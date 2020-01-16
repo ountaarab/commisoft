@@ -27,6 +27,7 @@ Class Auth extends CI_Controller{
                 $this->session->set_userdata($user);
                 redirect('home');   
                 
+                
             }else{
                 redirect('auth');
             }
