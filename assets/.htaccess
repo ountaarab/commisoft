@@ -1,0 +1,4 @@
+<IfModule mime_module>
+  php_value date.timezone "Asia/Jakarta"
+  php_value post_max_size 20M
+</IfModule>
