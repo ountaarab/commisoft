@@ -85,10 +85,10 @@ class Projects extends CI_Controller
         $data = array(
             'button' => 'save',
             'action' => site_url('projects/create_action'),
-	    'id' => set_value('id'),
-	    'project_id' => set_value('project_id'),
-	    'project_name' => set_value('project_name'),
-	    'project_desc' => set_value('project_desc'),
+    	    'id' => set_value('id'),
+    	    'project_id' => set_value('project_id'),
+    	    'project_name' => set_value('project_name'),
+    	    'project_desc' => set_value('project_desc'),
 	);
         $this->template->load('template','projects/tbl_projects_form', $data);
     }
@@ -101,14 +101,15 @@ class Projects extends CI_Controller
             $this->create();
         } else {
             $data = array(
-		'project_id' => $this->input->post('project_id',TRUE),
-		'project_name' => $this->input->post('project_name',TRUE),
-		'project_desc' => $this->input->post('project_desc',TRUE),
-	    );
+                    		'project_id' => $this->input->post('project_id',TRUE),
+                    		'project_name' => $this->input->post('project_name',TRUE),
+                    		'project_desc' => $this->input->post('project_desc',TRUE),
+                    	   );
+
 
 
         $this->Projects_model->insert($data);
-         $id_project = $this->db->insert_id();
+        $id_project = $this->db->insert_id();
         date_default_timezone_set('Asia/Bangkok');
         $datetime = date('Y-m-d H:i:s');
          $datalog = array(

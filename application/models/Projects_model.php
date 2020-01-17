@@ -14,38 +14,45 @@ class Projects_model extends CI_Model
 
 
     function __construct()
-    {
-        parent::__construct();
-    }
+        {
+            parent::__construct();
+        }
 
-    // get all
     function get_all($status = NULL)
-    {
-        $this->db->order_by($this->id, $this->desc);
-        $this->db->where('project_status',$status);
-        $this->db->from($this->table);
-        return $this->db->get()->result();
-    }
+        {
+            $this->db->order_by($this->id, $this->desc);
+            $this->db->where('project_status',$status);
+            $this->db->from($this->table);
+            return $this->db->get()->result();
+        }
 
-    // get data by id
+
     function get_by_id($id)
-    {
-        $this->db->where($this->id, $id);
-        return $this->db->get($this->table)->row();
-    }
+        {
+            $this->db->where($this->id, $id);
+            return $this->db->get($this->table)->row();
+        }
+
+    function select_to_insert ()
+        {
+            $this->db->where    ('project_id =', $id);
+            $this->db->or_where ('project_name =', $name);
+            return $this->db->get($this->table)->row();
+        }
     
-    // get total rows
-    function total_rows($q = NULL ,$status = NULL) {
-    $this->db->group_start();  
-    $this->db->like('id', $q);
-	$this->db->or_like('project_id', $q);
-	$this->db->or_like('project_name', $q);
-	$this->db->or_like('project_desc', $q);
-    $this->db->group_end(); 
-    $this->db->where('project_status',$status);
-	$this->db->from($this->table);
-        return $this->db->count_all_results();
-    }
+    
+    function total_rows($q = NULL ,$status = NULL) 
+        {
+            $this->db->group_start();  
+            $this->db->like('id', $q);
+        	$this->db->or_like('project_id', $q);
+        	$this->db->or_like('project_name', $q);
+        	$this->db->or_like('project_desc', $q);
+            $this->db->group_end(); 
+            $this->db->where('project_status',$status);
+        	$this->db->from($this->table);
+            return $this->db->count_all_results();
+        }
 
     // get data with limit and search
     function get_limit_data($limit, $start = 0, $q = NULL ,$status = NULL) {
