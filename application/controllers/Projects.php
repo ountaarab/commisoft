@@ -68,7 +68,7 @@ class Projects extends CI_Controller
         $row = $this->Projects_model->get_by_id($id);
         if ($row) {
             $data = array(
-		'id' => $row->id,
+		'id_projects' => $row->id_projects,
 		'project_id' => $row->project_id,
 		'project_name' => $row->project_name,
 		'project_desc' => $row->project_desc,
@@ -85,7 +85,7 @@ class Projects extends CI_Controller
         $data = array(
             'button' => 'save',
             'action' => site_url('projects/create_action'),
-	    'id' => set_value('id'),
+	    'id_projects' => set_value('id_projects'),
 	    'project_id' => set_value('project_id'),
 	    'project_name' => set_value('project_name'),
 	    'project_desc' => set_value('project_desc'),
@@ -108,11 +108,11 @@ class Projects extends CI_Controller
 
 
         $this->Projects_model->insert($data);
-         $id_project = $this->db->insert_id();
+         $id_projects = $this->db->insert_id();
         date_default_timezone_set('Asia/Bangkok');
         $datetime = date('Y-m-d H:i:s');
          $datalog = array(
-        'id_project' => $id_project,
+        'id_projects' => $id_projects,
         'project_id' => $this->input->post('project_id',TRUE),
         'project_name' => $this->input->post('project_name',TRUE),
         'project_desc' => $this->input->post('project_desc',TRUE),
@@ -134,7 +134,7 @@ class Projects extends CI_Controller
             $data = array(
                 'button' => 'Update',
                 'action' => site_url('projects/update_action'),
-		'id' => set_value('id', $row->id),
+		'id_projects' => set_value('id_projects', $row->id_projects),
 		'project_id' => set_value('project_id', $row->project_id),
 		'project_name' => set_value('project_name', $row->project_name),
 		'project_desc' => set_value('project_desc', $row->project_desc),
@@ -151,7 +151,7 @@ class Projects extends CI_Controller
         $this->_rules();
 
         if ($this->form_validation->run() == FALSE) {
-            $this->update($this->input->post('id', TRUE));
+            $this->update($this->input->post('id_projects', TRUE));
         } else {
             $data = array(
 		'project_id' => $this->input->post('project_id',TRUE),
@@ -164,7 +164,7 @@ class Projects extends CI_Controller
         date_default_timezone_set('Asia/Bangkok');
         $datetime = date('Y-m-d H:i:s');
         $datalog = array(
-        'id_project' => $this->input->post('id', TRUE),
+        'id_projects' => $this->input->post('id_projects', TRUE),
         'project_id' => $this->input->post('project_id',TRUE),
         'project_name' => $this->input->post('project_name',TRUE),
         'project_desc' => $this->input->post('project_desc',TRUE),
@@ -179,16 +179,16 @@ class Projects extends CI_Controller
         }
     }
     
-    public function delete($id) 
+    public function delete($id_projects) 
     {
-        $row = $this->Projects_model->get_by_id($id);
+        $row = $this->Projects_model->get_by_id($id_projects);
 
         if ($row) {
-         $this->Projects_model->delete($id);
+         $this->Projects_model->delete($id_projects);
         date_default_timezone_set('Asia/Bangkok');
         $datetime = date('Y-m-d H:i:s');
          $datalog = array(
-        'id_project' => $id,
+        'id_projects' => $id_projects,
         'project_id' => $row->project_id,
         'project_name' => $row->project_name,
         'project_desc' => $row->project_desc,
@@ -238,7 +238,7 @@ class Projects extends CI_Controller
 	$this->form_validation->set_rules('project_name', 'project name', 'trim|required');
 	$this->form_validation->set_rules('project_desc', 'project desc', 'trim|required');
 
-	$this->form_validation->set_rules('id', 'id', 'trim');
+	$this->form_validation->set_rules('id_projects', 'id_projects', 'trim');
 	$this->form_validation->set_error_delimiters('<span class="text-danger">', '</span>');
     }
 

@@ -39,7 +39,7 @@
                 <th><input type="checkbox" id="checkall"></th>
                 <th>No</th>
 		<th>Item No</th>
-		<th>Item Discipline No</th>
+		<th>Discipline Name</th>
 		<th>Item Id</th>
 		<th>Item Name</th>
 		<th width="200">Action</th>
@@ -51,7 +51,7 @@
 			 <td width="10px"><input type="checkbox" class="checkitem" name="pilih[]" value="<?=$items->id?>"></td>
 			<td width="10px"><?php echo ++$start ?></td>
 			<td><?php echo $items->item_no ?></td>
-			<td><?php echo $items->item_discipline_no ?></td>
+			<td><?php echo $items->discipline_name ?></td>
 			<td><?php echo $items->item_id ?></td>
 			<td><?php echo $items->item_name ?></td>
 			<td>

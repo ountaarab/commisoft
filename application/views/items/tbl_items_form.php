@@ -10,7 +10,19 @@
 <table class='table table-striped'>        
 
 	    <tr><td width='200'>Item No <?php echo form_error('item_no') ?></td><td><input type="text" class="form-control" name="item_no" id="item_no" placeholder="Item No" value="<?php echo $item_no; ?>" /></td></tr>
-	    <tr><td width='200'>Item Discipline No <?php echo form_error('item_discipline_no') ?></td><td><input type="text" class="form-control" name="item_discipline_no" id="item_discipline_no" placeholder="Item Discipline No" value="<?php echo $item_discipline_no; ?>" /></td></tr>
+	    <tr><td width='200'>Discipline <?php echo form_error('item_discipline_no') ?></td>
+            <td>
+                <select class="form-control" name="item_discipline_no" required>
+                    <option value="">Choose</option>
+            <?php
+                foreach ($data_discipline as $baris): ?>
+                    <option value="<?= $baris->discipline_id ?>"><?= $baris->discipline_name ?></option>
+                <?php
+                endforeach;
+            ?>
+                </select>
+            </td>
+        </tr>
 	    <tr><td width='200'>Item Id <?php echo form_error('item_id') ?></td><td><input type="text" class="form-control" name="item_id" id="item_id" placeholder="Item Id" value="<?php echo $item_id; ?>" /></td></tr>
 	    <tr><td width='200'>Item Name <?php echo form_error('item_name') ?></td><td><input type="text" class="form-control" name="item_name" id="item_name" placeholder="Item Name" value="<?php echo $item_name; ?>" /></td></tr>
 	    <tr><td></td><td><input type="hidden" name="id" value="<?php echo $id; ?>" /> 

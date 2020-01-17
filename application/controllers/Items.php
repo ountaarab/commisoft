@@ -59,6 +59,7 @@ class Items extends CI_Controller
             'total_rows' => $config['total_rows'],
             'start' => $start,
         );
+
         $this->template->load('template','items/tbl_items_list', $data);
     }
 
@@ -91,6 +92,9 @@ class Items extends CI_Controller
 	    'item_id' => set_value('item_id'),
 	    'item_name' => set_value('item_name'),
 	);
+        
+        // MODIF BY FAZRI
+        $data ['data_discipline'] = $this->Disciplines_model->get_all();
         $this->template->load('template','items/tbl_items_form', $data);
     }
     
@@ -118,13 +122,15 @@ class Items extends CI_Controller
     {
         $row = $this->Items_model->get_by_id($id);
 
+        var_dump($row);die;
+
         if ($row) {
             $data = array(
                 'button' => 'Update',
                 'action' => site_url('items/update_action'),
 		'id' => set_value('id', $row->id),
 		'item_no' => set_value('item_no', $row->item_no),
-		'item_discipline_no' => set_value('item_discipline_no', $row->item_discipline_no),
+		'item_discipline_no' => set_value('discipline_id', $row->discipline_id),
 		'item_id' => set_value('item_id', $row->item_id),
 		'item_name' => set_value('item_name', $row->item_name),
 	    );

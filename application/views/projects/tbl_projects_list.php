@@ -49,7 +49,7 @@
             {
                 ?>
                 <tr>
-			 <td width="10px"><input type="checkbox" class="checkitem" name="pilih[]" value="<?=$projects->id?>"></td>
+			 <td width="10px"><input type="checkbox" class="checkitem" name="pilih[]" value="<?=$projects->id_projects?>"></td>
 			<td width="10px"><?php echo ++$start ?></td>
 			<!-- <td><?php echo $projects->project_no ?></td> -->
 			<td><?php echo $projects->project_id ?></td>
@@ -57,11 +57,11 @@
 			<td><?php echo $projects->project_desc ?></td>
 			<td>
 				<?php 
-				echo anchor(site_url('projects/read/'.$projects->id),'<i class="icon-desktop" aria-hidden="true"></i>'); 
+				echo anchor(site_url('projects/read/'.$projects->id_projects),'<i class="icon-desktop" aria-hidden="true"></i>'); 
 				echo '  '; 
-				echo anchor(site_url('projects/update/'.$projects->id),'<i class="icon-edit" aria-hidden="true"></i>'); 
+				echo anchor(site_url('projects/update/'.$projects->id_projects),'<i class="icon-edit" aria-hidden="true"></i>'); 
 				echo '  '; 
-				echo anchor(site_url('projects/delete/'.$projects->id),'<i class="icon-trash" aria-hidden="true"></i>','onclick="javasciprt: return confirm(\'Are You Sure ?\')"'); 
+				echo anchor(site_url('projects/delete/'.$projects->id_projects),'<i class="icon-trash" aria-hidden="true"></i>','onclick="javasciprt: return confirm(\'Are You Sure ?\')"'); 
 				?>
 			</td>
 		</tr>

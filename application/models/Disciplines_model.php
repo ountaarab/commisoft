@@ -22,7 +22,7 @@ class Disciplines_model extends CI_Model
     function get_all($status = 0)
     {
         $this->db->order_by($this->id, $this->desc);
-    $this->db->select(''.$this->table.'');
+    $this->db->select('*');
     $this->db->where(''.$this->table.'.discipline_status', $status);
     $this->db->from($this->table);
         return $this->db->get()->result();

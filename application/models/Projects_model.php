@@ -7,7 +7,7 @@ class Projects_model extends CI_Model
 {
 
     public $table = 'tbl_projects';
-    public $id = 'id';
+    public $id = 'id_projects';
     public $desc = 'DESC';
     public $asc = 'ASC';
     
@@ -37,7 +37,7 @@ class Projects_model extends CI_Model
     // get total rows
     function total_rows($q = NULL ,$status = NULL) {
     $this->db->group_start();  
-    $this->db->like('id', $q);
+    $this->db->like('id_projects', $q);
 	$this->db->or_like('project_id', $q);
 	$this->db->or_like('project_name', $q);
 	$this->db->or_like('project_desc', $q);
@@ -51,7 +51,7 @@ class Projects_model extends CI_Model
     function get_limit_data($limit, $start = 0, $q = NULL ,$status = NULL) {
         $this->db->order_by($this->id, $this->desc);
     $this->db->group_start();  
-    $this->db->like('id', $q);
+    $this->db->like('id_projects', $q);
 	$this->db->or_like('project_id', $q);
 	$this->db->or_like('project_name', $q);
 	$this->db->or_like('project_desc', $q);

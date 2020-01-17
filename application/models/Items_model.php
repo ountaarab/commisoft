@@ -7,7 +7,7 @@ class Items_model extends CI_Model
 {
 
     public $table = 'tbl_items';
-    public $id = 'id';
+    public $id = 'tbl_items.id';
     public $desc = 'DESC';
     public $asc = 'ASC';
     
@@ -29,6 +29,7 @@ class Items_model extends CI_Model
     function get_by_id($id)
     {
         $this->db->where($this->id, $id);
+        $this->db->join('tbl_disciplines', 'tbl_items.item_discipline_no = tbl_disciplines.id');
         return $this->db->get($this->table)->row();
     }
     
@@ -45,12 +46,14 @@ class Items_model extends CI_Model
 
     // get data with limit and search
     function get_limit_data($limit, $start = 0, $q = NULL) {
-        $this->db->order_by($this->id, $this->desc);
-        $this->db->like('id', $q);
+    $this->db->order_by($this->id, $this->desc);
+    $this->db->like('tbl_items.id', $q);
 	$this->db->or_like('item_no', $q);
 	$this->db->or_like('item_discipline_no', $q);
 	$this->db->or_like('item_id', $q);
 	$this->db->or_like('item_name', $q);
+    // MODIF BY FAZRI
+    $this->db->join('tbl_disciplines', 'tbl_items.item_discipline_no = tbl_disciplines.id');
 	$this->db->limit($limit, $start);
         return $this->db->get($this->table)->result();
     }
