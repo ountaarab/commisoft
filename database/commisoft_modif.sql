@@ -11,7 +11,7 @@
  Target Server Version : 100119
  File Encoding         : 65001
 
- Date: 17/01/2020 15:11:56
+ Date: 17/01/2020 15:17:30
 */
 
 SET NAMES utf8mb4;
@@ -22,7 +22,7 @@ SET FOREIGN_KEY_CHECKS = 0;
 -- ----------------------------
 DROP TABLE IF EXISTS `tbl_csv`;
 CREATE TABLE `tbl_csv`  (
-  `id` int(11) NOT NULL,
+  `id_csv` int(11) NOT NULL,
   `csv_code` tinyint(1) NOT NULL,
   `csv_file` varchar(150) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL
 ) ENGINE = InnoDB CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Compact;
@@ -121,12 +121,12 @@ INSERT INTO `tbl_csv` VALUES (101, 8, 'item.csv');
 -- ----------------------------
 DROP TABLE IF EXISTS `tbl_disciplines`;
 CREATE TABLE `tbl_disciplines`  (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id_discipline` int(11) NOT NULL AUTO_INCREMENT,
   `id_projects` varchar(50) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
   `discipline_id` varchar(30) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
   `discipline_name` varchar(200) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
   `discipline_status` int(11) NOT NULL,
-  PRIMARY KEY (`id`) USING BTREE
+  PRIMARY KEY (`id_discipline`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 20 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Compact;
 
 -- ----------------------------
@@ -146,14 +146,14 @@ INSERT INTO `tbl_disciplines` VALUES (8, '1', 'SAF', 'SAFETY', 0);
 -- ----------------------------
 DROP TABLE IF EXISTS `tbl_disciplines_log`;
 CREATE TABLE `tbl_disciplines_log`  (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id_discipline_log` int(11) NOT NULL AUTO_INCREMENT,
   `id_disciplines` int(11) NOT NULL,
   `discipline_id` varchar(30) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
   `discipline_name` varchar(200) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
   `id_users` int(11) NOT NULL,
   `note` enum('add','update','delete','restore') CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
   `datetime` datetime(0) NOT NULL,
-  PRIMARY KEY (`id`) USING BTREE
+  PRIMARY KEY (`id_discipline_log`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 12 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Compact;
 
 -- ----------------------------
@@ -173,14 +173,14 @@ INSERT INTO `tbl_disciplines_log` VALUES (8, 8, 'SAF', 'SAFETY', 13, 'add', '202
 -- ----------------------------
 DROP TABLE IF EXISTS `tbl_equipments`;
 CREATE TABLE `tbl_equipments`  (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `id_equipment` bigint(20) NOT NULL AUTO_INCREMENT,
   `id_projects` varchar(50) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
   `id_systems` varchar(50) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
   `id_subs` varchar(50) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
   `id_items` varchar(50) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
   `equipment_no` varchar(50) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
   `equipment_desc` text CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
-  PRIMARY KEY (`id`) USING BTREE
+  PRIMARY KEY (`id_equipment`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Compact;
 
 -- ----------------------------
@@ -443,13 +443,13 @@ INSERT INTO `tbl_form_progress` VALUES (2271, 121, 92, 100, '2018-02-23');
 -- ----------------------------
 DROP TABLE IF EXISTS `tbl_forms`;
 CREATE TABLE `tbl_forms`  (
-  `id` bigint(11) NOT NULL AUTO_INCREMENT,
+  `id_form` bigint(11) NOT NULL AUTO_INCREMENT,
   `id_projects` varchar(50) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL,
   `id_disciplines` varchar(50) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL,
   `id_items` varchar(50) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL,
   `id_templates` varchar(50) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL,
   `template_type` varchar(50) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL,
-  PRIMARY KEY (`id`) USING BTREE
+  PRIMARY KEY (`id_form`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Compact;
 
 -- ----------------------------
@@ -681,12 +681,12 @@ INSERT INTO `tbl_indexes` VALUES (242, 1, 14, 1, 'P-M-Test', 'from VSD-M-Test', 
 -- ----------------------------
 DROP TABLE IF EXISTS `tbl_items`;
 CREATE TABLE `tbl_items`  (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id_item` int(11) NOT NULL AUTO_INCREMENT,
   `id_projects` varchar(50) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
   `id_disciplines` varchar(50) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
   `item_type_id` varchar(50) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
   `item_type_name` varchar(100) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
-  PRIMARY KEY (`id`) USING BTREE
+  PRIMARY KEY (`id_item`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 66 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Compact;
 
 -- ----------------------------
@@ -763,12 +763,12 @@ INSERT INTO `tbl_items` VALUES (65, '', '', '75', '2');
 -- ----------------------------
 DROP TABLE IF EXISTS `tbl_locations`;
 CREATE TABLE `tbl_locations`  (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id_location` int(11) NOT NULL AUTO_INCREMENT,
   `id_projects` varchar(50) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
   `location_id` varchar(30) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
   `location_name` varchar(200) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
   `location_status` int(11) NOT NULL,
-  PRIMARY KEY (`id`) USING BTREE
+  PRIMARY KEY (`id_location`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 7 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Compact;
 
 -- ----------------------------
@@ -781,7 +781,7 @@ INSERT INTO `tbl_locations` VALUES (1, '1', 'RTO-Package', '	RTO Package Area', 
 -- ----------------------------
 DROP TABLE IF EXISTS `tbl_locations_log`;
 CREATE TABLE `tbl_locations_log`  (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id_locations_log` int(11) NOT NULL AUTO_INCREMENT,
   `id_locations` varchar(50) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
   `id_projects` varchar(50) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
   `location_id` varchar(30) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
@@ -789,7 +789,7 @@ CREATE TABLE `tbl_locations_log`  (
   `id_users` int(11) NOT NULL,
   `note` enum('add','update','delete','restore') CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
   `datetime` datetime(0) NOT NULL,
-  PRIMARY KEY (`id`) USING BTREE
+  PRIMARY KEY (`id_locations_log`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 14 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Compact;
 
 -- ----------------------------
@@ -1017,12 +1017,12 @@ INSERT INTO `tbl_progress2` VALUES (3, 'discipline_id', 'Discipline', 'disciplin
 -- ----------------------------
 DROP TABLE IF EXISTS `tbl_projects`;
 CREATE TABLE `tbl_projects`  (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id_project` int(11) NOT NULL AUTO_INCREMENT,
   `project_id` varchar(30) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
   `project_name` varchar(100) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
   `project_desc` text CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
   `project_status` int(11) NOT NULL,
-  PRIMARY KEY (`id`) USING BTREE
+  PRIMARY KEY (`id_project`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 17 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Compact;
 
 -- ----------------------------
@@ -1035,7 +1035,7 @@ INSERT INTO `tbl_projects` VALUES (16, 'RTO', 'RTO - U3 PROJECT', 'Systhetic Rub
 -- ----------------------------
 DROP TABLE IF EXISTS `tbl_projects_log`;
 CREATE TABLE `tbl_projects_log`  (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id_project_log` int(11) NOT NULL AUTO_INCREMENT,
   `id_projects` varchar(50) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
   `project_id` varchar(30) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
   `project_name` varchar(200) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
@@ -1043,7 +1043,7 @@ CREATE TABLE `tbl_projects_log`  (
   `id_users` int(11) NOT NULL,
   `note` enum('add','update','delete','restore') CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
   `datetime` datetime(0) NOT NULL,
-  PRIMARY KEY (`id`) USING BTREE
+  PRIMARY KEY (`id_project_log`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 22 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Compact;
 
 -- ----------------------------
@@ -1103,12 +1103,12 @@ INSERT INTO `tbl_setting` VALUES (1, 'Tampil Menu', 'tidak');
 -- ----------------------------
 DROP TABLE IF EXISTS `tbl_subs`;
 CREATE TABLE `tbl_subs`  (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id_sub` int(11) NOT NULL AUTO_INCREMENT,
   `id_systems` varchar(50) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
   `sub_id` varchar(30) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
   `sub_name` varchar(100) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
   `sub_status` int(11) NOT NULL,
-  PRIMARY KEY (`id`) USING BTREE
+  PRIMARY KEY (`id_sub`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 29 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Compact;
 
 -- ----------------------------
@@ -1121,7 +1121,7 @@ INSERT INTO `tbl_subs` VALUES (1, '1', 'FG-01', 'Off Gas to Burner', 0);
 -- ----------------------------
 DROP TABLE IF EXISTS `tbl_subs_log`;
 CREATE TABLE `tbl_subs_log`  (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id_sub_log` int(11) NOT NULL AUTO_INCREMENT,
   `id_subs` varchar(50) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
   `id_systems` varchar(50) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
   `sub_id` varchar(30) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
@@ -1129,7 +1129,7 @@ CREATE TABLE `tbl_subs_log`  (
   `id_users` int(11) NOT NULL,
   `note` enum('add','update','delete','restore') CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
   `datetime` datetime(0) NOT NULL,
-  PRIMARY KEY (`id`) USING BTREE
+  PRIMARY KEY (`id_sub_log`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 17 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Compact;
 
 -- ----------------------------
@@ -1142,12 +1142,12 @@ INSERT INTO `tbl_subs_log` VALUES (1, '1', '1', 'FG-01', 'Off Gas to Burner', 13
 -- ----------------------------
 DROP TABLE IF EXISTS `tbl_systems`;
 CREATE TABLE `tbl_systems`  (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id_system` int(11) NOT NULL AUTO_INCREMENT,
   `id_projects` varchar(50) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
   `system_id` varchar(30) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
   `system_name` varchar(100) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
   `system_status` int(11) NOT NULL,
-  PRIMARY KEY (`id`) USING BTREE
+  PRIMARY KEY (`id_system`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 24 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Compact;
 
 -- ----------------------------
@@ -1160,7 +1160,7 @@ INSERT INTO `tbl_systems` VALUES (1, '16', 'FG', 'Fire & Gas System', 0);
 -- ----------------------------
 DROP TABLE IF EXISTS `tbl_systems_log`;
 CREATE TABLE `tbl_systems_log`  (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id_system_log` int(11) NOT NULL AUTO_INCREMENT,
   `id_systems` varchar(50) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
   `id_projects` varbinary(50) NOT NULL,
   `system_id` varchar(30) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
@@ -1168,7 +1168,7 @@ CREATE TABLE `tbl_systems_log`  (
   `id_users` int(11) NOT NULL,
   `note` enum('add','update','delete','restore') CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
   `datetime` datetime(0) NOT NULL,
-  PRIMARY KEY (`id`) USING BTREE
+  PRIMARY KEY (`id_system_log`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 22 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Compact;
 
 -- ----------------------------
@@ -1181,11 +1181,11 @@ INSERT INTO `tbl_systems_log` VALUES (1, '1', 0x3136, 'FG', 'Fire & Gas System',
 -- ----------------------------
 DROP TABLE IF EXISTS `tbl_template_details`;
 CREATE TABLE `tbl_template_details`  (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `id_template_detail` bigint(20) NOT NULL AUTO_INCREMENT,
   `id_templates` varchar(100) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL,
   `template_no` int(11) NOT NULL,
   `template_item` text CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
-  PRIMARY KEY (`id`) USING BTREE
+  PRIMARY KEY (`id_template_detail`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 903 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Compact;
 
 -- ----------------------------
@@ -2099,11 +2099,11 @@ INSERT INTO `tbl_template_details` VALUES (902, NULL, 0, '');
 -- ----------------------------
 DROP TABLE IF EXISTS `tbl_template_details_temp`;
 CREATE TABLE `tbl_template_details_temp`  (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `id_template_detail_temp` bigint(20) NOT NULL AUTO_INCREMENT,
   `id_templates` varchar(100) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL,
   `template_no` int(11) NOT NULL,
   `template_item` text CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
-  PRIMARY KEY (`id`) USING BTREE
+  PRIMARY KEY (`id_template_detail_temp`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 903 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Compact;
 
 -- ----------------------------
@@ -3017,7 +3017,7 @@ INSERT INTO `tbl_template_details_temp` VALUES (902, NULL, 0, '');
 -- ----------------------------
 DROP TABLE IF EXISTS `tbl_templates`;
 CREATE TABLE `tbl_templates`  (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id_template` int(11) NOT NULL AUTO_INCREMENT,
   `template_id` varchar(11) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
   `template_name` varchar(100) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
   `template_type` varchar(8) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
@@ -3025,7 +3025,7 @@ CREATE TABLE `tbl_templates`  (
   `template_title_1` varchar(50) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL,
   `template_title_2` varchar(50) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL,
   `template_title_3` varchar(50) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL,
-  PRIMARY KEY (`id`) USING BTREE
+  PRIMARY KEY (`id_template`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 85 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Compact;
 
 -- ----------------------------
