@@ -11,7 +11,7 @@
  Target Server Version : 100119
  File Encoding         : 65001
 
- Date: 17/01/2020 14:42:13
+ Date: 17/01/2020 15:11:56
 */
 
 SET NAMES utf8mb4;
@@ -22,7 +22,7 @@ SET FOREIGN_KEY_CHECKS = 0;
 -- ----------------------------
 DROP TABLE IF EXISTS `tbl_csv`;
 CREATE TABLE `tbl_csv`  (
-  `id_csvs` int(11) NOT NULL,
+  `id` int(11) NOT NULL,
   `csv_code` tinyint(1) NOT NULL,
   `csv_file` varchar(150) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL
 ) ENGINE = InnoDB CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Compact;
@@ -121,79 +121,66 @@ INSERT INTO `tbl_csv` VALUES (101, 8, 'item.csv');
 -- ----------------------------
 DROP TABLE IF EXISTS `tbl_disciplines`;
 CREATE TABLE `tbl_disciplines`  (
-  `id_disciplines` int(11) NOT NULL AUTO_INCREMENT,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `id_projects` varchar(50) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
   `discipline_id` varchar(30) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
   `discipline_name` varchar(200) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
   `discipline_status` int(11) NOT NULL,
-  PRIMARY KEY (`id_disciplines`) USING BTREE
+  PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 20 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Records of tbl_disciplines
 -- ----------------------------
-INSERT INTO `tbl_disciplines` VALUES (1, '', 'MEC', 'MECHANICAL', 0);
-INSERT INTO `tbl_disciplines` VALUES (2, '', 'INST', 'INSTRUMENT', 0);
-INSERT INTO `tbl_disciplines` VALUES (3, '', 'ELE', 'ELECTRIC', 0);
-INSERT INTO `tbl_disciplines` VALUES (4, '', 'PIP', 'PIPING', 0);
-INSERT INTO `tbl_disciplines` VALUES (5, '', 'CIV', 'CIVIL', 0);
-INSERT INTO `tbl_disciplines` VALUES (6, '', 'STR', 'STRUCTURE', 0);
-INSERT INTO `tbl_disciplines` VALUES (7, '', 'TEL', 'TELCOMS', 0);
-INSERT INTO `tbl_disciplines` VALUES (8, '', 'SAF', 'SAFETY', 0);
-INSERT INTO `tbl_disciplines` VALUES (10, '', 'dsd', 'dsd', 0);
-INSERT INTO `tbl_disciplines` VALUES (11, '', 'dsd', 'sds', 0);
-INSERT INTO `tbl_disciplines` VALUES (12, '', 'ds', 'ds', 0);
-INSERT INTO `tbl_disciplines` VALUES (13, '', '2', 'fsfsf sfsf', 0);
-INSERT INTO `tbl_disciplines` VALUES (14, '', '33', '33', 1);
-INSERT INTO `tbl_disciplines` VALUES (15, '', '44', '44', 1);
-INSERT INTO `tbl_disciplines` VALUES (16, '', '2', 'CIVIL', 0);
-INSERT INTO `tbl_disciplines` VALUES (17, '', 'hg', 'jhjg', 0);
-INSERT INTO `tbl_disciplines` VALUES (18, '', 'gfgfgf', 'hghghg', 0);
-INSERT INTO `tbl_disciplines` VALUES (19, '', '1', '1', 0);
+INSERT INTO `tbl_disciplines` VALUES (1, '1', 'MEC', 'MECHANICAL', 0);
+INSERT INTO `tbl_disciplines` VALUES (2, '1', 'INST', 'INSTRUMENT', 0);
+INSERT INTO `tbl_disciplines` VALUES (3, '1', 'ELE', 'ELECTRIC', 0);
+INSERT INTO `tbl_disciplines` VALUES (4, '1', 'PIP', 'PIPING', 0);
+INSERT INTO `tbl_disciplines` VALUES (5, '1', 'CIV', 'CIVIL', 0);
+INSERT INTO `tbl_disciplines` VALUES (6, '1', 'STR', 'STRUCTURE', 0);
+INSERT INTO `tbl_disciplines` VALUES (7, '1', 'TEL', 'TELCOMS', 0);
+INSERT INTO `tbl_disciplines` VALUES (8, '1', 'SAF', 'SAFETY', 0);
 
 -- ----------------------------
 -- Table structure for tbl_disciplines_log
 -- ----------------------------
 DROP TABLE IF EXISTS `tbl_disciplines_log`;
 CREATE TABLE `tbl_disciplines_log`  (
-  `id_discipline_logs` int(11) NOT NULL AUTO_INCREMENT,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `id_disciplines` int(11) NOT NULL,
   `discipline_id` varchar(30) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
   `discipline_name` varchar(200) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
   `id_users` int(11) NOT NULL,
   `note` enum('add','update','delete','restore') CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
   `datetime` datetime(0) NOT NULL,
-  PRIMARY KEY (`id_discipline_logs`) USING BTREE
+  PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 12 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Records of tbl_disciplines_log
 -- ----------------------------
-INSERT INTO `tbl_disciplines_log` VALUES (1, 12, 'ds', 'ds', 12, 'add', '2019-12-28 08:30:33');
-INSERT INTO `tbl_disciplines_log` VALUES (2, 13, '2', 'fsfsf sfsf', 12, 'add', '2019-12-28 08:47:06');
-INSERT INTO `tbl_disciplines_log` VALUES (3, 14, '33', '33', 12, 'add', '2019-12-28 09:29:34');
-INSERT INTO `tbl_disciplines_log` VALUES (4, 15, '44', '44', 12, 'add', '2019-12-28 09:29:39');
-INSERT INTO `tbl_disciplines_log` VALUES (5, 15, '44', '44', 12, 'delete', '2019-12-28 09:30:07');
-INSERT INTO `tbl_disciplines_log` VALUES (6, 14, '33', '33', 12, 'delete', '2019-12-28 09:30:07');
-INSERT INTO `tbl_disciplines_log` VALUES (7, 13, '2', 'fsfsf sfsf', 12, 'update', '2019-12-28 12:07:53');
-INSERT INTO `tbl_disciplines_log` VALUES (8, 16, '2', 'CIVIL', 12, 'add', '2019-12-28 13:48:37');
-INSERT INTO `tbl_disciplines_log` VALUES (9, 17, 'hg', 'jhjg', 12, 'add', '2020-01-06 08:52:19');
-INSERT INTO `tbl_disciplines_log` VALUES (10, 18, 'gfgfgf', 'hghghg', 12, 'add', '2020-01-06 09:26:43');
-INSERT INTO `tbl_disciplines_log` VALUES (11, 19, '1', '1', 12, 'add', '2020-01-06 16:26:24');
+INSERT INTO `tbl_disciplines_log` VALUES (1, 1, 'MEC', 'MECHANICAL', 13, 'add', '2020-01-17 08:30:33');
+INSERT INTO `tbl_disciplines_log` VALUES (2, 2, 'INST', 'INSTRUMENT', 13, 'add', '2020-01-17 08:30:33');
+INSERT INTO `tbl_disciplines_log` VALUES (3, 3, 'ELE', 'ELECTRIC', 13, 'add', '2020-01-17 08:30:33');
+INSERT INTO `tbl_disciplines_log` VALUES (4, 4, 'PIP', 'PIPING', 13, 'add', '2020-01-17 08:30:33');
+INSERT INTO `tbl_disciplines_log` VALUES (5, 5, 'CIV', 'CIVIL', 13, 'add', '2020-01-17 08:30:33');
+INSERT INTO `tbl_disciplines_log` VALUES (6, 6, 'STR', 'STRUCTURE', 13, 'add', '2020-01-17 08:30:33');
+INSERT INTO `tbl_disciplines_log` VALUES (7, 7, 'TEL', 'TELCOMS', 13, 'add', '2020-01-17 08:30:33');
+INSERT INTO `tbl_disciplines_log` VALUES (8, 8, 'SAF', 'SAFETY', 13, 'add', '2020-01-17 08:30:33');
 
 -- ----------------------------
 -- Table structure for tbl_equipments
 -- ----------------------------
 DROP TABLE IF EXISTS `tbl_equipments`;
 CREATE TABLE `tbl_equipments`  (
-  `id_equipments` bigint(20) NOT NULL AUTO_INCREMENT,
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `id_projects` varchar(50) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
   `id_systems` varchar(50) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
   `id_subs` varchar(50) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
   `id_items` varchar(50) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
   `equipment_no` varchar(50) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
   `equipment_desc` text CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
-  PRIMARY KEY (`id_equipments`) USING BTREE
+  PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Compact;
 
 -- ----------------------------
@@ -456,13 +443,13 @@ INSERT INTO `tbl_form_progress` VALUES (2271, 121, 92, 100, '2018-02-23');
 -- ----------------------------
 DROP TABLE IF EXISTS `tbl_forms`;
 CREATE TABLE `tbl_forms`  (
-  `id_forms` bigint(11) NOT NULL AUTO_INCREMENT,
+  `id` bigint(11) NOT NULL AUTO_INCREMENT,
   `id_projects` varchar(50) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL,
   `id_disciplines` varchar(50) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL,
   `id_items` varchar(50) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL,
   `id_templates` varchar(50) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL,
   `template_type` varchar(50) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL,
-  PRIMARY KEY (`id_forms`) USING BTREE
+  PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Compact;
 
 -- ----------------------------
@@ -694,12 +681,12 @@ INSERT INTO `tbl_indexes` VALUES (242, 1, 14, 1, 'P-M-Test', 'from VSD-M-Test', 
 -- ----------------------------
 DROP TABLE IF EXISTS `tbl_items`;
 CREATE TABLE `tbl_items`  (
-  `id_items` int(11) NOT NULL AUTO_INCREMENT,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `id_projects` varchar(50) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
   `id_disciplines` varchar(50) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
   `item_type_id` varchar(50) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
   `item_type_name` varchar(100) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
-  PRIMARY KEY (`id_items`) USING BTREE
+  PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 66 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Compact;
 
 -- ----------------------------
@@ -776,28 +763,25 @@ INSERT INTO `tbl_items` VALUES (65, '', '', '75', '2');
 -- ----------------------------
 DROP TABLE IF EXISTS `tbl_locations`;
 CREATE TABLE `tbl_locations`  (
-  `id_locations` int(11) NOT NULL AUTO_INCREMENT,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `id_projects` varchar(50) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
   `location_id` varchar(30) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
   `location_name` varchar(200) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
   `location_status` int(11) NOT NULL,
-  PRIMARY KEY (`id_locations`) USING BTREE
+  PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 7 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Records of tbl_locations
 -- ----------------------------
-INSERT INTO `tbl_locations` VALUES (3, '1', 's', 's', 1);
-INSERT INTO `tbl_locations` VALUES (4, '1', 's', 's', 1);
-INSERT INTO `tbl_locations` VALUES (5, '1', '23', 'ffs', 1);
-INSERT INTO `tbl_locations` VALUES (6, '1', '12', 'asa', 0);
+INSERT INTO `tbl_locations` VALUES (1, '1', 'RTO-Package', '	RTO Package Area', 0);
 
 -- ----------------------------
 -- Table structure for tbl_locations_log
 -- ----------------------------
 DROP TABLE IF EXISTS `tbl_locations_log`;
 CREATE TABLE `tbl_locations_log`  (
-  `id_location_logs` int(11) NOT NULL AUTO_INCREMENT,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `id_locations` varchar(50) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
   `id_projects` varchar(50) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
   `location_id` varchar(30) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
@@ -805,16 +789,13 @@ CREATE TABLE `tbl_locations_log`  (
   `id_users` int(11) NOT NULL,
   `note` enum('add','update','delete','restore') CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
   `datetime` datetime(0) NOT NULL,
-  PRIMARY KEY (`id_location_logs`) USING BTREE
+  PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 14 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Records of tbl_locations_log
 -- ----------------------------
-INSERT INTO `tbl_locations_log` VALUES (10, '5', '1', '23', 'ffs', 12, 'delete', '2019-12-28 09:14:23');
-INSERT INTO `tbl_locations_log` VALUES (11, '4', '1', 's', 's', 12, 'delete', '2019-12-28 09:14:23');
-INSERT INTO `tbl_locations_log` VALUES (12, '3', '1', 's', 's', 12, 'delete', '2019-12-28 09:14:23');
-INSERT INTO `tbl_locations_log` VALUES (13, '6', '1', '12', 'asa', 12, 'add', '2019-12-28 09:17:16');
+INSERT INTO `tbl_locations_log` VALUES (1, '1', '1', 'RTO-Package', '	RTO Package Area', 13, 'add', '2020-01-17 14:59:45');
 
 -- ----------------------------
 -- Table structure for tbl_macros
@@ -1036,26 +1017,25 @@ INSERT INTO `tbl_progress2` VALUES (3, 'discipline_id', 'Discipline', 'disciplin
 -- ----------------------------
 DROP TABLE IF EXISTS `tbl_projects`;
 CREATE TABLE `tbl_projects`  (
-  `id_projects` int(11) NOT NULL AUTO_INCREMENT,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `project_id` varchar(30) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
   `project_name` varchar(100) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
   `project_desc` text CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
   `project_status` int(11) NOT NULL,
-  PRIMARY KEY (`id_projects`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 16 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Compact;
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 17 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Records of tbl_projects
 -- ----------------------------
-INSERT INTO `tbl_projects` VALUES (1, 'RTO', 'RTO - U3 PROJECT', 'Systhetic Rubber Indonesia (SRI) U3 Project', 0);
-INSERT INTO `tbl_projects` VALUES (15, 'RTO-02', 'RTO - U4 PROJECT', 'Systhetic Rubber Indonesia (SRI) U4 Project', 1);
+INSERT INTO `tbl_projects` VALUES (16, 'RTO', 'RTO - U3 PROJECT', 'Systhetic Rubber Indonesia (SRI) U3 Project', 0);
 
 -- ----------------------------
 -- Table structure for tbl_projects_log
 -- ----------------------------
 DROP TABLE IF EXISTS `tbl_projects_log`;
 CREATE TABLE `tbl_projects_log`  (
-  `id_project_logs` int(11) NOT NULL AUTO_INCREMENT,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `id_projects` varchar(50) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
   `project_id` varchar(30) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
   `project_name` varchar(200) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
@@ -1063,32 +1043,13 @@ CREATE TABLE `tbl_projects_log`  (
   `id_users` int(11) NOT NULL,
   `note` enum('add','update','delete','restore') CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
   `datetime` datetime(0) NOT NULL,
-  PRIMARY KEY (`id_project_logs`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 21 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Compact;
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 22 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Records of tbl_projects_log
 -- ----------------------------
-INSERT INTO `tbl_projects_log` VALUES (1, '6', 'RT2', 'RTT', 'kdjfkd dfsjdjf', 12, 'add', '2019-12-27 10:29:18');
-INSERT INTO `tbl_projects_log` VALUES (2, '6', 'RT2-2', 'RTT OK', 'nnnnn kdjfkd dfsjdjf', 12, 'update', '2019-12-27 10:32:00');
-INSERT INTO `tbl_projects_log` VALUES (3, '6', 'RT2', 'RTT', 'nnnnn kdjfkd dfsjdjf', 12, 'update', '2019-12-27 16:34:43');
-INSERT INTO `tbl_projects_log` VALUES (4, '6', 'RT2', 'RTT', 'nnnnn kdjfkd dfsjdjf', 12, 'delete', '2019-12-27 16:42:38');
-INSERT INTO `tbl_projects_log` VALUES (5, '2', 'JW1', 'Jawa 1 Power', 'Pertamina CGPP Jawa 1 Power', 12, 'delete', '2019-12-28 03:18:44');
-INSERT INTO `tbl_projects_log` VALUES (6, '7', '1', '1', '1', 12, 'add', '2019-12-28 09:21:13');
-INSERT INTO `tbl_projects_log` VALUES (7, '8', '2', '2', '2', 12, 'add', '2019-12-28 09:21:20');
-INSERT INTO `tbl_projects_log` VALUES (8, '8', '2', '2', '2', 12, 'delete', '2019-12-28 09:21:47');
-INSERT INTO `tbl_projects_log` VALUES (9, '7', '1', '1', '1', 12, 'delete', '2019-12-28 09:21:47');
-INSERT INTO `tbl_projects_log` VALUES (10, '9', '1', '1', '1\r\n\r\n1', 12, 'add', '2019-12-28 11:16:28');
-INSERT INTO `tbl_projects_log` VALUES (11, '9', '1', '1', '1\r\n\r\n1', 12, 'delete', '2019-12-28 11:16:40');
-INSERT INTO `tbl_projects_log` VALUES (12, '10', '2', 'Project 2', 'dhsdsj djshdjhs dsdjsh', 12, 'add', '2019-12-28 13:47:19');
-INSERT INTO `tbl_projects_log` VALUES (13, '11', '1', 'pembuatan software', 'ddssg sgsdf', 12, 'add', '2019-12-30 09:12:19');
-INSERT INTO `tbl_projects_log` VALUES (14, '12', 'rt2', 'dsds', 'dsds', 12, 'add', '2019-12-30 09:14:18');
-INSERT INTO `tbl_projects_log` VALUES (15, '13', '21', 'dsd', 'fgfggsd', 12, 'add', '2019-12-30 10:08:37');
-INSERT INTO `tbl_projects_log` VALUES (16, '14', 'k', 'k', 'k', 12, 'add', '2020-01-04 21:34:34');
-INSERT INTO `tbl_projects_log` VALUES (17, '14', 'k', 'k', 'k', 12, 'delete', '2020-01-04 21:35:25');
-INSERT INTO `tbl_projects_log` VALUES (18, '13', '21', 'dsd', 'fgfggsd', 12, 'update', '2020-01-04 22:38:04');
-INSERT INTO `tbl_projects_log` VALUES (19, '15', 'RTO-02', 'RTO - U4 PROJECT', 'Systhetic Rubber Indonesia (SRI) U4 Project', 13, 'add', '2020-01-17 14:40:43');
-INSERT INTO `tbl_projects_log` VALUES (20, '15', 'RTO-02', 'RTO - U4 PROJECT', 'Systhetic Rubber Indonesia (SRI) U4 Project', 13, 'delete', '2020-01-17 14:40:57');
+INSERT INTO `tbl_projects_log` VALUES (21, '16', 'RTO', 'RTO - U3 PROJECT', 'Systhetic Rubber Indonesia (SRI) U3 Project', 13, 'add', '2020-01-17 14:47:43');
 
 -- ----------------------------
 -- Table structure for tbl_punchlist
@@ -1142,51 +1103,25 @@ INSERT INTO `tbl_setting` VALUES (1, 'Tampil Menu', 'tidak');
 -- ----------------------------
 DROP TABLE IF EXISTS `tbl_subs`;
 CREATE TABLE `tbl_subs`  (
-  `id_subs` int(11) NOT NULL AUTO_INCREMENT,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `id_systems` varchar(50) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
   `sub_id` varchar(30) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
   `sub_name` varchar(100) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
   `sub_status` int(11) NOT NULL,
-  PRIMARY KEY (`id_subs`) USING BTREE
+  PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 29 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Records of tbl_subs
 -- ----------------------------
-INSERT INTO `tbl_subs` VALUES (1, '1', '10-01', 'RTO Rich Off Gas Vent Header', 0);
-INSERT INTO `tbl_subs` VALUES (2, '1', '10-02', 'Flare Vent Header', 0);
-INSERT INTO `tbl_subs` VALUES (3, '1', '10-03', 'Off Gas to Burner', 0);
-INSERT INTO `tbl_subs` VALUES (4, '2', '15-01', 'Instrument Air', 0);
-INSERT INTO `tbl_subs` VALUES (5, '3', '20-01', 'Natural Gas for RTO Package', 0);
-INSERT INTO `tbl_subs` VALUES (6, '3', '20-02', 'Cold Water Supply for RTO', 0);
-INSERT INTO `tbl_subs` VALUES (7, '3', '20-03', 'Cold Water Return for RTO Package', 0);
-INSERT INTO `tbl_subs` VALUES (8, '3', '20-05', 'RTO Package', 0);
-INSERT INTO `tbl_subs` VALUES (9, '3', '20-04', 'Low Pressure N2 for RTO Package', 0);
-INSERT INTO `tbl_subs` VALUES (10, '4', '25-01', 'Waste Air to RTO package', 0);
-INSERT INTO `tbl_subs` VALUES (11, '5', '30-01', 'Emergency Lighting System', 0);
-INSERT INTO `tbl_subs` VALUES (12, '5', '30-02', 'Normal Lighting System', 0);
-INSERT INTO `tbl_subs` VALUES (13, '6', '35-01', 'Installation and Testing Instrument at RTO Package', 0);
-INSERT INTO `tbl_subs` VALUES (14, '5', '30-03', 'Lightening and Earting system', 0);
-INSERT INTO `tbl_subs` VALUES (15, '5', '30-4', 'test sub 30-4', 0);
-INSERT INTO `tbl_subs` VALUES (17, '1', '9', 'fghyy', 1);
-INSERT INTO `tbl_subs` VALUES (18, '12', '1', '1', 0);
-INSERT INTO `tbl_subs` VALUES (19, '13', '1', 'fsfs', 0);
-INSERT INTO `tbl_subs` VALUES (20, '13', 'f', 'fd', 0);
-INSERT INTO `tbl_subs` VALUES (21, '13', 'f', 'fd', 0);
-INSERT INTO `tbl_subs` VALUES (22, '1', '1', '1', 1);
-INSERT INTO `tbl_subs` VALUES (23, '1', '1', '1', 1);
-INSERT INTO `tbl_subs` VALUES (24, '1', '1', '1', 1);
-INSERT INTO `tbl_subs` VALUES (25, '1', '1', '1', 1);
-INSERT INTO `tbl_subs` VALUES (26, '1', '2', '2', 1);
-INSERT INTO `tbl_subs` VALUES (27, '1', '2', '2', 1);
-INSERT INTO `tbl_subs` VALUES (28, '2', '12', 'ddsds', 0);
+INSERT INTO `tbl_subs` VALUES (1, '1', 'FG-01', 'Off Gas to Burner', 0);
 
 -- ----------------------------
 -- Table structure for tbl_subs_log
 -- ----------------------------
 DROP TABLE IF EXISTS `tbl_subs_log`;
 CREATE TABLE `tbl_subs_log`  (
-  `id_sub_logs` int(11) NOT NULL AUTO_INCREMENT,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `id_subs` varchar(50) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
   `id_systems` varchar(50) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
   `sub_id` varchar(30) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
@@ -1194,73 +1129,38 @@ CREATE TABLE `tbl_subs_log`  (
   `id_users` int(11) NOT NULL,
   `note` enum('add','update','delete','restore') CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
   `datetime` datetime(0) NOT NULL,
-  PRIMARY KEY (`id_sub_logs`) USING BTREE
+  PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 17 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Records of tbl_subs_log
 -- ----------------------------
-INSERT INTO `tbl_subs_log` VALUES (1, '18', '12', '1', '1', 12, 'add', '2019-12-28 03:12:29');
-INSERT INTO `tbl_subs_log` VALUES (2, '19', '13', '1', 'fsfs', 12, 'add', '2019-12-28 03:17:49');
-INSERT INTO `tbl_subs_log` VALUES (3, '20', '13', 'f', 'fd', 12, 'add', '2019-12-28 03:18:01');
-INSERT INTO `tbl_subs_log` VALUES (4, '21', '13', 'f', 'fd', 12, 'add', '2019-12-28 03:18:11');
-INSERT INTO `tbl_subs_log` VALUES (5, '22', '1', '1', '1', 12, 'add', '2019-12-28 09:26:20');
-INSERT INTO `tbl_subs_log` VALUES (6, '23', '1', '1', '1', 12, 'add', '2019-12-28 09:26:27');
-INSERT INTO `tbl_subs_log` VALUES (7, '24', '1', '1', '1', 12, 'add', '2019-12-28 09:27:02');
-INSERT INTO `tbl_subs_log` VALUES (8, '25', '1', '1', '1', 12, 'add', '2019-12-28 09:27:09');
-INSERT INTO `tbl_subs_log` VALUES (9, '25', '1', '1', '1', 12, 'delete', '2019-12-28 09:27:12');
-INSERT INTO `tbl_subs_log` VALUES (10, '24', '1', '1', '1', 12, 'delete', '2019-12-28 09:27:12');
-INSERT INTO `tbl_subs_log` VALUES (11, '22', '1', '1', '1', 12, 'delete', '2019-12-28 09:27:16');
-INSERT INTO `tbl_subs_log` VALUES (12, '26', '1', '2', '2', 12, 'add', '2019-12-28 09:27:25');
-INSERT INTO `tbl_subs_log` VALUES (13, '27', '1', '2', '2', 12, 'add', '2019-12-28 09:27:31');
-INSERT INTO `tbl_subs_log` VALUES (14, '27', '1', '2', '2', 12, 'delete', '2019-12-28 09:27:34');
-INSERT INTO `tbl_subs_log` VALUES (15, '26', '1', '2', '2', 12, 'delete', '2019-12-28 09:27:34');
-INSERT INTO `tbl_subs_log` VALUES (16, '28', '2', '12', 'ddsds', 12, 'add', '2019-12-28 13:35:31');
+INSERT INTO `tbl_subs_log` VALUES (1, '1', '1', 'FG-01', 'Off Gas to Burner', 13, 'add', '2020-01-17 14:54:42');
 
 -- ----------------------------
 -- Table structure for tbl_systems
 -- ----------------------------
 DROP TABLE IF EXISTS `tbl_systems`;
 CREATE TABLE `tbl_systems`  (
-  `id_systems` int(11) NOT NULL AUTO_INCREMENT,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `id_projects` varchar(50) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
   `system_id` varchar(30) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
   `system_name` varchar(100) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
   `system_status` int(11) NOT NULL,
-  PRIMARY KEY (`id_systems`) USING BTREE
+  PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 24 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Records of tbl_systems
 -- ----------------------------
-INSERT INTO `tbl_systems` VALUES (1, '1', '10', 'Off Gas KO Drum', 0);
-INSERT INTO `tbl_systems` VALUES (2, '1', '15', 'Instrument Air System', 0);
-INSERT INTO `tbl_systems` VALUES (3, '1', '20', 'Off Gas and Waste Air Treatment', 0);
-INSERT INTO `tbl_systems` VALUES (4, '1', '25', 'RTO Waste Header', 0);
-INSERT INTO `tbl_systems` VALUES (5, '1', '30', 'Lighting System', 0);
-INSERT INTO `tbl_systems` VALUES (6, '1', '35', 'Fire & Gas System', 0);
-INSERT INTO `tbl_systems` VALUES (7, '1', '50', 'test 2', 1);
-INSERT INTO `tbl_systems` VALUES (8, '1', '40', 'test', 1);
-INSERT INTO `tbl_systems` VALUES (11, '1', '20', 'komputer 1', 1);
-INSERT INTO `tbl_systems` VALUES (12, '1', '1', 'nnn', 1);
-INSERT INTO `tbl_systems` VALUES (13, '2', '1', 'dsds', 0);
-INSERT INTO `tbl_systems` VALUES (14, '2', '222', 'fdfd', 0);
-INSERT INTO `tbl_systems` VALUES (15, '1', '1', '1', 1);
-INSERT INTO `tbl_systems` VALUES (16, '1', '1', '1', 1);
-INSERT INTO `tbl_systems` VALUES (17, '10', '1', 'sada', 0);
-INSERT INTO `tbl_systems` VALUES (18, '10', '2', '2', 0);
-INSERT INTO `tbl_systems` VALUES (19, '1', 'dg', 'fg', 0);
-INSERT INTO `tbl_systems` VALUES (20, '11', 'dsds', 'dsd', 0);
-INSERT INTO `tbl_systems` VALUES (21, '1', '1', '1', 0);
-INSERT INTO `tbl_systems` VALUES (22, '1', '1', '1', 0);
-INSERT INTO `tbl_systems` VALUES (23, '1', '222', '2', 0);
+INSERT INTO `tbl_systems` VALUES (1, '16', 'FG', 'Fire & Gas System', 0);
 
 -- ----------------------------
 -- Table structure for tbl_systems_log
 -- ----------------------------
 DROP TABLE IF EXISTS `tbl_systems_log`;
 CREATE TABLE `tbl_systems_log`  (
-  `id_system_logs` int(11) NOT NULL AUTO_INCREMENT,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `id_systems` varchar(50) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
   `id_projects` varbinary(50) NOT NULL,
   `system_id` varchar(30) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
@@ -1268,44 +1168,24 @@ CREATE TABLE `tbl_systems_log`  (
   `id_users` int(11) NOT NULL,
   `note` enum('add','update','delete','restore') CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
   `datetime` datetime(0) NOT NULL,
-  PRIMARY KEY (`id_system_logs`) USING BTREE
+  PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 22 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Records of tbl_systems_log
 -- ----------------------------
-INSERT INTO `tbl_systems_log` VALUES (1, '11', 0x31, '20', 'komputer', 12, 'add', '2019-12-27 17:51:38');
-INSERT INTO `tbl_systems_log` VALUES (2, '11', 0x31, '20', 'komputer 1', 12, 'update', '2019-12-27 17:53:10');
-INSERT INTO `tbl_systems_log` VALUES (3, '11', 0x31, '20', 'komputer 1', 12, 'delete', '2019-12-27 18:00:58');
-INSERT INTO `tbl_systems_log` VALUES (4, '12', 0x31, '1', 'nnn', 12, 'add', '2019-12-28 03:11:39');
-INSERT INTO `tbl_systems_log` VALUES (5, '12', 0x31, '1', 'nnn', 12, 'delete', '2019-12-28 03:12:57');
-INSERT INTO `tbl_systems_log` VALUES (6, '13', 0x32, '1', 'dsds', 12, 'add', '2019-12-28 03:17:22');
-INSERT INTO `tbl_systems_log` VALUES (7, '14', 0x32, '222', 'fdfd', 12, 'add', '2019-12-28 03:17:31');
-INSERT INTO `tbl_systems_log` VALUES (8, '15', 0x31, '1', '1', 12, 'add', '2019-12-28 09:24:15');
-INSERT INTO `tbl_systems_log` VALUES (9, '16', 0x31, '1', '1', 12, 'add', '2019-12-28 09:24:19');
-INSERT INTO `tbl_systems_log` VALUES (10, '16', 0x31, '1', '1', 12, 'delete', '2019-12-28 09:24:23');
-INSERT INTO `tbl_systems_log` VALUES (11, '15', 0x31, '1', '1', 12, 'delete', '2019-12-28 09:24:23');
-INSERT INTO `tbl_systems_log` VALUES (12, '8', 0x31, '40', 'test', 12, 'delete', '2019-12-28 09:31:05');
-INSERT INTO `tbl_systems_log` VALUES (13, '7', 0x31, '50', 'test 2', 12, 'delete', '2019-12-28 09:31:05');
-INSERT INTO `tbl_systems_log` VALUES (14, '17', 0x3130, '1', 'sada', 12, 'add', '2020-01-04 22:44:58');
-INSERT INTO `tbl_systems_log` VALUES (15, '18', 0x3130, '2', '2', 12, 'add', '2020-01-04 22:46:26');
-INSERT INTO `tbl_systems_log` VALUES (16, '19', 0x31, 'dg', 'fg', 12, 'add', '2020-01-04 22:46:51');
-INSERT INTO `tbl_systems_log` VALUES (17, '20', 0x3131, 'dsds', 'dsd', 12, 'add', '2020-01-05 08:44:37');
-INSERT INTO `tbl_systems_log` VALUES (18, '18', 0x3130, '2', '2', 12, 'update', '2020-01-05 09:08:23');
-INSERT INTO `tbl_systems_log` VALUES (19, '21', 0x31, '1', '1', 12, 'add', '2020-01-06 16:30:02');
-INSERT INTO `tbl_systems_log` VALUES (20, '22', 0x31, '1', '1', 12, 'add', '2020-01-06 16:31:12');
-INSERT INTO `tbl_systems_log` VALUES (21, '23', 0x31, '222', '2', 12, 'add', '2020-01-06 16:33:05');
+INSERT INTO `tbl_systems_log` VALUES (1, '1', 0x3136, 'FG', 'Fire & Gas System', 13, 'add', '2020-01-17 14:50:31');
 
 -- ----------------------------
 -- Table structure for tbl_template_details
 -- ----------------------------
 DROP TABLE IF EXISTS `tbl_template_details`;
 CREATE TABLE `tbl_template_details`  (
-  `id_template_details` bigint(20) NOT NULL AUTO_INCREMENT,
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `id_templates` varchar(100) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL,
   `template_no` int(11) NOT NULL,
   `template_item` text CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
-  PRIMARY KEY (`id_template_details`) USING BTREE
+  PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 903 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Compact;
 
 -- ----------------------------
@@ -2219,11 +2099,11 @@ INSERT INTO `tbl_template_details` VALUES (902, NULL, 0, '');
 -- ----------------------------
 DROP TABLE IF EXISTS `tbl_template_details_temp`;
 CREATE TABLE `tbl_template_details_temp`  (
-  `id_template_details` bigint(20) NOT NULL AUTO_INCREMENT,
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `id_templates` varchar(100) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL,
   `template_no` int(11) NOT NULL,
   `template_item` text CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
-  PRIMARY KEY (`id_template_details`) USING BTREE
+  PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 903 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Compact;
 
 -- ----------------------------
@@ -3137,7 +3017,7 @@ INSERT INTO `tbl_template_details_temp` VALUES (902, NULL, 0, '');
 -- ----------------------------
 DROP TABLE IF EXISTS `tbl_templates`;
 CREATE TABLE `tbl_templates`  (
-  `id_templates` int(11) NOT NULL AUTO_INCREMENT,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `template_id` varchar(11) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
   `template_name` varchar(100) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
   `template_type` varchar(8) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
@@ -3145,7 +3025,7 @@ CREATE TABLE `tbl_templates`  (
   `template_title_1` varchar(50) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL,
   `template_title_2` varchar(50) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL,
   `template_title_3` varchar(50) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL,
-  PRIMARY KEY (`id_templates`) USING BTREE
+  PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 85 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Compact;
 
 -- ----------------------------

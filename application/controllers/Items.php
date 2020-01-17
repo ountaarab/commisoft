@@ -63,12 +63,12 @@ class Items extends CI_Controller
         $this->template->load('template','items/tbl_items_list', $data);
     }
 
-    public function read($id) 
+    public function read($id_items) 
     {
-        $row = $this->Items_model->get_by_id($id);
+        $row = $this->Items_model->get_by_id($id_items);
         if ($row) {
             $data = array(
-		'id' => $row->id,
+		'id_items' => $row->id_items,
 		'item_no' => $row->item_no,
 		'item_discipline_no' => $row->item_discipline_no,
 		'item_id' => $row->item_id,
@@ -86,7 +86,7 @@ class Items extends CI_Controller
         $data = array(
             'button' => 'save',
             'action' => site_url('items/create_action'),
-	    'id' => set_value('id'),
+	    'id_items' => set_value('id_items'),
 	    'item_no' => set_value('item_no'),
 	    'item_discipline_no' => set_value('item_discipline_no'),
 	    'item_id' => set_value('item_id'),
@@ -118,9 +118,9 @@ class Items extends CI_Controller
         }
     }
     
-    public function update($id) 
+    public function update($id_items) 
     {
-        $row = $this->Items_model->get_by_id($id);
+        $row = $this->Items_model->get_by_id($id_items);
 
         var_dump($row);die;
 
@@ -128,7 +128,7 @@ class Items extends CI_Controller
             $data = array(
                 'button' => 'Update',
                 'action' => site_url('items/update_action'),
-		'id' => set_value('id', $row->id),
+		'id_items' => set_value('id_items', $row->id_items),
 		'item_no' => set_value('item_no', $row->item_no),
 		'item_discipline_no' => set_value('discipline_id', $row->discipline_id),
 		'item_id' => set_value('item_id', $row->item_id),
@@ -146,7 +146,7 @@ class Items extends CI_Controller
         $this->_rules();
 
         if ($this->form_validation->run() == FALSE) {
-            $this->update($this->input->post('id', TRUE));
+            $this->update($this->input->post('id_items', TRUE));
         } else {
             $data = array(
 		'item_no' => $this->input->post('item_no',TRUE),
@@ -155,18 +155,18 @@ class Items extends CI_Controller
 		'item_name' => $this->input->post('item_name',TRUE),
 	    );
 
-            $this->Items_model->update($this->input->post('id', TRUE), $data);
+            $this->Items_model->update($this->input->post('id_items', TRUE), $data);
             $this->session->set_flashdata('message', 'Update Record Success');
             redirect(site_url('items'));
         }
     }
     
-    public function delete($id) 
+    public function delete($id_items) 
     {
-        $row = $this->Items_model->get_by_id($id);
+        $row = $this->Items_model->get_by_id($id_items);
 
         if ($row) {
-            $this->Items_model->delete($id);
+            $this->Items_model->delete($id_items);
             $this->session->set_flashdata('message', 'Delete Record Success');
             redirect(site_url('items'));
         } else {
@@ -214,7 +214,7 @@ class Items extends CI_Controller
 	$this->form_validation->set_rules('item_id', 'item id', 'trim|required');
 	$this->form_validation->set_rules('item_name', 'item name', 'trim|required');
 
-	$this->form_validation->set_rules('id', 'id', 'trim');
+	$this->form_validation->set_rules('id_items', 'id_items', 'trim');
 	$this->form_validation->set_error_delimiters('<span class="text-danger">', '</span>');
     }
 
