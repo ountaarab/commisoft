@@ -5,10 +5,10 @@
           <div class="span12">
             <h4 class="title"><strong>View</strong> items</h4>
         <table class="table">
-	    <tr><td>Item No</td><td><?php echo $item_no; ?></td></tr>
-	    <tr><td>Item Discipline No</td><td><?php echo $item_discipline_no; ?></td></tr>
-	    <tr><td>Item Id</td><td><?php echo $item_id; ?></td></tr>
-	    <tr><td>Item Name</td><td><?php echo $item_name; ?></td></tr>
+	    <tr><td>Project Name</td><td><?php echo $project_name; ?></td></tr>
+	    <tr><td>Discipline Name</td><td><?php echo $discipline_name; ?></td></tr>
+	    <tr><td>Item Type No</td><td><?php echo $item_type_id; ?></td></tr>
+	    <tr><td>Item Type Name</td><td><?php echo $item_type_name; ?></td></tr>
 	    <tr><td></td><td><a href="<?php echo site_url('items') ?>" class="btn btn-default">Cancel</a></td></tr>
 	</table>
 

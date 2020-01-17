@@ -7,7 +7,7 @@ class Disciplines_model extends CI_Model
 {
 
     public $table = 'tbl_disciplines';
-    public $id = 'id';
+    public $id = 'id_discipline';
     public $desc = 'DESC';
     public $asc = 'ASC';
     
