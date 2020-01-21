@@ -9,11 +9,35 @@
             
 <table class='table table-striped'>        
 
-	    <tr><td width='200'>Item No <?php echo form_error('item_no') ?></td><td><input type="text" class="form-control" name="item_no" id="item_no" placeholder="Item No" value="<?php echo $item_no; ?>" /></td></tr>
-	    <tr><td width='200'>Item Discipline No <?php echo form_error('item_discipline_no') ?></td><td><input type="text" class="form-control" name="item_discipline_no" id="item_discipline_no" placeholder="Item Discipline No" value="<?php echo $item_discipline_no; ?>" /></td></tr>
-	    <tr><td width='200'>Item Id <?php echo form_error('item_id') ?></td><td><input type="text" class="form-control" name="item_id" id="item_id" placeholder="Item Id" value="<?php echo $item_id; ?>" /></td></tr>
-	    <tr><td width='200'>Item Name <?php echo form_error('item_name') ?></td><td><input type="text" class="form-control" name="item_name" id="item_name" placeholder="Item Name" value="<?php echo $item_name; ?>" /></td></tr>
-	    <tr><td></td><td><input type="hidden" name="id" value="<?php echo $id; ?>" /> 
+	    <tr><td width='200'>Projects Name <?php echo form_error('id_projects') ?></td>
+            <td>
+                <select class="form-control" name="id_projects" required>
+                    <option value="">Choose</option>
+            <?php
+                foreach ($data_projects as $baris): ?>
+                    <option value="<?= $baris->id_project ?>" <?php if($id_projects==$baris->id_project) {echo " selected";} ?> ><?= $baris->project_name ?></option>
+                <?php
+                endforeach;
+            ?>
+                </select>
+            </td>
+        </tr>
+        <tr><td width='200'>Discipline <?php echo form_error('id_disciplines') ?></td>
+            <td>
+                <select class="form-control" name="id_disciplines" required>
+                    <option value="">Choose</option>
+            <?php
+                foreach ($data_discipline as $baris): ?>
+                    <option value="<?= $baris->id_discipline ?>" <?php if($id_disciplines==$baris->id_discipline) {echo " selected";} ?> ><?= $baris->discipline_name ?></option>
+                <?php
+                endforeach;
+            ?>
+                </select>
+            </td>
+        </tr>
+	    <tr><td width='200'>Item Type Id <?php echo form_error('item_type_id') ?></td><td><input type="text" class="form-control" name="item_type_id" id="item_type_id" placeholder="Item Type Id" value="<?php echo $item_type_id; ?>" /></td></tr>
+	    <tr><td width='200'>Item Type Name <?php echo form_error('item_type_name') ?></td><td><input type="text" class="form-control" name="item_type_name" id="item_type_name" placeholder="Item Type Name" value="<?php echo $item_type_name; ?>" /></td></tr>
+	    <tr><td></td><td><input type="hidden" name="id_item" value="<?php echo $id_item; ?>" /> 
 	    <button type="submit" class="btn btn-danger"><i class="fa fa-floppy-o"></i> <?php echo $button ?></button> 
 	    <a href="<?php echo site_url('items') ?>" class="btn btn-info"><i class="fa fa-sign-out"></i> back</a></td></tr>
 	</table></form> 

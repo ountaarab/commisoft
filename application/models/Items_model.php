@@ -7,7 +7,7 @@ class Items_model extends CI_Model
 {
 
     public $table = 'tbl_items';
-    public $id = 'id';
+    public $id = 'id_item';
     public $desc = 'DESC';
     public $asc = 'ASC';
     
@@ -29,28 +29,32 @@ class Items_model extends CI_Model
     function get_by_id($id)
     {
         $this->db->where($this->id, $id);
+        $this->db->join('tbl_disciplines', 'tbl_items.id_disciplines = tbl_disciplines.id_discipline');
+        $this->db->join('tbl_projects', 'tbl_items.id_projects = tbl_projects.id_project');
         return $this->db->get($this->table)->row();
     }
     
     // get total rows
     function total_rows($q = NULL) {
-        $this->db->like('id', $q);
-	$this->db->or_like('item_no', $q);
-	$this->db->or_like('item_discipline_no', $q);
-	$this->db->or_like('item_id', $q);
-	$this->db->or_like('item_name', $q);
+    $this->db->like('id_item', $q);
+	$this->db->or_like('item_type_id', $q);
+	$this->db->or_like('id_disciplines', $q);
+	$this->db->or_like('item_type_id', $q);
+	$this->db->or_like('item_type_name', $q);
 	$this->db->from($this->table);
         return $this->db->count_all_results();
     }
 
     // get data with limit and search
     function get_limit_data($limit, $start = 0, $q = NULL) {
-        $this->db->order_by($this->id, $this->desc);
-        $this->db->like('id', $q);
-	$this->db->or_like('item_no', $q);
-	$this->db->or_like('item_discipline_no', $q);
-	$this->db->or_like('item_id', $q);
-	$this->db->or_like('item_name', $q);
+    $this->db->order_by($this->id, $this->desc);
+    $this->db->like('id_item', $q);
+	$this->db->or_like('id_disciplines', $q);
+    $this->db->or_like('item_type_id', $q);
+	$this->db->or_like('item_type_name', $q);
+    // MODIF BY FAZRI
+    $this->db->join('tbl_disciplines', 'tbl_items.id_disciplines = tbl_disciplines.id_discipline');
+    $this->db->join('tbl_projects', 'tbl_items.id_projects = tbl_projects.id_project');
 	$this->db->limit($limit, $start);
         return $this->db->get($this->table)->result();
     }

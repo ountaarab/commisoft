@@ -38,29 +38,29 @@
             <tr>
                 <th><input type="checkbox" id="checkall"></th>
                 <th>No</th>
-		<th>Item No</th>
-		<th>Item Discipline No</th>
-		<th>Item Id</th>
-		<th>Item Name</th>
+		<th>Project Name</th>
+        <th>Discipline Name</th>
+		<th>Item Type Id</th>
+		<th>Item Type Name</th>
 		<th width="200">Action</th>
             </tr><?php
             foreach ($items_data as $items)
             {
                 ?>
                 <tr>
-			 <td width="10px"><input type="checkbox" class="checkitem" name="pilih[]" value="<?=$items->id?>"></td>
+			 <td width="10px"><input type="checkbox" class="checkitem" name="pilih[]" value="<?=$items->id_item?>"></td>
 			<td width="10px"><?php echo ++$start ?></td>
-			<td><?php echo $items->item_no ?></td>
-			<td><?php echo $items->item_discipline_no ?></td>
-			<td><?php echo $items->item_id ?></td>
-			<td><?php echo $items->item_name ?></td>
+			<td><?php echo $items->project_name ?></td>
+            <td><?php echo $items->discipline_name ?></td>
+			<td><?php echo $items->item_type_id ?></td>
+			<td><?php echo $items->item_type_name ?></td>
 			<td>
 				<?php 
-				echo anchor(site_url('items/read/'.$items->id),'<i class="icon-desktop" aria-hidden="true"></i>'); 
+				echo anchor(site_url('items/read/'.$items->id_item),'<i class="icon-desktop" aria-hidden="true"></i>'); 
 				echo '  '; 
-				echo anchor(site_url('items/update/'.$items->id),'<i class="icon-edit" aria-hidden="true"></i>'); 
+				echo anchor(site_url('items/update/'.$items->id_item),'<i class="icon-edit" aria-hidden="true"></i>'); 
 				echo '  '; 
-				echo anchor(site_url('items/delete/'.$items->id),'<i class="icon-trash" aria-hidden="true"></i>','onclick="javasciprt: return confirm(\'Are You Sure ?\')"'); 
+				echo anchor(site_url('items/delete/'.$items->id_item),'<i class="icon-trash" aria-hidden="true"></i>','onclick="javasciprt: return confirm(\'Are You Sure ?\')"'); 
 				?>
 			</td>
 		</tr>

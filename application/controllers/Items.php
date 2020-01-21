@@ -59,19 +59,20 @@ class Items extends CI_Controller
             'total_rows' => $config['total_rows'],
             'start' => $start,
         );
+
         $this->template->load('template','items/tbl_items_list', $data);
     }
 
-    public function read($id) 
+    public function read($id_item) 
     {
-        $row = $this->Items_model->get_by_id($id);
+        $row = $this->Items_model->get_by_id($id_item);
         if ($row) {
             $data = array(
-		'id' => $row->id,
-		'item_no' => $row->item_no,
-		'item_discipline_no' => $row->item_discipline_no,
-		'item_id' => $row->item_id,
-		'item_name' => $row->item_name,
+		'id_item' => $row->id_item,
+		'item_type_id' => $row->item_type_id,
+		'project_name' => $row->project_name,
+        'discipline_name' => $row->discipline_name,
+		'item_type_name' => $row->item_type_name,
 	    );
             $this->template->load('template','items/tbl_items_read', $data);
         } else {
@@ -85,12 +86,17 @@ class Items extends CI_Controller
         $data = array(
             'button' => 'save',
             'action' => site_url('items/create_action'),
-	    'id' => set_value('id'),
-	    'item_no' => set_value('item_no'),
-	    'item_discipline_no' => set_value('item_discipline_no'),
-	    'item_id' => set_value('item_id'),
-	    'item_name' => set_value('item_name'),
+	    'id_item' => set_value('id_item'),
+	    'item_type_id' => set_value('item_type_id'),
+	    'id_projects' => set_value('id_projects'),
+        'id_disciplines' => set_value('id_disciplines'),
+	    'item_type_name' => set_value('item_type_name'),
 	);
+        
+        // MODIF BY FAZRI
+        $data ['data_discipline'] = $this->Disciplines_model->get_all(0);
+        $data ['data_projects'] = $this->Projects_model->get_all(0);
+
         $this->template->load('template','items/tbl_items_form', $data);
     }
     
@@ -102,32 +108,35 @@ class Items extends CI_Controller
             $this->create();
         } else {
             $data = array(
-		'item_no' => $this->input->post('item_no',TRUE),
-		'item_discipline_no' => $this->input->post('item_discipline_no',TRUE),
-		'item_id' => $this->input->post('item_id',TRUE),
-		'item_name' => $this->input->post('item_name',TRUE),
+		'item_type_id' => $this->input->post('item_type_id',TRUE),
+		'id_projects' => $this->input->post('id_projects',TRUE),
+        'id_disciplines' => $this->input->post('id_disciplines',TRUE),
+		'item_type_name' => $this->input->post('item_type_name',TRUE),
 	    );
 
             $this->Items_model->insert($data);
-            $this->session->set_flashdata('message', 'Create Record Success 2');
+            $this->session->set_flashdata('message', 'Create Record Success');
             redirect($this->agent->referrer());
         }
     }
     
-    public function update($id) 
+    public function update($id_item) 
     {
-        $row = $this->Items_model->get_by_id($id);
+        $row = $this->Items_model->get_by_id($id_item);
 
         if ($row) {
             $data = array(
                 'button' => 'Update',
                 'action' => site_url('items/update_action'),
-		'id' => set_value('id', $row->id),
-		'item_no' => set_value('item_no', $row->item_no),
-		'item_discipline_no' => set_value('item_discipline_no', $row->item_discipline_no),
-		'item_id' => set_value('item_id', $row->item_id),
-		'item_name' => set_value('item_name', $row->item_name),
+		'id_item' => set_value('id_item', $row->id_item),
+		'item_type_id' => set_value('item_type_id', $row->item_type_id),
+		'id_projects' => $row->id_project,
+        'id_disciplines' => $row->id_disciplines,
+		'item_type_name' => set_value('item_type_name', $row->item_type_name),
 	    );
+            $data ['data_discipline'] = $this->Disciplines_model->get_all(0);
+            $data ['data_projects'] = $this->Projects_model->get_all(0);
+
             $this->template->load('template','items/tbl_items_form', $data);
         } else {
             $this->session->set_flashdata('message', 'Record Not Found');
@@ -140,27 +149,28 @@ class Items extends CI_Controller
         $this->_rules();
 
         if ($this->form_validation->run() == FALSE) {
-            $this->update($this->input->post('id', TRUE));
+            $this->update($this->input->post('id_item', TRUE));
         } else {
             $data = array(
-		'item_no' => $this->input->post('item_no',TRUE),
-		'item_discipline_no' => $this->input->post('item_discipline_no',TRUE),
-		'item_id' => $this->input->post('item_id',TRUE),
-		'item_name' => $this->input->post('item_name',TRUE),
+		'item_type_id' => $this->input->post('item_type_id',TRUE),
+		'id_projects' => $this->input->post('id_projects',TRUE),
+        'id_disciplines' => $this->input->post('id_disciplines',TRUE),
+		'item_type_name' => $this->input->post('item_type_name',TRUE),
 	    );
 
-            $this->Items_model->update($this->input->post('id', TRUE), $data);
+
+            $this->Items_model->update($this->input->post('id_item', TRUE), $data);
             $this->session->set_flashdata('message', 'Update Record Success');
             redirect(site_url('items'));
         }
     }
     
-    public function delete($id) 
+    public function delete($id_item) 
     {
-        $row = $this->Items_model->get_by_id($id);
+        $row = $this->Items_model->get_by_id($id_item);
 
         if ($row) {
-            $this->Items_model->delete($id);
+            $this->Items_model->delete($id_item);
             $this->session->set_flashdata('message', 'Delete Record Success');
             redirect(site_url('items'));
         } else {
@@ -203,12 +213,11 @@ class Items extends CI_Controller
 
     public function _rules() 
     {
-	$this->form_validation->set_rules('item_no', 'item no', 'trim|required');
-	$this->form_validation->set_rules('item_discipline_no', 'item discipline no', 'trim|required');
-	$this->form_validation->set_rules('item_id', 'item id', 'trim|required');
-	$this->form_validation->set_rules('item_name', 'item name', 'trim|required');
+	$this->form_validation->set_rules('item_type_id', 'item no', 'trim|required');
+	$this->form_validation->set_rules('id_disciplines', 'item discipline no', 'trim|required');
+	$this->form_validation->set_rules('item_type_name', 'item name', 'trim|required');
 
-	$this->form_validation->set_rules('id', 'id', 'trim');
+	$this->form_validation->set_rules('id_item', 'id_item', 'trim');
 	$this->form_validation->set_error_delimiters('<span class="text-danger">', '</span>');
     }
 
@@ -244,10 +253,9 @@ class Items extends CI_Controller
 
             //ubah xlsWriteLabel menjadi xlsWriteNumber untuk kolom numeric
             xlsWriteNumber($tablebody, $kolombody++, $nourut);
-	    xlsWriteNumber($tablebody, $kolombody++, $data->item_no);
-	    xlsWriteNumber($tablebody, $kolombody++, $data->item_discipline_no);
-	    xlsWriteLabel($tablebody, $kolombody++, $data->item_id);
-	    xlsWriteLabel($tablebody, $kolombody++, $data->item_name);
+	    xlsWriteNumber($tablebody, $kolombody++, $data->item_type_id);
+	    xlsWriteNumber($tablebody, $kolombody++, $data->id_disciplines);
+	    xlsWriteLabel($tablebody, $kolombody++, $data->item_type_name);
 
 	    $tablebody++;
             $nourut++;
