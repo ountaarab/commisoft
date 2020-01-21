@@ -22,7 +22,13 @@ class Subs_model extends CI_Model
     function get_all($status = NULL)
     {
     $this->db->order_by($this->id, $this->desc);
-    $this->db->select(''.$this->table.'.*,tbl_systems.system_name,tbl_systems.system_status,tbl_projects.project_name,tbl_projects.project_status');
+
+    $this->db->select(''.$this->table.'.*,
+                    tbl_systems.system_name,
+                    tbl_systems.system_status,
+                    tbl_projects.project_name,
+                    tbl_projects.project_status');
+
     $this->db->where(''.$this->table.'.sub_status', $status);
     $this->db->where('tbl_systems.system_status', $status);
     $this->db->where('tbl_projects.project_status', $status);
@@ -49,7 +55,12 @@ class Subs_model extends CI_Model
 	$this->db->or_like(''.$this->table.'.sub_name', $q);
 	$this->db->or_like(''.$this->table.'.sub_status', $q);
     $this->db->group_end();
-    $this->db->select(''.$this->table.'.*,tbl_systems.system_name,tbl_systems.system_status,tbl_projects.project_name,tbl_projects.project_status');
+
+    $this->db->select(''.$this->table.'.*,tbl_systems.system_name,
+                                            tbl_systems.system_status,
+                                            tbl_projects.project_name,
+                                            tbl_projects.project_status');
+
     $this->db->where(''.$this->table.'.sub_status', $status);
     $this->db->where('tbl_systems.system_status', $status);
     $this->db->where('tbl_projects.project_status', $status);
@@ -60,7 +71,8 @@ class Subs_model extends CI_Model
     }
 
     // get data with limit and search
-    function get_limit_data($limit, $start = 0, $q = NULL , $status = NULL) {
+    function get_limit_data($limit, $start = 0, $q = NULL , $status = NULL) 
+    {
     $this->db->order_by($this->id, $this->desc);
     $this->db->group_start();
     $this->db->like(''.$this->table.'.id', $q);

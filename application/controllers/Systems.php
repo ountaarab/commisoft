@@ -6,238 +6,256 @@ if (!defined('BASEPATH'))
 class Systems extends CI_Controller
 {
     function __construct()
-    {
-        parent::__construct();
-        is_login();
-        $this->load->model('Systems_model');
-        $this->load->library('form_validation');
-        $this->load->library('user_agent'); 
-    }
+        {
+            parent::__construct();
+            is_login();
+            $this->load->model('Systems_model');
+            $this->load->library('form_validation');
+            $this->load->library('user_agent'); 
+        }
 
     public function index()
-    {
+        {
 
-       $q = urldecode($this->input->get('q', TRUE));
-        $start = intval($this->input->get('start'));
-        
-        if ($q <> '') {
-            $config['base_url'] = base_url() . 'index.php/systems/index?q=' . urlencode($q);
-            $config['first_url'] = base_url() . 'index.php/systems/index?q=' . urlencode($q);
-        } else {
-            $config['base_url'] = base_url() . 'index.php/systems/index';
-            $config['first_url'] = base_url() . 'index.php/systems/index';
+           $q = urldecode($this->input->get('q', true));
+            $start = intval($this->input->get('start'));
+            
+           if ($q <> '') {
+                $config['base_url']  = base_url() . 'index.php/systems/index?q=' . urlencode($q);
+                $config['first_url'] = base_url() . 'index.php/systems/index?q=' . urlencode($q);
+            } else {
+                $config['base_url']  = base_url() . 'index.php/systems/index';
+                $config['first_url'] = base_url() . 'index.php/systems/index';
+            }
+
+            $config['per_page']         = 10;
+            $config['page_query_string']= true;
+            $config['total_rows']       = $this->Systems_model->total_rows($q, 0);
+            $systems                    = $this->Systems_model->get_limit_data($config['per_page'], $start, $q, 0);
+            $config['first_link']       = 'First';
+            $config['last_link']        = 'Last';
+            $config['next_link']        = 'Next';
+            $config['prev_link']        = 'Prev';
+            $config['full_tag_open']    = '<div class="pagination full-right"><nav><ul>';
+            $config['full_tag_close']   = '</ul></nav></div>';
+            $config['num_tag_open']     = '<li class="page-item">';
+            $config['num_tag_close']    = '</li>';
+            $config['cur_tag_open']     = '<li class="active"><span class="page-link">';
+            $config['cur_tag_close']    = '<span class="sr-only"></span></span></li>';
+            $config['next_tag_open']    = '<li class="page-item"><span class="page-link">';
+            $config['next_tagl_close']  = '<span aria-hidden="true">&raquo;</span></span></li>';
+            $config['prev_tag_open']    = '<li class="page-item"><span class="page-link">';
+            $config['prev_tagl_close']  = '</span>Next</li>';
+            $config['first_tag_open']   = '<li class="page-item"><span class="page-link">';
+            $config['first_tagl_close'] = '</span></li>';
+            $config['last_tag_open']    = '<li class="page-item"><span class="page-link">';
+            $config['last_tagl_close']  = '</span></li>';
+            $this->load->library('pagination');
+            $this->pagination->initialize($config);
+
+            $data = array(
+                            'systems_data' => $systems,
+                            'q'            => $q,
+                            'pagination'   => $this->pagination->create_links(),
+                            'total_rows'   => $config['total_rows'],
+                            'start'        => $start,
+                        );
+            $this->template->load('template','systems/tbl_systems_list', $data);
         }
 
-        $config['per_page'] = 10;
-        $config['page_query_string'] = TRUE;
-        $config['total_rows'] = $this->Systems_model->total_rows($q,'0');
-        $systems = $this->Systems_model->get_limit_data($config['per_page'], $start, $q,'0');
-        $config['first_link']       = 'First';
-        $config['last_link']        = 'Last';
-        $config['next_link']        = 'Next';
-        $config['prev_link']        = 'Prev';
-        $config['full_tag_open']    = '<div class="pagination full-right"><nav><ul>';
-        $config['full_tag_close']   = '</ul></nav></div>';
-        $config['num_tag_open']     = '<li class="page-item">';
-        $config['num_tag_close']    = '</li>';
-        $config['cur_tag_open']     = '<li class="active"><span class="page-link">';
-        $config['cur_tag_close']    = '<span class="sr-only"></span></span></li>';
-        $config['next_tag_open']    = '<li class="page-item"><span class="page-link">';
-        $config['next_tagl_close']  = '<span aria-hidden="true">&raquo;</span></span></li>';
-        $config['prev_tag_open']    = '<li class="page-item"><span class="page-link">';
-        $config['prev_tagl_close']  = '</span>Next</li>';
-        $config['first_tag_open']   = '<li class="page-item"><span class="page-link">';
-        $config['first_tagl_close'] = '</span></li>';
-        $config['last_tag_open']    = '<li class="page-item"><span class="page-link">';
-        $config['last_tagl_close']  = '</span></li>';
-        $this->load->library('pagination');
-        $this->pagination->initialize($config);
-
-        $data = array(
-            'systems_data' => $systems,
-            'q' => $q,
-            'pagination' => $this->pagination->create_links(),
-            'total_rows' => $config['total_rows'],
-            'start' => $start,
-        );
-        $this->template->load('template','systems/tbl_systems_list', $data);
-    }
+    public function get_project_name ()
+        {
+            $this->template->load('template','systems/tbl_systems_form', $data);
+        }
 
     public function read($id) 
-    {
-        $row = $this->Systems_model->get_by_id($id);
-        if ($row) {
-            $data = array(
-		'id' => $row->id,
-		// 'system_no' => $row->system_no,
-		'system_project_no' => $row->system_project_no,
-		'system_id' => $row->system_id,
-		'system_name' => $row->system_name,
-	    );
-            $this->template->load('template','systems/tbl_systems_read', $data);
-        } else {
-            $this->session->set_flashdata('message', 'Record Not Found');
-            redirect(site_url('systems'));
+        {
+            $row = $this->Systems_model->get_by_id($id);
+            if ($row) {
+                $data = array(
+                                'id'                => $row->id,
+                                'system_project_no' => $row->system_project_no,
+                                'system_id'         => $row->system_id,
+                                'system_name'       => $row->system_name,
+                             );
+                $this->template->load('template','systems/tbl_systems_read', $data);
+            } else {
+                $this->session->set_flashdata('message', 'Record Not Found');
+                redirect(site_url('systems'));
+            }
         }
-    }
 
     public function create() 
-    {
-        $data = array(
-            'button' => 'save',
-            'action' => site_url('systems/create_action'),
-	    'id' => set_value('id'),
-	    // 'system_no' => set_value('system_no'),
-	    'system_project_no' => set_value('system_project_no'),
-	    'system_id' => set_value('system_id'),
-	    'system_name' => set_value('system_name'),
-	);
-        $this->template->load('template','systems/tbl_systems_form', $data);
-    }
-    
-    public function create_action() 
-    {
-        $this->_rules();
+        {
+            $data = array (
+                            'button'        => 'save',
+                            'action'        => site_url('systems/create_action'),
+                            'list_project'  => set_value('list_project'),
+                            'system_id'     => set_value('system_id'),
+                            'system_name'   => set_value('system_name'),
+                            'id_system'     => set_value('id_system')
+                          );
 
-        if ($this->form_validation->run() == FALSE) {
-            $this->create();
-        } else {
-            $data = array(
-		// 'system_no' => $this->input->post('system_no',TRUE),
-		'system_project_no' => $this->input->post('system_project_no',TRUE),
-		'system_id' => $this->input->post('system_id',TRUE),
-		'system_name' => $this->input->post('system_name',TRUE),
-	    );
-
-            $this->Systems_model->insert($data);
-        $id_system = $this->db->insert_id();
-        date_default_timezone_set('Asia/bangkok');
-        $datetime = date('Y-m-d H:i:s');
-             $datalog = array(
-        'id_system' => $id_system,
-        // 'system_no' => $this->input->post('system_no',TRUE),
-        'system_project_no' => $this->input->post('system_project_no',TRUE),
-        'system_id' => $this->input->post('system_id',TRUE),
-        'system_name' => $this->input->post('system_name',TRUE),
-        'id_users' => $this->session->userdata('id_users',TRUE),
-        'note' => 'add',
-        'datetime' => $datetime,
-        );
-              $this->db->insert('tbl_systems_log',$datalog);
-            $this->session->set_flashdata('message', 'Create Record Success');
-           redirect($this->agent->referrer());
+            $data ['list_project'] = $this->Systems_model->select_m_project ();
+            $this->template->load('template','systems/tbl_systems_form', $data);
         }
-    }
+
+    public function _rules() 
+        {
+            $this->form_validation->set_rules('list_project', 'list_project', 'trim|required');
+            $this->form_validation->set_rules('system_id', 'system id', 'trim|required');
+            $this->form_validation->set_rules('system_name', 'system name', 'trim|required');
+
+            $this->form_validation->set_error_delimiters('<span class="text-danger">', '</span>');
+        }
+
+    public function create_action() 
+        {
+            $this->_rules();
+
+            if ($this->form_validation->run() == FALSE) {
+                $this->create();
+            } else {
+                $list_project = $this->input->post ('list_project', true);
+                $system_id    = $this->input->post ('system_id', true);
+                $system_name  = $this->input->post ('system_name', true);
+
+                $data = array (
+                                'id_projects'   => $list_project,
+                        		'system_id'     => $system_id,
+                        		'system_name'   => $system_name
+                        	   );
+
+                $cek_first = $this->Systems_model->select_to_insert($system_id, $system_name, $list_project);
+                if ($cek_first>0) {
+                    $this->session->set_flashdata('message', 'Sorry, record already exists');
+                    redirect ('Systems/create');
+                } else {
+
+                    $this->Systems_model->insert($data);
+                    $id_system = $this->db->insert_id();
+                    date_default_timezone_set('Asia/bangkok');
+                    $datetime = date('Y-m-d H:i:s');
+                    $datalog = array(
+                                    'id_systems'  => $id_system,
+                                    'id_projects' => $this->input->post('list_project',true),
+                                    'system_id'   => $this->input->post('system_id',true),
+                                    'system_name' => $this->input->post('system_name',true),
+                                    'id_users'    => $this->session->userdata('id_users',true),
+                                    'note'        => 'add',
+                                    'datetime'    => $datetime,
+                                 );
+                    $this->db->insert('tbl_systems_log',$datalog);
+                    $this->session->set_flashdata('message', 'Create Record Success');
+                    redirect('Systems');
+                }
+            }
+        }
+
+    public function delete($id) 
+        {
+            $row = $this->Systems_model->get_by_id ($id);
+            if ($row) {
+                $this->Systems_model->delete($id);
+                date_default_timezone_set('Asia/bangkok');
+                $datetime = date('Y-m-d H:i:s');
+                $datalog = array(
+                                'id_systems'    => $id,
+                                'id_projects'   => $row->id_projects,
+                                'system_id'     => $row->system_id,
+                                'system_name'   => $row->system_name,
+                                'id_users'      => $this->session->userdata('id_users', true),
+                                'note'          => 'delete',
+                                'datetime'      => $datetime,
+                              );
+                $this->db->insert('tbl_systems_log',$datalog);
+                $this->session->set_flashdata('message', 'Delete Record Success');
+                redirect(site_url('systems'));
+            } else {
+                    $this->session->set_flashdata('message', 'Record Not Found');
+                    redirect(site_url('systems'));
+            }
+        }
     
     public function update($id) 
-    {
-        $row = $this->Systems_model->get_by_id($id);
+        {
+            $row = $this->Systems_model->get_by_id($id);
+            if ($row) {
+                $data = array(
+                                'button'            => 'Update',
+                                'action'            => site_url('systems/update_action'),
+                                'id_system'         => set_value('id_system', $row->id_system),
+                                'system_id'         => set_value('system_id', $row->system_id),
+                                'system_name'       => set_value('system_name', $row->system_name),
+                            );
 
-        if ($row) {
-            $data = array(
-                'button' => 'Update',
-                'action' => site_url('systems/update_action'),
-		'id' => set_value('id', $row->id),
-		// 'system_no' => set_value('system_no', $row->system_no),
-		'system_project_no' => set_value('system_project_no', $row->system_project_no),
-		'system_id' => set_value('system_id', $row->system_id),
-		'system_name' => set_value('system_name', $row->system_name),
-	    );
+            $data ['list_project'] = $this->Systems_model->select_m_project ();
             $this->template->load('template','systems/tbl_systems_form', $data);
-        } else {
-            $this->session->set_flashdata('message', 'Record Not Found');
-            redirect(site_url('systems'));
+            } else {
+                $this->session->set_flashdata('message', 'Record Not Found');
+                redirect(site_url('systems'));
+            }
         }
-    }
     
-    public function update_action() 
-    {
-        $this->_rules();
-
-        if ($this->form_validation->run() == FALSE) {
-            $this->update($this->input->post('id', TRUE));
-        } else {
-            $data = array(
-		// 'system_no' => $this->input->post('system_no',TRUE),
-		'system_project_no' => $this->input->post('system_project_no',TRUE),
-		'system_id' => $this->input->post('system_id',TRUE),
-		'system_name' => $this->input->post('system_name',TRUE),
-	    );
-
-
-            $this->Systems_model->update($this->input->post('id', TRUE), $data);
-        date_default_timezone_set('Asia/bangkok');
-        $datetime = date('Y-m-d H:i:s');
-             $datalog = array(
-        'id_system' => $this->input->post('id', TRUE),
-        // 'system_no' => $this->input->post('system_no',TRUE),
-        'system_project_no' => $this->input->post('system_project_no',TRUE),
-        'system_id' => $this->input->post('system_id',TRUE),
-        'system_name' => $this->input->post('system_name',TRUE),
-        'id_users' => $this->session->userdata('id_users',TRUE),
-        'note' => 'update',
-        'datetime' => $datetime,
-        );
-              $this->db->insert('tbl_systems_log',$datalog);
-            $this->session->set_flashdata('message', 'Update Record Success');
-            redirect(site_url('systems'));
-        }
-    }
     
-    public function delete($id) 
-    {
-        $row = $this->Systems_model->get_by_id($id);
+    /*public function update_action() 
+        {
+            $this->_rules();
 
-        if ($row) {
-            $this->Systems_model->delete($id);
-        date_default_timezone_set('Asia/bangkok');
-        $datetime = date('Y-m-d H:i:s');
-        $datalog = array(
-        'id_system' => $id,
-        // 'system_no' => $row->system_no,
-        'system_project_no' => $row->system_project_no,
-        'system_id' => $row->system_id,
-        'system_name' => $row->system_name,
-        'id_users' => $this->session->userdata('id_users',TRUE),
-        'note' => 'delete',
-        'datetime' => $datetime,
-        );
-              $this->db->insert('tbl_systems_log',$datalog);
-            $this->session->set_flashdata('message', 'Delete Record Success');
-            redirect(site_url('systems'));
-        } else {
-            $this->session->set_flashdata('message', 'Record Not Found');
-            redirect(site_url('systems'));
-        }
-    }
+            if ($this->form_validation->run() == FALSE) {
+                $this->update($this->input->post('id', TRUE));
+            } else {
+                $data = array(
+                                'system_project_no' => $this->input->post('system_project_no',TRUE),
+                                'system_id' => $this->input->post('system_id',TRUE),
+                                'system_name' => $this->input->post('system_name',TRUE),
+                             );
+
+
+                $this->Systems_model->update($this->input->post('id', TRUE), $data);
+                date_default_timezone_set('Asia/bangkok');
+                $datetime = date('Y-m-d H:i:s');
+                $datalog = array(
+                                'id_system'         => $this->input->post('id', TRUE),
+                                'system_project_no' => $this->input->post('system_project_no',TRUE),
+                                'system_id'         => $this->input->post('system_id',TRUE),
+                                'system_name'       => $this->input->post('system_name',TRUE),
+                                'id_users'          => $this->session->userdata('id_users',TRUE),
+                                'note'              => 'update',
+                                'datetime'          => $datetime,
+                              );
+
+                $this->db->insert('tbl_systems_log',$datalog);
+                $this->session->set_flashdata('message', 'Update Record Success');
+                redirect(site_url('systems'));
+            }
+        }*/
+    
 
      public function delete_select() 
-    {
-        $pilih = $this->input->post('pilih');
-        $jumlah = count($pilih);
-        for($i=0; $i < $jumlah;$i++){
-            $this->db->query("UPDATE tbl_systems SET system_status = 1 WHERE id = ".$pilih[$i]."");
-            $row = $this->db->get_where('tbl_systems','id = '.$pilih[$i].'')->row();
-        date_default_timezone_set('Asia/bangkok');
-        $datetime = date('Y-m-d H:i:s');
-        $datalog = array(
-        'id_system' => $row->id,
-        // 'system_no' => $row->system_no,
-        'system_project_no' => $row->system_project_no,
-        'system_id' => $row->system_id,
-        'system_name' => $row->system_name,
-        'id_users' => $this->session->userdata('id_users',TRUE),
-        'note' => 'delete',
-        'datetime' => $datetime,
-        );
-            $this->db->insert('tbl_systems_log',$datalog);
-             $this->session->set_flashdata('message', 'Delete '.$jumlah .'Record Success');
+        {
+            $pilih = $this->input->post('pilih');
+            $jumlah = count($pilih);
+            for($i=0; $i < $jumlah;$i++){
+                $this->db->query("UPDATE tbl_systems SET system_status = 1 WHERE id = ".$pilih[$i]."");
+                $row = $this->db->get_where('tbl_systems','id = '.$pilih[$i].'')->row();
+            date_default_timezone_set('Asia/bangkok');
+            $datetime = date('Y-m-d H:i:s');
+            $datalog = array(
+            'id_system' => $row->id,
+            // 'system_no' => $row->system_no,
+            'system_project_no' => $row->system_project_no,
+            'system_id' => $row->system_id,
+            'system_name' => $row->system_name,
+            'id_users' => $this->session->userdata('id_users',TRUE),
+            'note' => 'delete',
+            'datetime' => $datetime,
+            );
+                $this->db->insert('tbl_systems_log',$datalog);
+                 $this->session->set_flashdata('message', 'Delete '.$jumlah .'Record Success');
+            }
+                redirect(site_url('systems'));
         }
-
-           
-            redirect(site_url('systems'));
-       
-    }
 
      public function pdf($status){
  
@@ -257,16 +275,6 @@ class Systems extends CI_Controller
     redirect($this->agent->referrer());
     }
 
-    public function _rules() 
-    {
-	// $this->form_validation->set_rules('system_no', 'system no', 'trim|required');
-	$this->form_validation->set_rules('system_project_no', 'system project no', 'trim|required');
-	$this->form_validation->set_rules('system_id', 'system id', 'trim|required');
-	$this->form_validation->set_rules('system_name', 'system name', 'trim|required');
-
-	$this->form_validation->set_rules('id', 'id', 'trim');
-	$this->form_validation->set_error_delimiters('<span class="text-danger">', '</span>');
-    }
 
     public function excel($status)
     {
