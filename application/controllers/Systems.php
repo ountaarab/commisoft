@@ -104,6 +104,7 @@ class Systems extends CI_Controller
         {
             $this->form_validation->set_rules('list_project', 'list_project', 'trim|required');
             $this->form_validation->set_rules('system_id', 'system id', 'trim|required');
+            $this->form_validation->set_rules('id_system', 'id_system');
             $this->form_validation->set_rules('system_name', 'system name', 'trim|required');
 
             $this->form_validation->set_error_delimiters('<span class="text-danger">', '</span>');
@@ -118,6 +119,7 @@ class Systems extends CI_Controller
             } else {
                 $list_project = $this->input->post ('list_project', true);
                 $system_id    = $this->input->post ('system_id', true);
+                $id_system    = $this->input->post ('id_system', true);
                 $system_name  = $this->input->post ('system_name', true);
 
                 $data = array (
@@ -157,6 +159,7 @@ class Systems extends CI_Controller
             $row = $this->Systems_model->get_by_id ($id);
             if ($row) {
                 $this->Systems_model->delete($id);
+                
                 date_default_timezone_set('Asia/bangkok');
                 $datetime = date('Y-m-d H:i:s');
                 $datalog = array(
@@ -198,29 +201,31 @@ class Systems extends CI_Controller
         }
     
     
-    /*public function update_action() 
+    public function update_action() 
         {
             $this->_rules();
 
             if ($this->form_validation->run() == FALSE) {
-                $this->update($this->input->post('id', TRUE));
+                $this->update($this->input->post('id', true));
             } else {
                 $data = array(
-                                'system_project_no' => $this->input->post('system_project_no',TRUE),
-                                'system_id' => $this->input->post('system_id',TRUE),
-                                'system_name' => $this->input->post('system_name',TRUE),
+                                'id_projects'       => $this->input->post('list_project',true),
+                                'system_id'         => $this->input->post('system_id',true),
+                                'system_name'       => $this->input->post('system_name',true),
+                                'id_system'         => $this->input->post('id_system',true),
                              );
 
 
-                $this->Systems_model->update($this->input->post('id', TRUE), $data);
+                $this->Systems_model->update($this->input->post('id_system', true), $data);
+                
                 date_default_timezone_set('Asia/bangkok');
                 $datetime = date('Y-m-d H:i:s');
                 $datalog = array(
-                                'id_system'         => $this->input->post('id', TRUE),
-                                'system_project_no' => $this->input->post('system_project_no',TRUE),
-                                'system_id'         => $this->input->post('system_id',TRUE),
-                                'system_name'       => $this->input->post('system_name',TRUE),
-                                'id_users'          => $this->session->userdata('id_users',TRUE),
+                                'id_systems'         => $this->input->post('id_system', true),
+                                'id_projects'      => $this->input->post('list_project',true),
+                                'system_id'         => $this->input->post('system_id',true),
+                                'system_name'       => $this->input->post('system_name',true),
+                                'id_users'          => $this->session->userdata('id_users',true),
                                 'note'              => 'update',
                                 'datetime'          => $datetime,
                               );
@@ -229,7 +234,7 @@ class Systems extends CI_Controller
                 $this->session->set_flashdata('message', 'Update Record Success');
                 redirect(site_url('systems'));
             }
-        }*/
+        }
     
 
      public function delete_select() 

@@ -14,79 +14,83 @@ class Disciplines_model extends CI_Model
 
 
     function __construct()
-    {
-        parent::__construct();
-    }
+        {
+            parent::__construct();
+        }
 
 
     function get_all($status = 0)
-    {
-        $this->db->order_by($this->id, $this->desc);
-    $this->db->select('*');
-    $this->db->where(''.$this->table.'.discipline_status', $status);
-    $this->db->from($this->table);
-        return $this->db->get()->result();
-    }
+        {
+            $this->db->order_by($this->id, $this->desc);
 
-    // get data by id
-    function get_by_id($id)
-    {
-        $this->db->where($this->id, $id);
-        return $this->db->get($this->table)->row();
-    }
+            $this->db->select ('tbl_disciplines.*,
+                                tbl_projects.project_name,
+                                tbl_projects.project_status 
+                              ');
+
+            $this->db->where ('tbl_disciplines.discipline_status', $status);
+            $this->db->where ('tbl_projects.project_status', $status);
+            $this->db->from ('tbl_disciplines');
+            $this->db->join ('tbl_projects', 'tbl_disciplines.id_projects = tbl_projects.id_project');
+
+            return $this->db->get()->result();
+        }
     
-    // get total rows
-    function total_rows($q = NULL, $status = NULL) {
-    $this->db->group_start();
-    $this->db->like(''.$this->table.'.id', $q);
-	// $this->db->or_like(''.$this->table.'.discipline_project_no', $q);
-    // $this->db->or_like('tbl_projects.project_name', $q);
-	$this->db->or_like(''.$this->table.'.discipline_id', $q);
-	$this->db->or_like(''.$this->table.'.discipline_name', $q);
-    $this->db->group_end();
-    $this->db->select(''.$this->table.'.*');
-    $this->db->where(''.$this->table.'.discipline_status', $status);
-	$this->db->from($this->table);
-        return $this->db->count_all_results();
-    }
+    function total_rows($q = NULL, $status = NULL) 
+        {
+            $this->db->group_start();
+            $this->db->like ('tbl_disciplines.id_discipline', $q);
+            $this->db->or_like ('tbl_projects.id_project', $q);
+            $this->db->or_like ('tbl_disciplines.discipline_id', $q);
+            $this->db->or_like ('tbl_disciplines.discipline_name', $q);
+            $this->db->group_end();
 
-    // get data with limit and search
-    function get_limit_data($limit, $start = 0, $q = NULL, $status = NULL) {
-    $this->db->order_by($this->id, $this->desc);
-    $this->db->group_start();
-    $this->db->like(''.$this->table.'.id', $q);
-    // $this->db->or_like(''.$this->table.'.discipline_project_no', $q);
-    // $this->db->or_like('tbl_projects.project_name', $q);
-    $this->db->or_like(''.$this->table.'.discipline_id', $q);
-    $this->db->or_like(''.$this->table.'.discipline_name', $q);
-    $this->db->group_end();
-    $this->db->select(''.$this->table.'.*');
-    $this->db->where(''.$this->table.'.discipline_status', $status);
-    $this->db->from($this->table);
-	$this->db->limit($limit, $start);
-        return $this->db->get()->result();
-    }
+            $this->db->select('tbl_disciplines.*');
+            $this->db->where('tbl_disciplines.discipline_status', $status);
+            $this->db->from('tbl_disciplines');
+            return $this->db->count_all_results();
+        }
 
-    // insert data
+    function get_limit_data($limit, $start = 0, $q = NULL, $status = NULL) 
+        {
+            $this->db->order_by($this->id, $this->desc);
+
+            $this->db->group_start();
+            $this->db->like(''.$this->table.'.id', $q);
+            $this->db->or_like(''.$this->table.'.discipline_id', $q);
+            $this->db->or_like(''.$this->table.'.discipline_name', $q);
+            $this->db->group_end();
+
+            $this->db->select(''.$this->table.'.*');
+            $this->db->where(''.$this->table.'.discipline_status', $status);
+            $this->db->from($this->table);
+            $this->db->limit($limit, $start);
+            return $this->db->get()->result();
+        }
+
+    /*function get_by_id($id)
+        {
+            $this->db->where($this->id, $id);
+            return $this->db->get($this->table)->row();
+        }
+
     function insert($data)
-    {
-        $this->db->insert($this->table, $data);
-    }
+        {
+            $this->db->insert($this->table, $data);
+        }
 
-    // update data
     function update($id, $data)
-    {
-        $this->db->where($this->id, $id);
-        $this->db->update($this->table, $data);
-    }
+        {
+            $this->db->where($this->id, $id);
+            $this->db->update($this->table, $data);
+        }
 
-    // delete data
     function delete($id)
-    {
-        $data = array('discipline_status' => 1,);
-        $this->db->where($this->id, $id);
-        $this->db->update($this->table,$data);
-    }
+        {
+            $data = array('discipline_status' => 1,);
+            $this->db->where($this->id, $id);
+            $this->db->update($this->table,$data);
+        }*/
 
 }
 
