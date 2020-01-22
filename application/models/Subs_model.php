@@ -17,7 +17,6 @@ class Subs_model extends CI_Model
         }
 
     function get_all($status = NULL)
-<<<<<<< HEAD
         {
             $this->db->order_by ($this->id, $this->desc);
 
@@ -32,25 +31,10 @@ class Subs_model extends CI_Model
             $this->db->where ('tbl_systems.system_status', $status);
             $this->db->where ('tbl_projects.project_status', $status);
             $this->db->from ('tbl_subs');
-            $this->db->join ('tbl_systems', 'tbl_subs.id_systems = tbl_systems.id_system');
-            $this->db->join ('tbl_projects', 'tbl_systems.id_projects = tbl_projects.id_project');
-            return $this->db->get()->result();
-        }
-=======
-    {
-    $this->db->order_by($this->id, $this->desc);
     $this->db->join('tbl_systems', 'tbl_subs.id_systems = tbl_systems.id_system');
     $this->db->join('tbl_projects', 'tbl_subs.id_projects = tbl_projects.id_project');
         return $this->db->get($this->table)->result();
     }
-
-    // get data by id
-    function get_by_id($id)
-    {
-        $this->db->where($this->id, $id);
-        return $this->db->get($this->table)->row();
-    }
->>>>>>> 7f1a05c96a9d89aef82bd47dc5d86f9a94acb77e
     
     function total_rows($q = NULL, $status = NULL) 
         {
