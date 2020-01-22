@@ -31,9 +31,9 @@ class Subs_model extends CI_Model
             $this->db->where ('tbl_systems.system_status', $status);
             $this->db->where ('tbl_projects.project_status', $status);
             $this->db->from ('tbl_subs');
-    $this->db->join('tbl_systems', 'tbl_subs.id_systems = tbl_systems.id_system');
-    $this->db->join('tbl_projects', 'tbl_subs.id_projects = tbl_projects.id_project');
-        return $this->db->get($this->table)->result();
+            $this->db->join('tbl_systems', 'tbl_subs.id_systems = tbl_systems.id_system');
+            $this->db->join('tbl_projects', 'tbl_subs.id_projects = tbl_projects.id_project');
+            return $this->db->get($this->table)->result();
     }
     
     function total_rows($q = NULL, $status = NULL) 
