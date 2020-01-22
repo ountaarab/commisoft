@@ -18,7 +18,7 @@ class Projects_model extends CI_Model
 
     function get_all($status = NULL)
         {
-            $this->db->order_by($this->id_project, $this->desc);
+            $this->db->order_by($this->id, $this->desc);
             $this->db->where('project_status', $status);
             $this->db->from($this->table);
             return $this->db->get()->result();

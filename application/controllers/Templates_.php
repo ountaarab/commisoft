@@ -99,6 +99,7 @@ class Templates_ extends CI_Controller
 	    'template_title_3' => set_value('template_title_3'),
 	);
         
+        $data['detailtemplate'] = NULL;
         $data ['data_discipline'] = $this->Disciplines_model->get_all(0);
         $this->template->load('template','templates_/tbl_templates_form', $data);
     }
@@ -166,6 +167,8 @@ class Templates_ extends CI_Controller
 		'template_title_2' => set_value('template_title_2', $row->template_title_2),
 		'template_title_3' => set_value('template_title_3', $row->template_title_3),
 	    );
+
+            $data['detailtemplate'] = $this->Templates_model_->get_detailtemplate_by_id($id);
             $data ['data_discipline'] = $this->Disciplines_model->get_all(0);
             $this->template->load('template','templates_/tbl_templates_form', $data);
         } else {
@@ -191,8 +194,42 @@ class Templates_ extends CI_Controller
 		'template_title_3' => $this->input->post('template_title_3',TRUE),
 	    );
 
+            $id_template = $this->input->post('id_template', TRUE);
+            $data_item = $this->input->post('mytext',TRUE);
 
-            if ($this->Templates_model_->update($this->input->post('id_template', TRUE), $data)) 
+            $detailtemplate = $this->Templates_model_->get_detailtemplate_by_id($id_template);
+
+            $jml_data = count($data_item);
+            $jml_data_lama = count($detailtemplate);
+            $jml_data_baru = count($data_item) - $jml_data_lama;
+
+            $posisi_data_baru = $jml_data_lama+1;
+
+            $x = 1;
+            if($detailtemplate != NULL){
+                foreach ($detailtemplate as $baris) {
+                    $updateData[] = array('id_template_detail'=>$baris->id_template_detail, 'template_no'=>$baris->template_no, 'template_item'=>$data_item[$baris->id_template_detail]);
+                    $x++;
+                    $template_no = $baris->id_template_detail;
+                }
+                $this->Templates_model_->update_detail($id_template, $updateData); 
+            }
+
+             if($jml_data_baru > 0){
+
+                if(!isset($template_no)){
+                    $template_no = 0;
+                    $posisi_data_baru = 1;
+                }
+
+                 for ($i=$posisi_data_baru; $i <= $jml_data ; $i++) {
+                    $template_no = $template_no+1;
+                     $insertData[] = array('id_templates'=>$id_template, 'template_no'=>$i, 'template_item'=>$data_item[$template_no]);
+                 }
+                 $this->Templates_model_->insert_detail($insertData);
+             }
+
+            if ($this->Templates_model_->update($id_template, $data)) 
             {
               $response = array(
                 'status' => 20,
@@ -206,8 +243,29 @@ class Templates_ extends CI_Controller
                 'return_url' => '#'
               );
             }
+
             echo json_encode($response);
         }
+    }
+
+    public function delete_detail($id, $id_template){
+        $id = $id;
+        if($this->Templates_model_->delete_detail($id))
+        {
+          $response = array(
+            'status' => 20,
+            'message' => 'Delete Item Success',
+            'return_url' => site_url('templates_/update/'.$id_template)
+          );
+        } else {
+          $response = array(
+            'status' => 0,
+            'message' => 'Delete Item Failed',
+            'return_url' => '#'
+          );
+        }
+        echo json_encode($response);
+
     }
     
     public function delete($id) 

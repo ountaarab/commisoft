@@ -42,7 +42,22 @@
                 <br>
                 <div class="input_fields_wrap">
                     <button class="add_field_button">Add Item Checklist</button>
-                    <div><input type="text" name="mytext[]" style="width: 85%" required></div>
+                    <?php
+                    if($detailtemplate != NULL): 
+                        foreach ($detailtemplate as $baris):
+                        $x=$baris->id_template_detail;
+                        ?>
+                        <div><input type="text" name="mytext[<?= $baris->id_template_detail ?>]" style="width: 85%" value="<?= $baris->template_item ?>" required>&nbsp;<a onclick="myFunction(<?= $baris->id_template_detail ?>, <?= $id_template ?>)">Remove</a></div>                        
+                        <?php
+                        endforeach;
+                    ?>
+                    <?php
+                    else:
+                    ?>
+                        <div><input type="text" name="mytext[1]" style="width: 85%" required></div>
+                    <?php
+                    endif;
+                    ?>
                 </div>
             </td>
         </tr>
@@ -77,18 +92,27 @@ $('input').on("keypress", function(e) {
             }
         });
 
+
 $(document).ready(function() {
     var max_fields      = 10; //maximum input boxes allowed
     var wrapper         = $(".input_fields_wrap"); //Fields wrapper
     var add_button      = $(".add_field_button"); //Add button ID
-    
+
+    <?php 
+    if($detailtemplate != NULL):
+    ?>
+    var x = <?= $x ?>; //initlal text box count
+    <?php
+    else:
+    ?>
     var x = 1; //initlal text box count
+    <?php
+    endif;
+    ?>
     $(add_button).click(function(e){ //on add input button click
         e.preventDefault();
-        if(x < max_fields){ //max input box allowed
             x++; //text box increment
-            $(wrapper).append('<div><input type="text" name="mytext[]" style="width: 85%">&nbsp;<a href="#" class="remove_field">Remove</a></div>'); //add input box
-        }
+            $(wrapper).append('<div><input type="text" name="mytext['+x+']" style="width: 85%">&nbsp;<a href="#" class="remove_field">Remove</a></div>'); //add input box
     });
     
     $(wrapper).on("click",".remove_field", function(e){ //user click on remove text
@@ -132,4 +156,34 @@ $(document).ready(function() {
         e.preventDefault();
       });
 });
+function myFunction($id, $id_template) {
+  var txt;
+  var page = '<?php echo base_url('templates_/delete_detail/') ?>';
+  var id = $id;
+  var id_template = $id_template;
+  var r = confirm("Yakin Hapus Item ini?");
+  if (r == true) {    
+        $.ajax({
+          type: 'GET',
+          url: page+id+'/'+id_template,
+          success: function(data){
+            console.log(data);
+            data = JSON.parse(data);
+            if(data.status == 20) {
+                if(data.return_url != '#') {
+                  document.location.href=data.return_url;
+                }
+            } else  {
+              alert(data.message);
+            }
+          },
+          cache: false,
+          contentType: false,
+          processData: false,
+          error: function(data) {
+            alert(data);
+          }
+        });
+  }
+}
     </script>

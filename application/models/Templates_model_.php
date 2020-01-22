@@ -33,6 +33,13 @@ class Templates_model_ extends CI_Model
         $this->db->join('tbl_disciplines', 'tbl_templates.id_disciplines = tbl_disciplines.id_discipline');
         return $this->db->get($this->table)->row();
     }
+
+    // get data detailtemplate by id
+    function get_detailtemplate_by_id($id)
+    {
+        $this->db->where('id_templates', $id);
+        return $this->db->get('tbl_template_details')->result();
+    }
     
     // get total rows
     function total_rows($q = NULL) {
@@ -86,10 +93,23 @@ class Templates_model_ extends CI_Model
         $this->db->delete($this->table);
     }
 
+    // delete detail data 
+    function delete_detail($id)
+    {
+        $this->db->where('id_template_detail', $id);
+        return $this->db->delete('tbl_template_details');
+    }
+
     function insert_detail($data)
     {
 
         return $this->db->insert_batch('tbl_template_details', $data);
+    }
+
+    function update_detail($id, $data)
+    {
+
+        return $this->db->update_batch('tbl_template_details', $data, 'id_template_detail');
     }
 
 }

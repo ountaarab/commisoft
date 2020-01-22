@@ -7,7 +7,7 @@ class Subs_model extends CI_Model
 {
 
     public $table = 'tbl_subs';
-    public $id = 'id';
+    public $id = 'id_sub';
     public $desc = 'DESC';
     public $asc = 'ASC';
     
@@ -22,20 +22,9 @@ class Subs_model extends CI_Model
     function get_all($status = NULL)
     {
     $this->db->order_by($this->id, $this->desc);
-
-    $this->db->select(''.$this->table.'.*,
-                    tbl_systems.system_name,
-                    tbl_systems.system_status,
-                    tbl_projects.project_name,
-                    tbl_projects.project_status');
-
-    $this->db->where(''.$this->table.'.sub_status', $status);
-    $this->db->where('tbl_systems.system_status', $status);
-    $this->db->where('tbl_projects.project_status', $status);
-    $this->db->from($this->table);
-    $this->db->join('tbl_systems', ''.$this->table.'.sub_system_no = tbl_systems.id');
-    $this->db->join('tbl_projects', 'tbl_systems.system_project_no = tbl_projects.id');
-        return $this->db->get()->result();
+    $this->db->join('tbl_systems', 'tbl_subs.id_systems = tbl_systems.id_system');
+    $this->db->join('tbl_projects', 'tbl_subs.id_projects = tbl_projects.id_project');
+        return $this->db->get($this->table)->result();
     }
 
     // get data by id

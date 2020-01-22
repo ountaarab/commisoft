@@ -134,5 +134,9 @@ $autoload['language'] = array();
 */
 $autoload['model'] = array(
 							'Disciplines_model',
-							'Projects_model'
+							'Projects_model',
+							'Items_model',
+							'Templates_model_',
+							'Systems_model',
+							'Subs_model',
 							);
