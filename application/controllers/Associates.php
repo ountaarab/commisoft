@@ -69,10 +69,10 @@ class Associates extends CI_Controller
         if ($row) {
             $data = array(
 		'id_form' => $row->id_form,
-		'id_projects' => $row->id_projects,
-		'id_disciplines' => $row->id_disciplines,
-		'id_items' => $row->id_items,
-		'id_templates' => $row->id_templates,
+		'project_name' => $row->project_name,
+		'discipline_name' => $row->discipline_name,
+		'item_type_name' => $row->item_type_name,
+		'template_name' => $row->template_name,
 		'template_type' => $row->template_type,
 	    );
             $this->template->load('template','associates/tbl_forms_read', $data);

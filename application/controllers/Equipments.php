@@ -68,10 +68,10 @@ class Equipments extends CI_Controller
         if ($row) {
             $data = array(
 		'id_equipment' => $row->id_equipment,
-		'id_projects' => $row->id_projects,
-		'id_systems' => $row->id_systems,
-		'id_subs' => $row->id_subs,
-		'id_items' => $row->id_items,
+		'project_name' => $row->project_name,
+		'system_name' => $row->system_name,
+		'sub_name' => $row->sub_name,
+		'item_type_name' => $row->item_type_name,
 		'equipment_no' => $row->equipment_no,
 		'equipment_desc' => $row->equipment_desc,
 	    );

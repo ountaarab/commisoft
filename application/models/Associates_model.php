@@ -33,6 +33,10 @@ class Associates_model extends CI_Model
     function get_by_id($id)
     {
         $this->db->where($this->id, $id);
+        $this->db->join('tbl_projects', 'tbl_projects.id_project = tbl_forms.id_projects');
+        $this->db->join('tbl_disciplines', 'tbl_disciplines.id_discipline = tbl_forms.id_disciplines');
+        $this->db->join('tbl_items', 'tbl_items.id_item = tbl_forms.id_items');
+        $this->db->join('tbl_templates', 'tbl_templates.id_template = tbl_forms.id_templates');
         return $this->db->get($this->table)->row();
     }
     
