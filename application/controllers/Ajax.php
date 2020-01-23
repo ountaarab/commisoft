@@ -37,6 +37,11 @@ class Ajax extends CI_Controller
         echo json_encode($hasil);
     }
 
+    public function get_equi_by_subs($id_subs){
+        $hasil = $this->Ajax_model->get_equi_by_subs($id_subs);
+        echo json_encode($hasil);
+    }
+
     public function get_subsystem_by_proj_AND_sys($id_s, $id_p){
         $where = array(
             'id_systems' => $id_s,

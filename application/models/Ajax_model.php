@@ -40,6 +40,13 @@ class Ajax_model extends CI_Model
         return $this->db->get('tbl_items')->result();
     }
 
+    // get equipment by subsystem
+    function get_equi_by_subs($id_subs)
+    {
+        $this->db->where('id_subs', $id_subs);
+        return $this->db->get('tbl_equipments')->result();
+    }
+
     // get SubSystem by project and system
     function get_subsystem_by_proj_AND_sys($where)
     {

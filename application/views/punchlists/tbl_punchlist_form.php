@@ -24,7 +24,7 @@
 
         <tr><td width='200'>Sub System <?php echo form_error('id_subs') ?></td>
             <td>
-                <select class="form-control" name="id_subs" required>
+                <select class="form-control" name="id_subs" id="id_subs" required>
                     <option value="">Choose</option>
             <?php
                 foreach ($data_subs as $baris): ?>
@@ -52,14 +52,7 @@
 
         <tr><td width='200'>Equipment <?php echo form_error('id_equipments') ?></td>
             <td>
-                <select class="form-control" name="id_equipments" required>
-                    <option value="">Choose</option>
-            <?php
-                foreach ($data_equipments as $baris): ?>
-                    <option value="<?= $baris->id_equipment ?>" <?php if($id_equipments==$baris->id_equipment) {echo " selected";} ?> ><?= $baris->equipment_no ?></option>
-                <?php
-                endforeach;
-            ?>
+                <select class="form-control" name="id_equipments" id="id_equipments" required>
                 </select>
             </td>
         </tr>
@@ -101,3 +94,25 @@ $('input').on("keypress", function(e) {
                 return false;
             }
         });</script>
+
+
+
+    <script type="text/javascript">
+        $('#id_subs').change(function(){
+            var id=$(this).val();
+            $.ajax({
+                url : "<?php echo base_url();?>Ajax/get_equi_by_subs/"+id,
+                method : "GET",
+                async : false,
+                dataType : 'json',
+                success: function(data){
+                    var html = '';
+                    var i;
+                    for(i=0; i<data.length; i++){
+                        html += '<option value="'+data[i].id_equipment+'">'+data[i].equipment_no+'</option>';
+                    }
+                    $('#id_equipments').html('<option value="">-Choose-</option>'+html);
+                }
+            });
+        });
+    </script>
