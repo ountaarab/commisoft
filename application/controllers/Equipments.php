@@ -141,6 +141,10 @@ class Equipments extends CI_Controller
 		'equipment_no' => set_value('equipment_no', $row->equipment_no),
 		'equipment_desc' => set_value('equipment_desc', $row->equipment_desc),
 	    );
+            $data ['data_projects'] = $this->Projects_model->get_all(0);
+            $data ['data_items'] = $this->Items_model->get_all(0);
+            $data ['data_systems'] = $this->Systems_model->get_all(0);
+            $data ['data_subs'] = $this->Subs_model->get_all(0);
             $this->template->load('template','equipments/tbl_equipments_form', $data);
         } else {
             $this->session->set_flashdata('message', 'Record Not Found');
