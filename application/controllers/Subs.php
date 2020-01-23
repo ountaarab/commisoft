@@ -64,6 +64,7 @@ class Subs extends CI_Controller
 
     public function _rules() 
         {
+            $this->form_validation->set_rules('list_project', 'list_project', 'trim|required');
         	$this->form_validation->set_rules('list_system', 'list_system', 'trim|required');
             $this->form_validation->set_rules('sub_id', 'sub_id', 'trim|required');
             $this->form_validation->set_rules('sub_name', 'sub_name', 'trim|required');
@@ -77,13 +78,15 @@ class Subs extends CI_Controller
             $data = array(
                             'button'        => 'save',
                             'action'        => site_url('subs/create_action'),
+                            'list_project'   => set_value('list_project'),
                             'list_system'   => set_value('list_system'),
                             'sub_id'        => set_value('sub_id'),
                             'sub_name'      => set_value('sub_name'),
                             'id_sub'        => set_value('id_sub'),
                          );
 
-            $data ['list_system'] = $this->Subs_model->select_m_systems();
+            $data ['list_project'] = $this->Subs_model->select_m_project();
+            $data ['list_system']  = $this->Subs_model->select_m_systems();
             $this->template->load('template','subs/tbl_subs_form', $data);
         }
 
@@ -94,12 +97,14 @@ class Subs extends CI_Controller
             if ($this->form_validation->run() == FALSE) {
                 $this->create();
             } else {
+                $list_project  = $this->input->post('list_project',true);
                 $list_system   = $this->input->post('list_system',true);
                 $sub_id        = $this->input->post('sub_id',true);
                 $sub_name      = $this->input->post('sub_name',true);
                 $id_sub        = $this->input->post('id_sub',true);
 
                 $data = array (
+                                'id_projects'=> $list_project,
                                 'id_systems' => $list_system,
                                 'sub_id'     => $sub_id,
                                 'sub_name'   => $sub_name,

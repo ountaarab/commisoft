@@ -36,7 +36,8 @@
     <tr>
         <th><input type="checkbox" id="checkall"></th>
         <th>No</th>
-		<th>System Name</th>
+        <th>Project Category</th>
+		<th>System Category</th>
 		<th>Sub Id</th>
 		<th>Sub Name</th>
 		<th >Action</th>
@@ -46,6 +47,9 @@
 		<td width="10px"><input type="checkbox" class="checkitem" name="pilih[]" value="<?=$subs->id_sub?>"></td>
 		<td width="10px"><?php echo ++$start ?></td>
 		<td>
+            <?php echo $subs->project_name ?>
+        </td>
+        <td>
             <?php echo $subs->system_name ?>
         </td>
 		<td>
