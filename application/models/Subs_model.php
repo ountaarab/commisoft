@@ -93,6 +93,14 @@ class Subs_model extends CI_Model
             return $this->db->get()->result();
         }
 
+    function select_m_project ()
+        {
+            $this->db->select('project_name, id_project');
+            $this->db->where ('project_status', 0);
+            $query = $this->db->get('tbl_projects');
+            return $query;
+        }
+
     function select_m_systems ()
         {
             $this->db->select('system_name, id_system');
@@ -106,7 +114,7 @@ class Subs_model extends CI_Model
             $this->db->where ('sub_id', $sub_id);
             $this->db->where ('sub_name', $sub_name);
             $this->db->where ('sub_status', 0);
-            $this->db->where_in ('id_systemS', $list_system);
+            $this->db->where_in ('id_systems', $list_system);
             $query = $this->db->get('tbl_subs');
             return $query->num_rows();
         }
