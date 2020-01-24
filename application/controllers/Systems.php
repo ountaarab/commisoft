@@ -17,7 +17,7 @@ class Systems extends CI_Controller
     public function index()
         {
 
-           $q = urldecode($this->input->get('q', true));
+            $q = urldecode($this->input->get('q', true));
             $start = intval($this->input->get('start'));
             
            if ($q <> '') {
@@ -63,26 +63,20 @@ class Systems extends CI_Controller
             $this->template->load('template','systems/tbl_systems_list', $data);
         }
 
-    public function get_project_name ()
-        {
-            $this->template->load('template','systems/tbl_systems_form', $data);
-        }
-
     public function read($id) 
         {
-            $row = $this->Systems_model->get_by_id($id);
-            if ($row) {
-                $data = array(
-                                'id'                => $row->id,
-                                'system_project_no' => $row->system_project_no,
-                                'system_id'         => $row->system_id,
-                                'system_name'       => $row->system_name,
-                             );
-                $this->template->load('template','systems/tbl_systems_read', $data);
-            } else {
-                $this->session->set_flashdata('message', 'Record Not Found');
-                redirect(site_url('systems'));
-            }
+            $data ['siap'] = $this->Systems_model->select_by_id($id);
+            $this->template->load('template','systems/tbl_systems_read', $data);
+        }
+
+    public function _rules() 
+        {
+            $this->form_validation->set_rules('list_project', 'list_project', 'trim|required');
+            $this->form_validation->set_rules('system_id', 'system id', 'trim|required');
+            $this->form_validation->set_rules('id_system', 'id_system');
+            $this->form_validation->set_rules('system_name', 'system name', 'trim|required');
+
+            $this->form_validation->set_error_delimiters('<span class="text-danger">', '</span>');
         }
 
     public function create() 
@@ -100,15 +94,6 @@ class Systems extends CI_Controller
             $this->template->load('template','systems/tbl_systems_form', $data);
         }
 
-    public function _rules() 
-        {
-            $this->form_validation->set_rules('list_project', 'list_project', 'trim|required');
-            $this->form_validation->set_rules('system_id', 'system id', 'trim|required');
-            $this->form_validation->set_rules('id_system', 'id_system');
-            $this->form_validation->set_rules('system_name', 'system name', 'trim|required');
-
-            $this->form_validation->set_error_delimiters('<span class="text-danger">', '</span>');
-        }
 
     public function create_action() 
         {
@@ -210,9 +195,9 @@ class Systems extends CI_Controller
             } else {
                 $data = array(
                                 'id_projects'       => $this->input->post('list_project',true),
+                                'id_system'         => $this->input->post('id_system',true),
                                 'system_id'         => $this->input->post('system_id',true),
                                 'system_name'       => $this->input->post('system_name',true),
-                                'id_system'         => $this->input->post('id_system',true),
                              );
 
 
@@ -221,8 +206,8 @@ class Systems extends CI_Controller
                 date_default_timezone_set('Asia/bangkok');
                 $datetime = date('Y-m-d H:i:s');
                 $datalog = array(
-                                'id_systems'         => $this->input->post('id_system', true),
-                                'id_projects'      => $this->input->post('list_project',true),
+                                'id_systems'        => $this->input->post('id_system', true),
+                                'id_projects'       => $this->input->post('list_project',true),
                                 'system_id'         => $this->input->post('system_id',true),
                                 'system_name'       => $this->input->post('system_name',true),
                                 'id_users'          => $this->session->userdata('id_users',true),

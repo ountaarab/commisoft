@@ -78,7 +78,7 @@ class Subs extends CI_Controller
             $data = array(
                             'button'        => 'save',
                             'action'        => site_url('subs/create_action'),
-                            'list_project'   => set_value('list_project'),
+                            'list_project'  => set_value('list_project'),
                             'list_system'   => set_value('list_system'),
                             'sub_id'        => set_value('sub_id'),
                             'sub_name'      => set_value('sub_name'),
@@ -125,6 +125,7 @@ class Subs extends CI_Controller
                 $datetime = date('Y-m-d H:i:s');
                 $datalog  = array(
                                     'id_subs'       => $id_sub,
+                                    'id_projects'   => $this->input->post('list_project',true),
                                     'id_systems'    => $this->input->post('list_system',true),
                                     'sub_id'        => $this->input->post('sub_id',true),
                                     'sub_name'      => $this->input->post('sub_name',true),
@@ -148,12 +149,14 @@ class Subs extends CI_Controller
                 $data = array(
                                 'button'        => 'Update',
                                 'action'        => site_url('subs/update_action'),
+                                'id_projects'   => $this->input->post('list_project'),
                                 'id_systems'    => $this->input->post('list_system'),
                                 'sub_id'        => set_value('sub_id', $row->sub_id),
                                 'sub_name'      => set_value('sub_name', $row->sub_name),
                                 'id_sub'        => set_value('id_sub', $row->id_sub),
                                );
 
+                $data ['list_project'] = $this->Subs_model->select_m_project();
                 $data ['list_system'] = $this->Subs_model->select_m_systems();
                 $this->template->load('template','subs/tbl_subs_form', $data);
             } else {
@@ -164,20 +167,8 @@ class Subs extends CI_Controller
 
     public function read($id) 
         {
-            $row = $this->Subs_model->get_by_id($id);
-            if ($row) {
-                $data = array(
-                                'id'            => $row->id,
-                                'sub_system_no' => $row->sub_system_no,
-                                'sub_id'        => $row->sub_id,
-                                'sub_name'      => $row->sub_name,
-                               );
-
-                $this->template->load('template','subs/tbl_subs_read', $data);
-            } else {
-                $this->session->set_flashdata('message', 'Record Not Found');
-                redirect(site_url('subs'));
-            }
+            $data ['siap'] = $this->Subs_model->select_by_id($id);
+            $this->template->load('template','subs/tbl_subs_read', $data);
         }
 
     public function update_action() 
@@ -188,6 +179,7 @@ class Subs extends CI_Controller
                 $this->update($this->input->post('id', true));
             } else {
                 $data = array(
+                                'id_projects'   => $this->input->post('list_project',true),
                                 'id_systems'    => $this->input->post('list_system',true),
                                 'sub_id'        => $this->input->post('sub_id',true),
                                 'sub_name'      => $this->input->post('sub_name',true),
@@ -199,7 +191,8 @@ class Subs extends CI_Controller
                 date_default_timezone_set('Asia/Bangkok');
                 $datetime = date('Y-m-d H:i:s');
                 $datalog = array(
-                                    'id_subs'        => $this->input->post('id_sub', true),
+                                    'id_subs'       => $this->input->post('id_sub',true),
+                                    'id_projects'   => $this->input->post('list_project',true),
                                     'id_systems'    => $this->input->post('list_system',true),
                                     'sub_id'        => $this->input->post('sub_id',true),
                                     'sub_name'      => $this->input->post('sub_name',true),
@@ -224,10 +217,12 @@ class Subs extends CI_Controller
                 date_default_timezone_set('Asia/Bangkok');
                 $datetime = date('Y-m-d H:i:s');
                 $datalog  = array(
+                                    'id_subs'       => $id,
+                                    'id_projects'   => $row->id_projects,
                                     'id_systems'    => $row->id_systems,
                                     'sub_id'        => $row->sub_id,
                                     'sub_name'      => $row->sub_name,
-                                    'id_users'      => $this->session->userdata('id_users',TRUE),
+                                    'id_users'      => $this->session->userdata('id_users',true),
                                     'note'          => 'delete',
                                     'datetime'      => $datetime,
                                 );

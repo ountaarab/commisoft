@@ -86,8 +86,26 @@ class Systems_model extends CI_Model
 
     function get_by_id($id)
         {
-            $this->db->where('id_system', $id);
+            $this->db->where($this->id, $id);
             return $this->db->get($this->table)->row();
+        }
+
+    function select_by_id($id)
+        {
+            $this->db->order_by($this->id, $this->desc);
+
+            $this->db->select ('tbl_systems.*,
+                                tbl_systems.system_name,
+                                tbl_projects.project_name,
+                                tbl_projects.project_id,
+                                tbl_projects.project_status 
+                              ');
+
+            $this->db->where ('tbl_systems.id_system', $id);
+            $this->db->from ('tbl_systems');
+            $this->db->join ('tbl_projects', 'tbl_systems.id_projects = tbl_projects.id_project');
+
+            return $this->db->get()->result();
         }
     
     function select_m_project ()
@@ -100,14 +118,6 @@ class Systems_model extends CI_Model
 
     function select_to_insert($system_id, $system_name, $list_project)
         {
-           /* $sql = "SELECT * FROM tbl_systems WHERE 
-                                                    system_status = '0' AND
-                                                    system_id = '$system_id' AND 
-                                                    system_name = '$system_name'
-                                                IN (id_projects = '$list_project') ";
-            $susah = $this->db->query ($sql);
-            return $susah->num_rows();*/
-
             $this->db->where ('system_id', $system_id);
             $this->db->where ('system_name', $system_name);
             $this->db->where ('system_status', 0);

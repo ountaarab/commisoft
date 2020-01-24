@@ -136,6 +136,25 @@ class Subs_model extends CI_Model
             $this->db->where($this->id, $id);
             return $this->db->get($this->table)->row();
         }
+
+    function select_by_id($id)
+        {
+            $this->db->order_by($this->id, $this->desc);
+            $this->db->select ('tbl_subs.*,
+                                tbl_systems.system_name,
+                                tbl_systems.system_id,
+                                tbl_systems.system_status,
+                                tbl_projects.project_name,
+                                tbl_projects.project_id,
+                                tbl_projects.project_status'
+                               );
+
+            $this->db->where ('tbl_subs.id_sub', $id);
+            $this->db->from ('tbl_subs');
+            $this->db->join('tbl_systems', 'tbl_subs.id_systems = tbl_systems.id_system');
+            $this->db->join('tbl_projects', 'tbl_subs.id_projects = tbl_projects.id_project');
+            return $this->db->get()->result();
+        }
     
     function delete($id)
         {

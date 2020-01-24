@@ -3,14 +3,37 @@
         <div class="row">
 
           <div class="span12">
-            <h4 class="title"><strong>View</strong> locations</h4>
-        <table class="table">
-	    <tr><td>Location No</td><td><?php echo $location_no; ?></td></tr>
-	    <tr><td>Location Project No</td><td><?php $key = $this->db->get_where('tbl_projects','id='.$location_project_no.'')->row(); echo $key->project_name; ?></td></tr>
-	    <tr><td>Location Id</td><td><?php echo $location_id; ?></td></tr>
-	    <tr><td>Location Name</td><td><?php echo $location_name; ?></td></tr>
-	    <tr><td></td><td><a href="<?php echo site_url('locations') ?>" class="btn btn-default">Cancel</a></td></tr>
-	</table>
+            <h4 class="title"><strong>View</strong> Location </h4>
+
+    <?php foreach ($siap as $key) { ?>
+<table class="table">
+	<tr>
+		<th>Location of ID </th>
+		<td>
+			<?php echo $key->location_id; ?>
+		</td>
+	</tr>
+	<tr>
+		<th>Location name </th>
+		<td>
+			<?php echo $key->location_name; ?>
+		</td>
+	</tr>
+	<tr>
+		<th> Project category </th>
+		<td>
+			<?php echo $key->project_name; ?> <b> (<?php echo $key->project_id; ?>) </b>
+		</td>
+	</tr>
+	<tr>
+        <td></td>
+        <td>
+          <a href="<?php echo site_url('Locations') ?>" class="btn btn-default">Back</a>
+        </td>
+      </tr>
+
+</table>
+   	<?php } ?>
 
 </div>
 </div>

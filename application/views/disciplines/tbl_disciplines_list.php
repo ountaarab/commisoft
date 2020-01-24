@@ -48,17 +48,17 @@
 
     <?php foreach ($disciplines_data as $disciplines) { ?>
     <tr>
-		<td width="10px"><input type="checkbox" class="checkitem" name="pilih[]" value="<?=$disciplines->id?>"></td>
+		<td width="10px"><input type="checkbox" class="checkitem" name="pilih[]" value="<?=$disciplines->id_discipline?>"></td>
 		<td width="10px"><?php echo ++$start ?></td>
 		<td><?php echo $disciplines->discipline_id ?></td>
 		<td><?php echo $disciplines->discipline_name ?></td>
 		<td>
 			<?php 
-			echo anchor(site_url('disciplines/read/'.$disciplines->id),'<i class="icon-desktop" aria-hidden="true"></i>'); 
+			echo anchor(site_url('disciplines/read/'.$disciplines->id_discipline),'<i class="icon-desktop" aria-hidden="true"></i>'); 
 			echo '  '; 
-			echo anchor(site_url('disciplines/update/'.$disciplines->id),'<i class="icon-edit" aria-hidden="true"></i>'); 
+			echo anchor(site_url('disciplines/update/'.$disciplines->id_discipline),'<i class="icon-edit" aria-hidden="true"></i>'); 
 			echo '  '; 
-			echo anchor(site_url('disciplines/delete/'.$disciplines->id),'<i class="icon-trash" aria-hidden="true"></i>','onclick="javasciprt: return confirm(\'Are You Sure ?\')"'); 
+			echo anchor(site_url('disciplines/delete/'.$disciplines->id_discipline),'<i class="icon-trash" aria-hidden="true"></i>','onclick="javasciprt: return confirm(\'Are You Sure ?\')"'); 
 			?>
 		</td>
 	</tr>

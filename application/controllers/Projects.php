@@ -98,47 +98,6 @@ class Projects extends CI_Controller
             $this->template->load('template','projects/tbl_projects_form', $data);
         }
     
-    public function create_action() 
-        {
-            $this->_rules();
-
-            if ($this->form_validation->run() == FALSE) {
-                $this->create();
-            } else {
-                $project_id = $this->input->post ('project_id', true);
-                $project_name = $this->input->post ('project_name', true);
-                $project_desc = $this->input->post ('project_desc', true);
-
-                $data = array(
-                                'project_id'   => $project_id,
-                                'project_name' => $project_name,
-                                'project_desc' => $project_desc
-                               );
-
-                $cek = $this->Projects_model->select_to_insert ($project_id, $project_name);
-                if ($cek>0) {
-                    $this->session->set_flashdata('message', 'Sorry, record already exists');
-                    redirect ('Projects/create');
-                } else {        
-                $this->Projects_model->insert($data);
-
-                date_default_timezone_set('Asia/Bangkok');
-                $datetime = date('Y-m-d H:i:s');
-                $datalog = array(
-                                'project_id'    => $this->input->post('project_id',TRUE),
-                                'project_name'  => $this->input->post('project_name',TRUE),
-                                'project_desc'  => $this->input->post('project_desc',TRUE),
-                                'id_users'      => $this->session->userdata('id_users',TRUE),
-                                'note'          => 'add',
-                                'datetime'      => $datetime,
-                                );
-
-                $this->db->insert('tbl_projects_log',$datalog);
-                $this->session->set_flashdata('message', 'Added Record Success');
-                redirect('Projects');
-            }}
-        }
-    
     public function update($id) 
         {
             $row = $this->Projects_model->get_by_id($id);
@@ -158,7 +117,52 @@ class Projects extends CI_Controller
                 redirect(site_url('projects'));
             }
         }
-    
+
+    public function create_action() 
+        {
+            $this->_rules();
+
+            if ($this->form_validation->run() == FALSE) {
+                $this->create();
+            } else {
+                $project_id   = $this->input->post ('project_id', true);
+                $project_name = $this->input->post ('project_name', true);
+                $project_desc = $this->input->post ('project_desc', true);
+                $id_project   = $this->input->post ('id_project', true);
+
+                $data = array(
+                                'project_id'   => $project_id,
+                                'project_name' => $project_name,
+                                'project_desc' => $project_desc,
+                                'id_project'   => $id_project
+                               );
+
+                $cek = $this->Projects_model->select_to_insert ($project_id, $project_name);
+                if ($cek>0) {
+                    $this->session->set_flashdata('message', 'Sorry, record already exists');
+                    redirect ('Projects/create');
+                } else {        
+                $this->Projects_model->insert($data);
+                $id_project = $this->db->insert_id();
+
+                date_default_timezone_set('Asia/Bangkok');
+                $datetime = date('Y-m-d H:i:s');
+                $datalog = array(
+                                'id_projects'   => $id_project,
+                                'project_id'    => $this->input->post('project_id',true),
+                                'project_name'  => $this->input->post('project_name',true),
+                                'project_desc'  => $this->input->post('project_desc',true),
+                                'id_users'      => $this->session->userdata('id_users',true),
+                                'note'          => 'add',
+                                'datetime'      => $datetime,
+                                );
+
+                $this->db->insert('tbl_projects_log',$datalog);
+                $this->session->set_flashdata('message', 'Added Record Success');
+                redirect('Projects');
+            }}
+        }
+
     public function update_action() 
         {
             $this->_rules();
@@ -178,6 +182,7 @@ class Projects extends CI_Controller
                 date_default_timezone_set('Asia/Bangkok');
                 $datetime = date('Y-m-d H:i:s');
                 $datalog = array(
+                                    'id_projects'   => $this->input->post('id_project',true),
                                     'project_id'    => $this->input->post('project_id',true),
                                     'project_name'  => $this->input->post('project_name',true),
                                     'project_desc'  => $this->input->post('project_desc',true),
@@ -251,7 +256,7 @@ class Projects extends CI_Controller
         	$this->form_validation->set_rules('project_id', 'project id', 'trim|required');
         	$this->form_validation->set_rules('project_name', 'project name', 'trim|required');
         	$this->form_validation->set_rules('project_desc', 'project desc', 'trim|required');
-        	$this->form_validation->set_rules('id_projects', 'id_projects', 'trim');
+        	$this->form_validation->set_rules('id_project', 'id_project', 'trim');
 
         	$this->form_validation->set_error_delimiters('<span class="text-danger">', '</span>');
         }

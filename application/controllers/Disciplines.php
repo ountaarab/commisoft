@@ -62,20 +62,20 @@ class Disciplines extends CI_Controller
             $this->template->load('template','disciplines/tbl_disciplines_list', $data);
         }
 
-    public function read($id) 
+    public function _rules() 
         {
-            $row = $this->Disciplines_model->get_by_id($id);
-            if ($row) {
-                $data = array(
-                        		'id'              => $row->id,
-                        		'discipline_id'   => $row->discipline_id,
-                        		'discipline_name' => $row->discipline_name,
-                        	   );
-                $this->template->load('template','disciplines/tbl_disciplines_read', $data);
-            } else {
-                $this->session->set_flashdata('message', 'Record Not Found');
-                redirect(site_url('disciplines'));
-            }
+            $this->form_validation->set_rules('discipline_id', 'discipline id', 'trim|required');
+        	$this->form_validation->set_rules('list_project', 'list_project', 'trim|required');
+        	$this->form_validation->set_rules('discipline_name', 'discipline name', 'trim|required');
+
+        	$this->form_validation->set_rules('id_discipline', 'id_discipline', 'trim');
+        	$this->form_validation->set_error_delimiters('<span class="text-danger">', '</span>');
+        }
+
+   public function read($id) 
+        {
+            $data ['siap'] = $this->Disciplines_model->select_by_id($id);
+            $this->template->load('template','Disciplines/tbl_disciplines_read', $data);
         }
 
     public function create() 
@@ -83,10 +83,11 @@ class Disciplines extends CI_Controller
             $data = array(
                             'button'          => 'save',
                             'action'          => site_url('disciplines/create_action'),
-                    	    'id'              => set_value('id'),
-                    	    'discipline_id'   => set_value('discipline_id'),
-                    	    'discipline_name' => set_value('discipline_name'),
-                    	);
+                            'id_discipline'   => set_value('id_discipline'),
+                            'discipline_id'   => set_value('discipline_id'),
+                            'discipline_name' => set_value('discipline_name'),
+                        );
+            $data ['list_project'] = $this->Disciplines_model->select_m_project ();
             $this->template->load('template','disciplines/tbl_disciplines_form', $data);
         }
     
@@ -97,10 +98,21 @@ class Disciplines extends CI_Controller
             if ($this->form_validation->run() == FALSE) {
                 $this->create();
             } else {
-                $data = array(
-                        		'discipline_id'   => $this->input->post('discipline_id',TRUE),
-                        		'discipline_name' => $this->input->post('discipline_name',TRUE),
-                        	);
+                $list_project    = $this->input->post('list_project',true);
+                $discipline_id   = $this->input->post('discipline_id',true);
+                $discipline_name = $this->input->post('discipline_name',true);
+
+                $data = array (
+                                'id_projects'       => $list_project,
+                                'discipline_id'     => $discipline_id,
+                                'discipline_name'   => $discipline_name
+                               );
+
+                $cek_first = $this->Systems_model->select_to_insert($discipline_id, $discipline_name, $list_project);
+                if ($cek_first>0) {
+                    $this->session->set_flashdata('message', 'Sorry, record already exists');
+                    redirect ('Disciplines/create');
+                } else {
 
                 $this->Disciplines_model->insert($data);
                 $id_discipline = $this->db->insert_id();
@@ -108,18 +120,19 @@ class Disciplines extends CI_Controller
                 date_default_timezone_set('Asia/bangkok');
                 $datetime = date('Y-m-d H:i:s');
                 $datalog = array(
-                                    'id_discipline'   => $id_discipline,
-                                    'discipline_id'   => $this->input->post('discipline_id',TRUE),
-                                    'discipline_name' => $this->input->post('discipline_name',TRUE),
-                                    'id_users'        => $this->session->userdata('id_users',TRUE),
+                                    'id_disciplines'  => $id_discipline,
+                                    'discipline_id'   => $this->input->post('discipline_id',true),
+                                    'id_projects'     => $this->input->post('list_project',true),
+                                    'discipline_name' => $this->input->post('discipline_name',true),
+                                    'id_users'        => $this->session->userdata('id_users',true),
                                     'note'            => 'add',
                                     'datetime'        => $datetime,
                                  );
 
                 $this->db->insert('tbl_disciplines_log',$datalog);
-                $this->session->set_flashdata('message', 'Create Record Success 2');
-               redirect($this->agent->referrer());
-            }
+                $this->session->set_flashdata('message', 'Create Record Success');
+                redirect('Disciplines');
+            }}
         }
     
     public function update($id) 
@@ -130,11 +143,12 @@ class Disciplines extends CI_Controller
                 $data = array(
                                 'button'          => 'Update',
                                 'action'          => site_url('disciplines/update_action'),
-                        		'id'              => set_value('id', $row->id),
-                        		'discipline_id'   => set_value('discipline_id', $row->discipline_id),
-                        		'discipline_name' => set_value('discipline_name', $row->discipline_name),
-                        	);
+                                'id_discipline'   => set_value('id_discipline', $row->id_discipline),
+                                'discipline_id'   => set_value('discipline_id', $row->discipline_id),
+                                'discipline_name' => set_value('discipline_name', $row->discipline_name),
+                            );
 
+                $data ['list_project'] = $this->Systems_model->select_m_project ();
                 $this->template->load('template','disciplines/tbl_disciplines_form', $data);
             } else {
                 $this->session->set_flashdata('message', 'Record Not Found');
@@ -147,22 +161,24 @@ class Disciplines extends CI_Controller
             $this->_rules();
 
             if ($this->form_validation->run() == FALSE) {
-                $this->update($this->input->post('id', TRUE));
+                $this->update($this->input->post('id', true));
             } else {
                 $data = array(
-                        		'discipline_id'   => $this->input->post('discipline_id',TRUE),
-                        		'discipline_name' => $this->input->post('discipline_name',TRUE),
-                        	  );
+                                'id_projects'     => $this->input->post('list_project',true),
+                                'discipline_id'   => $this->input->post('discipline_id',true),
+                                'discipline_name' => $this->input->post('discipline_name',true),
+                              );
 
-                $this->Disciplines_model->update($this->input->post('id', TRUE), $data);
+                $this->Disciplines_model->update($this->input->post('id_discipline', true), $data);
 
                 date_default_timezone_set('Asia/bangkok');
                 $datetime = date('Y-m-d H:i:s');
                 $datalog = array(
-                                    'id_discipline'   => $this->input->post('id', TRUE),
-                                    'discipline_id'   => $this->input->post('discipline_id',TRUE),
-                                    'discipline_name' => $this->input->post('discipline_name',TRUE),
-                                    'id_users'        => $this->session->userdata('id_users',TRUE),
+                                    'id_projects'     => $this->input->post('list_project',true),
+                                    'id_disciplines'  => $this->input->post('id_discipline', true),
+                                    'discipline_id'   => $this->input->post('discipline_id',true),
+                                    'discipline_name' => $this->input->post('discipline_name',true),
+                                    'id_users'        => $this->session->userdata('id_users',true),
                                     'note'            => 'update',
                                     'datetime'        => $datetime,
                                 );
@@ -183,10 +199,11 @@ class Disciplines extends CI_Controller
                 date_default_timezone_set('Asia/bangkok');
                 $datetime = date('Y-m-d H:i:s');
                 $datalog = array(
-                                    'id_discipline'   => $id,
+                                    'id_disciplines'  => $id,
                                     'discipline_id'   => $row->discipline_id,
+                                    'id_projects'     => $row->id_projects,
                                     'discipline_name' => $row->discipline_name,
-                                    'id_users'        => $this->session->userdata('id_users',TRUE),
+                                    'id_users'        => $this->session->userdata('id_users',true),
                                     'note'            => 'delete',
                                     'datetime'        => $datetime,
                                 );
@@ -214,7 +231,7 @@ class Disciplines extends CI_Controller
                                 'id_discipline'   => $row->id,
                                 'discipline_id'   => $row->discipline_id,
                                 'discipline_name' => $row->discipline_name,
-                                'id_users'        => $this->session->userdata('id_users',TRUE),
+                                'id_users'        => $this->session->userdata('id_users',true),
                                 'note'            => 'delete',
                                 'datetime'        => $datetime,
                             );
@@ -243,16 +260,6 @@ class Disciplines extends CI_Controller
     redirect($this->agent->referrer());
     }
 
-    public function _rules() 
-    {
-	// $this->form_validation->set_rules('discipline_no', 'discipline no', 'trim|required');
-	// $this->form_validation->set_rules('discipline_project_no', 'discipline project no', 'trim|required');
-	$this->form_validation->set_rules('discipline_id', 'discipline id', 'trim|required');
-	$this->form_validation->set_rules('discipline_name', 'discipline name', 'trim|required');
-
-	$this->form_validation->set_rules('id', 'id', 'trim');
-	$this->form_validation->set_error_delimiters('<span class="text-danger">', '</span>');
-    }
 
     public function excel($status)
     {
