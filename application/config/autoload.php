@@ -139,4 +139,5 @@ $autoload['model'] = array(
 							'Templates_model_',
 							'Systems_model',
 							'Subs_model',
+							'Equipments_model',
 							);

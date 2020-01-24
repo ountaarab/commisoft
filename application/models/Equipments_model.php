@@ -33,6 +33,10 @@ class Equipments_model extends CI_Model
     function get_by_id($id)
     {
         $this->db->where($this->id, $id);
+        $this->db->join('tbl_projects', 'tbl_projects.id_project = tbl_equipments.id_projects');
+        $this->db->join('tbl_systems', 'tbl_systems.id_system = tbl_equipments.id_systems');
+        $this->db->join('tbl_subs', 'tbl_subs.id_sub = tbl_equipments.id_subs');
+        $this->db->join('tbl_items', 'tbl_items.id_item = tbl_equipments.id_items');
         return $this->db->get($this->table)->row();
     }
     

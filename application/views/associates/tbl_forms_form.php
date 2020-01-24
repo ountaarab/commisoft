@@ -11,7 +11,7 @@
 
         <tr><td width='200'>Projects Name <?php echo form_error('id_projects') ?></td>
             <td>
-                <select class="form-control" name="id_projects" required>
+                <select class="form-control" name="id_projects" id="id_projects" required>
                     <option value="">Choose</option>
             <?php
                 foreach ($data_projects as $baris): ?>
@@ -24,27 +24,27 @@
         </tr>
         <tr><td width='200'>Discipline <?php echo form_error('id_disciplines') ?></td>
             <td>
-                <select class="form-control" name="id_disciplines" required>
-                    <option value="">Choose</option>
-            <?php
-                foreach ($data_discipline as $baris): ?>
-                    <option value="<?= $baris->id_discipline ?>" <?php if($id_disciplines==$baris->id_discipline) {echo " selected";} ?> ><?= $baris->discipline_name ?></option>
-                <?php
-                endforeach;
-            ?>
+                <select class="form-control" name="id_disciplines" id="id_disciplines" required>
+                    <?php 
+                    if($id_disciplines != NULL){
+                    ?>
+                    <option value="<?= $id_disciplines ?>" selected><?= $discipline_name ?></option>
+                    <?php 
+                    }
+                    ?>
                 </select>
             </td>
         </tr>
         <tr><td width='200'>Items Name <?php echo form_error('id_items') ?></td>
             <td>
-                <select class="form-control" name="id_items" required>
-                    <option value="">Choose</option>
-            <?php
-                foreach ($data_items as $baris): ?>
-                    <option value="<?= $baris->id_item ?>" <?php if($id_items==$baris->id_item) {echo " selected";} ?> ><?= $baris->item_type_name ?></option>
-                <?php
-                endforeach;
-            ?>
+                <select class="form-control" name="id_items" id="id_items" required>
+                    <?php 
+                    if($id_items != NULL){
+                    ?>
+                    <option value="<?= $id_items ?>" selected><?= $item_type_name ?></option>
+                    <?php 
+                    }
+                    ?>
                 </select>
             </td>
         </tr>
@@ -52,7 +52,7 @@
             <td width='180'>Template Type <?php echo form_error('template_type') ?></td>
             <td>
                 <select class="form-control" name="template_type" id="template_type" required>
-                    <option value="">Choose</option>
+                    <option value="">-Choose-</option>
                     <option value="Test Sheet" <?php if($template_type=="Test Sheet"){echo" selected";} ?> >Test Sheet</option>
                     <option value="Check Sheet" <?php if($template_type=="Check Sheet"){echo" selected";} ?> >Check Sheet</option>
                 </select>
@@ -60,14 +60,14 @@
         </tr>
         <tr><td width='200'>Templates Name <?php echo form_error('id_templates') ?></td>
             <td>
-                <select class="form-control" name="id_templates" required>
-                    <option value="">Choose</option>
-            <?php
-                foreach ($data_templates as $baris): ?>
-                    <option value="<?= $baris->id_template ?>" <?php if($id_templates==$baris->id_template) {echo " selected";} ?> ><?= $baris->template_name ?></option>
-                <?php
-                endforeach;
-            ?>
+                <select class="form-control" name="id_templates" id="id_templates" required>
+                    <?php 
+                    if($id_templates != NULL){
+                    ?>
+                    <option value="<?= $id_templates ?>" selected><?= $template_name ?></option>
+                    <?php 
+                    }
+                    ?>
                 </select>
             </td>
         </tr>
@@ -136,3 +136,68 @@ $('input').on("keypress", function(e) {
         e.preventDefault();
       });
     </script>
+
+    <script type="text/javascript">
+        $('#id_projects').change(function(){
+            var id=$(this).val();
+            $.ajax({
+                url : "<?php echo base_url();?>Ajax/get_discipline_by_proj/"+id,
+                method : "GET",
+                async : false,
+                dataType : 'json',
+                success: function(data){
+                    var html = '';
+                    var i;
+                    for(i=0; i<data.length; i++){
+                        html += '<option value="'+data[i].id_discipline+'">'+data[i].discipline_name+'</option>';
+                    }
+                    $('#id_disciplines').html('<option value="">-Choose-</option>'+html);                     
+                    $('#id_items').html('<option value="">-Choose-</option>');
+                    $('#id_templates').html('<option value="">-Choose-</option>');                     
+                    $('#template_type').val("");                 
+                }
+            });
+        });
+
+        $('#id_disciplines').change(function(){
+            var id_d=$(this).val();
+            var id_p=$('#id_projects').val();
+            $.ajax({
+                url : "<?php echo base_url();?>Ajax/get_items_by_proj_AND_disc/"+id_d+"/"+id_p,
+                method : "GET",
+                async : false,
+                dataType : 'json',
+                success: function(data){
+                    var html = '';
+                    var i;
+                    for(i=0; i<data.length; i++){
+                        html += '<option value="'+data[i].id_item+'">'+data[i].item_type_name+'</option>';
+                    }
+                    $('#id_items').html('<option value="">-Choose-</option>'+html);                 
+                    $('#template_type').val("");                 
+                }
+            });
+        });
+
+        $('#template_type').change(function(){
+            var t_type=$(this).val();
+            var id_d=$('#id_disciplines').val();
+            $.ajax({
+                url : "<?php echo base_url();?>Ajax/get_templ_by_disc_AND_type",
+                type : "POST",
+                dataType : "JSON",
+                data : {t_type:t_type, id_d:id_d},
+                success: function(data){
+                    var html = '';
+                    var i;
+                    for(i=0; i<data.length; i++){
+                        html += '<option value="'+data[i].id_template+'">'+data[i].template_name+'</option>';
+                    }
+                    $('#id_templates').html('<option value="">-Choose-</option>'+html);                     
+                }
+            });   
+        });
+
+
+ 
+  </script>

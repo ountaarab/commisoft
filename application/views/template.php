@@ -101,7 +101,7 @@
             }
         }
         ?>
-                  <li><?php echo anchor('auth/logout',"<i class='icon-share-alt'></i> Logot");?></li>  
+                  <li><?php echo anchor('auth/logout',"<i class='icon-share-alt'></i> Logout");?></li>  
                   </ul>
                 </nav>
               </div>

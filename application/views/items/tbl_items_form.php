@@ -11,8 +11,8 @@
 
 	    <tr><td width='200'>Projects Name <?php echo form_error('id_projects') ?></td>
             <td>
-                <select class="form-control" name="id_projects" required>
-                    <option value="">Choose</option>
+                <select class="form-control" name="id_projects" id="id_projects" required>
+                    <option value="">-Choose-</option>
             <?php
                 foreach ($data_projects as $baris): ?>
                     <option value="<?= $baris->id_project ?>" <?php if($id_projects==$baris->id_project) {echo " selected";} ?> ><?= $baris->project_name ?></option>
@@ -24,14 +24,14 @@
         </tr>
         <tr><td width='200'>Discipline <?php echo form_error('id_disciplines') ?></td>
             <td>
-                <select class="form-control" name="id_disciplines" required>
-                    <option value="">Choose</option>
-            <?php
-                foreach ($data_discipline as $baris): ?>
-                    <option value="<?= $baris->id_discipline ?>" <?php if($id_disciplines==$baris->id_discipline) {echo " selected";} ?> ><?= $baris->discipline_name ?></option>
-                <?php
-                endforeach;
-            ?>
+                <select class="form-control" name="id_disciplines" id="id_disciplines" required>
+                    <?php 
+                    if($id_disciplines != NULL){
+                    ?>
+                    <option value="<?= $id_disciplines ?>" selected><?= $discipline_name ?></option>
+                    <?php 
+                    }
+                    ?>
                 </select>
             </td>
         </tr>
@@ -62,3 +62,25 @@ $('input').on("keypress", function(e) {
                 return false;
             }
         });</script>
+
+
+
+    <script type="text/javascript">
+        $('#id_projects').change(function(){
+            var id=$(this).val();
+            $.ajax({
+                url : "<?php echo base_url();?>Ajax/get_discipline_by_proj/"+id,
+                method : "GET",
+                async : false,
+                dataType : 'json',
+                success: function(data){
+                    var html = '';
+                    var i;
+                    for(i=0; i<data.length; i++){
+                        html += '<option value="'+data[i].id_discipline+'">'+data[i].discipline_name+'</option>';
+                    }
+                    $('#id_disciplines').html('<option value="">-Choose-</option>'+html);                     
+                }
+            });
+        });
+  </script>

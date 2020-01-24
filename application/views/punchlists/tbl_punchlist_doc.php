@@ -16,15 +16,15 @@
         </style>
     </head>
     <body>
-        <h2>Punchlist List</h2>
+        <h2>Punchlists List</h2>
         <table class="word-table" style="margin-bottom: 10px">
             <tr>
                 <th>No</th>
 		<th>Punch Id</th>
-		<th>Punch Location No</th>
-		<th>Punch Sub No</th>
-		<th>Punch Discipline No</th>
-		<th>Punch ItemNo</th>
+		<th>Id Locations</th>
+		<th>Id Subs</th>
+		<th>Id Disciplines</th>
+		<th>Id Equipments</th>
 		<th>Punch Desc</th>
 		<th>Punch Category</th>
 		<th>Originator Ctr</th>
@@ -37,26 +37,26 @@
 		<th>Punch Date</th>
 		
             </tr><?php
-            foreach ($punchlist_data as $punchlist)
+            foreach ($punchlists_data as $punchlists)
             {
                 ?>
                 <tr>
 		      <td><?php echo ++$start ?></td>
-		      <td><?php echo $punchlist->punch_id ?></td>
-		      <td><?php echo $punchlist->punch_location_no ?></td>
-		      <td><?php echo $punchlist->punch_sub_no ?></td>
-		      <td><?php echo $punchlist->punch_discipline_no ?></td>
-		      <td><?php echo $punchlist->punch_itemNo ?></td>
-		      <td><?php echo $punchlist->punch_desc ?></td>
-		      <td><?php echo $punchlist->punch_category ?></td>
-		      <td><?php echo $punchlist->originator_ctr ?></td>
-		      <td><?php echo $punchlist->originator_cpy ?></td>
-		      <td><?php echo $punchlist->originator_date ?></td>
-		      <td><?php echo $punchlist->verified_ctr ?></td>
-		      <td><?php echo $punchlist->verified_cpy ?></td>
-		      <td><?php echo $punchlist->verified_date ?></td>
-		      <td><?php echo $punchlist->punch_status ?></td>
-		      <td><?php echo $punchlist->punch_date ?></td>	
+		      <td><?php echo $punchlists->punch_id ?></td>
+		      <td><?php echo $punchlists->id_locations ?></td>
+		      <td><?php echo $punchlists->id_subs ?></td>
+		      <td><?php echo $punchlists->id_disciplines ?></td>
+		      <td><?php echo $punchlists->id_equipments ?></td>
+		      <td><?php echo $punchlists->punch_desc ?></td>
+		      <td><?php echo $punchlists->punch_category ?></td>
+		      <td><?php echo $punchlists->originator_ctr ?></td>
+		      <td><?php echo $punchlists->originator_cpy ?></td>
+		      <td><?php echo $punchlists->originator_date ?></td>
+		      <td><?php echo $punchlists->verified_ctr ?></td>
+		      <td><?php echo $punchlists->verified_cpy ?></td>
+		      <td><?php echo $punchlists->verified_date ?></td>
+		      <td><?php echo $punchlists->punch_status ?></td>
+		      <td><?php echo $punchlists->punch_date ?></td>	
                 </tr>
                 <?php
             }

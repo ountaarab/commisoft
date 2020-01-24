@@ -11,7 +11,7 @@
 
         <tr><td width='200'>Projects Name <?php echo form_error('id_projects') ?></td>
             <td>
-                <select class="form-control" name="id_projects" required>
+                <select class="form-control" name="id_projects" id="id_projects" required>
                     <option value="">Choose</option>
             <?php
                 foreach ($data_projects as $baris): ?>
@@ -25,42 +25,42 @@
 
         <tr><td width='200'>System <?php echo form_error('id_systems') ?></td>
             <td>
-                <select class="form-control" name="id_systems" required>
-                    <option value="">Choose</option>
-            <?php
-                foreach ($data_systems as $baris): ?>
-                    <option value="<?= $baris->id_system ?>" <?php if($id_systems==$baris->id_system) {echo " selected";} ?> ><?= $baris->system_name ?></option>
-                <?php
-                endforeach;
-            ?>
+                <select class="form-control" name="id_systems" id="id_systems" required>
+                    <?php 
+                    if($id_systems != NULL){
+                    ?>
+                    <option value="<?= $id_systems ?>" selected><?= $system_name ?></option>
+                    <?php 
+                    }
+                    ?>
                 </select>
             </td>
         </tr>
 
         <tr><td width='200'>Sub System <?php echo form_error('id_subs') ?></td>
             <td>
-                <select class="form-control" name="id_subs" required>
-                    <option value="">Choose</option>
-            <?php
-                foreach ($data_subs as $baris): ?>
-                    <option value="<?= $baris->id_sub ?>" <?php if($id_subs==$baris->id_sub) {echo " selected";} ?> ><?= $baris->sub_name ?></option>
-                <?php
-                endforeach;
-            ?>
+                <select class="form-control" name="id_subs" id="id_subs" required>
+                    <?php 
+                    if($id_subs != NULL){
+                    ?>
+                    <option value="<?= $id_subs ?>" selected><?= $sub_name ?></option>
+                    <?php 
+                    }
+                    ?>
                 </select>
             </td>
         </tr>
 
         <tr><td width='200'>Items Name <?php echo form_error('id_items') ?></td>
             <td>
-                <select class="form-control" name="id_items" required>
-                    <option value="">Choose</option>
-            <?php
-                foreach ($data_items as $baris): ?>
-                    <option value="<?= $baris->id_item ?>" <?php if($id_items==$baris->id_item) {echo " selected";} ?> ><?= $baris->item_type_name ?></option>
-                <?php
-                endforeach;
-            ?>
+                <select class="form-control" name="id_items" id="id_items" required>
+                    <?php 
+                    if($id_items != NULL){
+                    ?>
+                    <option value="<?= $id_items ?>" selected><?= $item_type_name ?></option>
+                    <?php 
+                    }
+                    ?>
                 </select>
             </td>
         </tr>
@@ -93,3 +93,60 @@ $('input').on("keypress", function(e) {
                 return false;
             }
         });</script>
+
+
+    <script type="text/javascript">
+        $('#id_projects').change(function(){
+            var id=$(this).val();
+            $.ajax({
+                url : "<?php echo base_url();?>Ajax/get_system_by_proj/"+id,
+                method : "GET",
+                async : false,
+                dataType : 'json',
+                success: function(data){
+                    var html = '';
+                    var i;
+                    for(i=0; i<data.length; i++){
+                        html += '<option value="'+data[i].id_system+'">'+data[i].system_name+'</option>';
+                    }
+                    $('#id_systems').html('<option value="">-Choose-</option>'+html);                     
+                    $('#id_subs').html('<option value="">-Choose-</option>');
+
+                    $.ajax({
+                        url : "<?php echo base_url();?>Ajax/get_items_by_proj/"+id,
+                        method : "GET",
+                        async : false,
+                        dataType : 'json',
+                        success: function(data){
+                            var html = '';
+                            var i;
+                            for(i=0; i<data.length; i++){
+                                html += '<option value="'+data[i].id_item+'">'+data[i].item_type_name+'</option>';
+                            }               
+                            $('#id_items').html('<option value="">-Choose-</option>'+html);
+                            
+                        }
+                    });
+                }
+            });
+        });
+
+        $('#id_systems').change(function(){
+            var id_s=$(this).val();
+            var id_p=$('#id_projects').val();
+            $.ajax({
+                url : "<?php echo base_url();?>Ajax/get_subsystem_by_proj_AND_sys/"+id_s+"/"+id_p,
+                method : "GET",
+                async : false,
+                dataType : 'json',
+                success: function(data){
+                    var html = '';
+                    var i;
+                    for(i=0; i<data.length; i++){
+                        html += '<option value="'+data[i].id_sub+'">'+data[i].sub_id+' - '+data[i].sub_name+'</option>';
+                    }
+                    $('#id_subs').html('<option value="">-Choose-</option>'+html);                     
+                }
+            });
+        });
+  </script>

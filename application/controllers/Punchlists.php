@@ -3,14 +3,15 @@
 if (!defined('BASEPATH'))
     exit('No direct script access allowed');
 
-class Punchlist extends CI_Controller
+class Punchlists extends CI_Controller
 {
     function __construct()
     {
         parent::__construct();
         is_login();
-        $this->load->model('Punchlist_model');
+        $this->load->model('Punchlists_model');
         $this->load->library('form_validation');
+        $this->load->library('user_agent');
     }
 
     public function index()
@@ -19,17 +20,17 @@ class Punchlist extends CI_Controller
         $start = intval($this->input->get('start'));
         
         if ($q <> '') {
-            $config['base_url'] = base_url() . 'index.php/punchlist/index?q=' . urlencode($q);
-            $config['first_url'] = base_url() . 'index.php/punchlist/index?q=' . urlencode($q);
+            $config['base_url'] = base_url() . 'index.php/punchlists/index?q=' . urlencode($q);
+            $config['first_url'] = base_url() . 'index.php/punchlists/index?q=' . urlencode($q);
         } else {
-            $config['base_url'] = base_url() . 'index.php/punchlist/index';
-            $config['first_url'] = base_url() . 'index.php/punchlist/index';
+            $config['base_url'] = base_url() . 'index.php/punchlists/index';
+            $config['first_url'] = base_url() . 'index.php/punchlists/index';
         }
 
         $config['per_page'] = 10;
         $config['page_query_string'] = TRUE;
-        $config['total_rows'] = $this->Punchlist_model->total_rows($q);
-        $punchlist = $this->Punchlist_model->get_limit_data($config['per_page'], $start, $q);
+        $config['total_rows'] = $this->Punchlists_model->total_rows($q);
+        $punchlists = $this->Punchlists_model->get_limit_data($config['per_page'], $start, $q);
         $config['first_link']       = 'First';
         $config['last_link']        = 'Last';
         $config['next_link']        = 'Next';
@@ -52,26 +53,26 @@ class Punchlist extends CI_Controller
         $this->pagination->initialize($config);
 
         $data = array(
-            'punchlist_data' => $punchlist,
+            'punchlists_data' => $punchlists,
             'q' => $q,
             'pagination' => $this->pagination->create_links(),
             'total_rows' => $config['total_rows'],
             'start' => $start,
         );
-        $this->template->load('template','punchlist/tbl_punchlist_list', $data);
+        $this->template->load('template','punchlists/tbl_punchlist_list', $data);
     }
 
     public function read($id) 
     {
-        $row = $this->Punchlist_model->get_by_id($id);
+        $row = $this->Punchlists_model->get_by_id($id);
         if ($row) {
             $data = array(
-		'id' => $row->id,
+		'id_punch' => $row->id_punch,
 		'punch_id' => $row->punch_id,
-		'punch_location_no' => $row->punch_location_no,
-		'punch_sub_no' => $row->punch_sub_no,
-		'punch_discipline_no' => $row->punch_discipline_no,
-		'punch_itemNo' => $row->punch_itemNo,
+		'id_locations' => $row->id_locations,
+		'sub_name' => $row->sub_name,
+		'discipline_name' => $row->discipline_name,
+		'equipment_no' => $row->equipment_no,
 		'punch_desc' => $row->punch_desc,
 		'punch_category' => $row->punch_category,
 		'originator_ctr' => $row->originator_ctr,
@@ -83,10 +84,10 @@ class Punchlist extends CI_Controller
 		'punch_status' => $row->punch_status,
 		'punch_date' => $row->punch_date,
 	    );
-            $this->template->load('template','punchlist/tbl_punchlist_read', $data);
+            $this->template->load('template','punchlists/tbl_punchlist_read', $data);
         } else {
             $this->session->set_flashdata('message', 'Record Not Found');
-            redirect(site_url('punchlist'));
+            redirect(site_url('punchlists'));
         }
     }
 
@@ -94,13 +95,13 @@ class Punchlist extends CI_Controller
     {
         $data = array(
             'button' => 'save',
-            'action' => site_url('punchlist/create_action'),
-	    'id' => set_value('id'),
+            'action' => site_url('punchlists/create_action'),
+	    'id_punch' => set_value('id_punch'),
 	    'punch_id' => set_value('punch_id'),
-	    'punch_location_no' => set_value('punch_location_no'),
-	    'punch_sub_no' => set_value('punch_sub_no'),
-	    'punch_discipline_no' => set_value('punch_discipline_no'),
-	    'punch_itemNo' => set_value('punch_itemNo'),
+	    'id_locations' => set_value('id_locations'),
+	    'id_subs' => set_value('id_subs'),
+	    'id_disciplines' => set_value('id_disciplines'),
+	    'id_equipments' => set_value('id_equipments'),
 	    'punch_desc' => set_value('punch_desc'),
 	    'punch_category' => set_value('punch_category'),
 	    'originator_ctr' => set_value('originator_ctr'),
@@ -112,7 +113,13 @@ class Punchlist extends CI_Controller
 	    'punch_status' => set_value('punch_status'),
 	    'punch_date' => set_value('punch_date'),
 	);
-        $this->template->load('template','punchlist/tbl_punchlist_form', $data);
+        
+        // MODIF BY FAZRI
+        $data ['data_discipline'] = $this->Disciplines_model->get_all(0);
+        $data ['data_equipments'] = $this->Equipments_model->get_all(0);
+        $data ['data_subs'] = $this->Subs_model->get_all(0);
+
+        $this->template->load('template','punchlists/tbl_punchlist_form', $data);
     }
     
     public function create_action() 
@@ -124,10 +131,10 @@ class Punchlist extends CI_Controller
         } else {
             $data = array(
 		'punch_id' => $this->input->post('punch_id',TRUE),
-		'punch_location_no' => $this->input->post('punch_location_no',TRUE),
-		'punch_sub_no' => $this->input->post('punch_sub_no',TRUE),
-		'punch_discipline_no' => $this->input->post('punch_discipline_no',TRUE),
-		'punch_itemNo' => $this->input->post('punch_itemNo',TRUE),
+		'id_locations' => $this->input->post('id_locations',TRUE),
+		'id_subs' => $this->input->post('id_subs',TRUE),
+		'id_disciplines' => $this->input->post('id_disciplines',TRUE),
+		'id_equipments' => $this->input->post('id_equipments',TRUE),
 		'punch_desc' => $this->input->post('punch_desc',TRUE),
 		'punch_category' => $this->input->post('punch_category',TRUE),
 		'originator_ctr' => $this->input->post('originator_ctr',TRUE),
@@ -140,26 +147,27 @@ class Punchlist extends CI_Controller
 		'punch_date' => $this->input->post('punch_date',TRUE),
 	    );
 
-            $this->Punchlist_model->insert($data);
+            $this->Punchlists_model->insert($data);
             $this->session->set_flashdata('message', 'Create Record Success 2');
-            redirect(site_url('punchlist'));
+            redirect($this->agent->referrer());
         }
     }
     
     public function update($id) 
     {
-        $row = $this->Punchlist_model->get_by_id($id);
+        $row = $this->Punchlists_model->get_by_id($id);
 
         if ($row) {
             $data = array(
                 'button' => 'Update',
-                'action' => site_url('punchlist/update_action'),
-		'id' => set_value('id', $row->id),
+                'action' => site_url('punchlists/update_action'),
+		'id_punch' => set_value('id_punch', $row->id_punch),
 		'punch_id' => set_value('punch_id', $row->punch_id),
-		'punch_location_no' => set_value('punch_location_no', $row->punch_location_no),
-		'punch_sub_no' => set_value('punch_sub_no', $row->punch_sub_no),
-		'punch_discipline_no' => set_value('punch_discipline_no', $row->punch_discipline_no),
-		'punch_itemNo' => set_value('punch_itemNo', $row->punch_itemNo),
+		'id_locations' => set_value('id_locations', $row->id_locations),
+		'id_subs' => set_value('id_subs', $row->id_subs),
+		'id_disciplines' => set_value('id_disciplines', $row->id_disciplines),
+		'id_equipments' => set_value('id_equipments', $row->id_equipments),
+        'equipment_no' => $row->equipment_no,
 		'punch_desc' => set_value('punch_desc', $row->punch_desc),
 		'punch_category' => set_value('punch_category', $row->punch_category),
 		'originator_ctr' => set_value('originator_ctr', $row->originator_ctr),
@@ -171,10 +179,14 @@ class Punchlist extends CI_Controller
 		'punch_status' => set_value('punch_status', $row->punch_status),
 		'punch_date' => set_value('punch_date', $row->punch_date),
 	    );
-            $this->template->load('template','punchlist/tbl_punchlist_form', $data);
+            // MODIF BY FAZRI
+            $data ['data_discipline'] = $this->Disciplines_model->get_all(0);
+            $data ['data_equipments'] = $this->Equipments_model->get_all(0);
+            $data ['data_subs'] = $this->Subs_model->get_all(0);
+            $this->template->load('template','punchlists/tbl_punchlist_form', $data);
         } else {
             $this->session->set_flashdata('message', 'Record Not Found');
-            redirect(site_url('punchlist'));
+            redirect(site_url('punchlists'));
         }
     }
     
@@ -183,14 +195,14 @@ class Punchlist extends CI_Controller
         $this->_rules();
 
         if ($this->form_validation->run() == FALSE) {
-            $this->update($this->input->post('id', TRUE));
+            $this->update($this->input->post('id_punch', TRUE));
         } else {
             $data = array(
 		'punch_id' => $this->input->post('punch_id',TRUE),
-		'punch_location_no' => $this->input->post('punch_location_no',TRUE),
-		'punch_sub_no' => $this->input->post('punch_sub_no',TRUE),
-		'punch_discipline_no' => $this->input->post('punch_discipline_no',TRUE),
-		'punch_itemNo' => $this->input->post('punch_itemNo',TRUE),
+		'id_locations' => $this->input->post('id_locations',TRUE),
+		'id_subs' => $this->input->post('id_subs',TRUE),
+		'id_disciplines' => $this->input->post('id_disciplines',TRUE),
+		'id_equipments' => $this->input->post('id_equipments',TRUE),
 		'punch_desc' => $this->input->post('punch_desc',TRUE),
 		'punch_category' => $this->input->post('punch_category',TRUE),
 		'originator_ctr' => $this->input->post('originator_ctr',TRUE),
@@ -203,23 +215,23 @@ class Punchlist extends CI_Controller
 		'punch_date' => $this->input->post('punch_date',TRUE),
 	    );
 
-            $this->Punchlist_model->update($this->input->post('id', TRUE), $data);
+            $this->Punchlists_model->update($this->input->post('id_punch', TRUE), $data);
             $this->session->set_flashdata('message', 'Update Record Success');
-            redirect(site_url('punchlist'));
+            redirect(site_url('punchlists'));
         }
     }
     
     public function delete($id) 
     {
-        $row = $this->Punchlist_model->get_by_id($id);
+        $row = $this->Punchlists_model->get_by_id($id);
 
         if ($row) {
-            $this->Punchlist_model->delete($id);
+            $this->Punchlists_model->delete($id);
             $this->session->set_flashdata('message', 'Delete Record Success');
-            redirect(site_url('punchlist'));
+            redirect(site_url('punchlists'));
         } else {
             $this->session->set_flashdata('message', 'Record Not Found');
-            redirect(site_url('punchlist'));
+            redirect(site_url('punchlists'));
         }
     }
 
@@ -228,12 +240,12 @@ class Punchlist extends CI_Controller
         $pilih = $this->input->post('pilih');
         $jumlah = count($pilih);
         for($i=0; $i < $jumlah;$i++){
-            $this->db->query("DELETE FROM tbl_punchlist WHERE id = ".$pilih[$i]."");
+            $this->db->query("DELETE FROM tbl_punchlist WHERE id_punch = ".$pilih[$i]."");
              $this->session->set_flashdata('message', 'Delete '.$jumlah .'Record Success');
         }
 
            
-            redirect(site_url('punchlist'));
+            redirect(site_url('punchlists'));
        
     }
 
@@ -241,15 +253,15 @@ class Punchlist extends CI_Controller
  
     $this->load->library('pdf');
          $data = array(
-            'punchlist_data' => $this->Punchlist_model->get_all(),
+            'punchlists_data' => $this->Punchlists_model->get_all(),
             'start' => 0
         );
-    $file_name = 'punchlist-'.md5(rand()) . '.pdf';
-    $html_code = $this->load->view('punchlist/tbl_punchlist_doc', $data, true);
+    $file_name = 'punchlists-'.md5(rand()) . '.pdf';
+    $html_code = $this->load->view('punchlists/tbl_punchlist_doc', $data, true);
     $pdf = new Pdf('A4');
     $pdf->load_html($html_code);
     $pdf->render();
-    $file = $pdf->stream($file_name);
+    $file = $pdf->stream($file_name, array("Attachment" => false));
     // file_put_contents($file_name, $file);
     // unlink($file_name);
     redirect($this->agent->referrer());
@@ -258,10 +270,10 @@ class Punchlist extends CI_Controller
     public function _rules() 
     {
 	$this->form_validation->set_rules('punch_id', 'punch id', 'trim|required');
-	$this->form_validation->set_rules('punch_location_no', 'punch location no', 'trim|required');
-	$this->form_validation->set_rules('punch_sub_no', 'punch sub no', 'trim|required');
-	$this->form_validation->set_rules('punch_discipline_no', 'punch discipline no', 'trim|required');
-	$this->form_validation->set_rules('punch_itemNo', 'punch itemno', 'trim|required');
+	$this->form_validation->set_rules('id_locations', 'id locations', 'trim|required');
+	$this->form_validation->set_rules('id_subs', 'id subs', 'trim|required');
+	$this->form_validation->set_rules('id_disciplines', 'id disciplines', 'trim|required');
+	$this->form_validation->set_rules('id_equipments', 'id equipments', 'trim|required');
 	$this->form_validation->set_rules('punch_desc', 'punch desc', 'trim|required');
 	$this->form_validation->set_rules('punch_category', 'punch category', 'trim|required');
 	$this->form_validation->set_rules('originator_ctr', 'originator ctr', 'trim|required');
@@ -273,7 +285,7 @@ class Punchlist extends CI_Controller
 	$this->form_validation->set_rules('punch_status', 'punch status', 'trim|required');
 	$this->form_validation->set_rules('punch_date', 'punch date', 'trim|required');
 
-	$this->form_validation->set_rules('id', 'id', 'trim');
+	$this->form_validation->set_rules('id_punch', 'id_punch', 'trim');
 	$this->form_validation->set_error_delimiters('<span class="text-danger">', '</span>');
     }
 
@@ -300,10 +312,10 @@ class Punchlist extends CI_Controller
         $kolomhead = 0;
         xlsWriteLabel($tablehead, $kolomhead++, "No");
 	xlsWriteLabel($tablehead, $kolomhead++, "Punch Id");
-	xlsWriteLabel($tablehead, $kolomhead++, "Punch Location No");
-	xlsWriteLabel($tablehead, $kolomhead++, "Punch Sub No");
-	xlsWriteLabel($tablehead, $kolomhead++, "Punch Discipline No");
-	xlsWriteLabel($tablehead, $kolomhead++, "Punch ItemNo");
+	xlsWriteLabel($tablehead, $kolomhead++, "Id Locations");
+	xlsWriteLabel($tablehead, $kolomhead++, "Id Subs");
+	xlsWriteLabel($tablehead, $kolomhead++, "Id Disciplines");
+	xlsWriteLabel($tablehead, $kolomhead++, "Id Equipments");
 	xlsWriteLabel($tablehead, $kolomhead++, "Punch Desc");
 	xlsWriteLabel($tablehead, $kolomhead++, "Punch Category");
 	xlsWriteLabel($tablehead, $kolomhead++, "Originator Ctr");
@@ -315,16 +327,16 @@ class Punchlist extends CI_Controller
 	xlsWriteLabel($tablehead, $kolomhead++, "Punch Status");
 	xlsWriteLabel($tablehead, $kolomhead++, "Punch Date");
 
-	foreach ($this->Punchlist_model->get_all() as $data) {
+	foreach ($this->Punchlists_model->get_all() as $data) {
             $kolombody = 0;
 
             //ubah xlsWriteLabel menjadi xlsWriteNumber untuk kolom numeric
             xlsWriteNumber($tablebody, $kolombody++, $nourut);
 	    xlsWriteLabel($tablebody, $kolombody++, $data->punch_id);
-	    xlsWriteNumber($tablebody, $kolombody++, $data->punch_location_no);
-	    xlsWriteNumber($tablebody, $kolombody++, $data->punch_sub_no);
-	    xlsWriteLabel($tablebody, $kolombody++, $data->punch_discipline_no);
-	    xlsWriteLabel($tablebody, $kolombody++, $data->punch_itemNo);
+	    xlsWriteNumber($tablebody, $kolombody++, $data->id_locations);
+	    xlsWriteNumber($tablebody, $kolombody++, $data->id_subs);
+	    xlsWriteLabel($tablebody, $kolombody++, $data->id_disciplines);
+	    xlsWriteLabel($tablebody, $kolombody++, $data->id_equipments);
 	    xlsWriteLabel($tablebody, $kolombody++, $data->punch_desc);
 	    xlsWriteLabel($tablebody, $kolombody++, $data->punch_category);
 	    xlsWriteLabel($tablebody, $kolombody++, $data->originator_ctr);
@@ -350,17 +362,17 @@ class Punchlist extends CI_Controller
         header("Content-Disposition: attachment;Filename=tbl_punchlist.doc");
 
         $data = array(
-            'punchlist_data' => $this->Punchlist_model->get_all(),
+            'punchlists_data' => $this->Punchlists_model->get_all(),
             'start' => 0
         );
         
-        $this->load->view('punchlist/tbl_punchlist_doc',$data);
+        $this->load->view('punchlists/tbl_punchlist_doc',$data);
     }
 
 }
 
-/* End of file Punchlist.php */
-/* Location: ./application/controllers/Punchlist.php */
+/* End of file Punchlists.php */
+/* Location: ./application/controllers/Punchlists.php */
 /* Please DO NOT modify this information : */
-/* Generated by Denzoe Codeigniter CRUD Generator 2019-12-27 09:26:28 */
+/* Generated by Denzoe Codeigniter CRUD Generator 2020-01-23 06:31:00 */
 /* http://AA-soft develover.com */

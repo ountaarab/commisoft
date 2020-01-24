@@ -13,6 +13,7 @@
       <td width='200'>Project Category <?php echo form_error('list_project') ?></td>
       <td> 
         <select class="form-control" name="list_project" id="list_project" >
+            <option value="">-Choose-</option>
           <?php foreach ($list_project->result_array() as $key) { ?>
             <option value="<?php echo $key['id_project']; ?>">
               <?php echo $key['project_name'];?>
@@ -25,12 +26,7 @@
      <tr>
       <td width='200'>System Category <?php echo form_error('list_system') ?></td>
       <td> 
-        <select class="form-control" name="list_system" id="list_system" >
-          <?php foreach ($list_system->result_array() as $key) { ?>
-            <option value="<?php echo $key['id_system']; ?>">
-              <?php echo $key['system_name'];?>
-            </option>
-          <?php } ?>
+        <select class="form-control" name="list_system" id="list_system" required>
         </select>
       </td>
     </tr>
@@ -60,45 +56,24 @@
 </div>
 </div>
 </div>
+<script type="text/javascript" src="<?=base_url('') ?>assets/js/jquery.js"></script>
 
-<script type="text/javascript">
-   $(document).ready(function(){
-      $(#list_project).cange(function(){
-          var id_project = $this.val ();
-
-      })
-
-   });
-</script>
-
-
-
-<script>
-/*function nextfield_sub_no(event){  // fungsi saat tombol enter
-    if(event.keyCode == 13 || event.which == 13){
-  document.getElementById('sub_system_no').focus();
-  $("#submit").prop('disabled', true);
-
-    } 
-}
-
-function nextfield_sub_system_no(event){  // fungsi saat tombol enter
-    if(event.keyCode == 13 || event.which == 13){
-  document.getElementById('sub_id').focus();
-  $("#submit").prop('disabled', true);
-    } 
-}
-
-function nextfield_sub_id(event){  // fungsi saat tombol enter
-    if(event.keyCode == 13 || event.which == 13){
-  document.getElementById('sub_name').focus();
-  $("#submit").prop('disabled', true);
-    } 
-}
-
-function nextfield_sub_name(event){  // fungsi saat tombol enter
-    if(event.keyCode == 13 || event.which == 13){
-  $("#submit").prop('disabled', false);
-    } 
-}*/
-</script>
+    <script type="text/javascript">
+        $('#list_project').change(function(){
+            var id=$(this).val();
+            $.ajax({
+                url : "<?php echo base_url();?>Ajax/get_system_by_proj/"+id,
+                method : "GET",
+                async : false,
+                dataType : 'json',
+                success: function(data){
+                    var html = '';
+                    var i;
+                    for(i=0; i<data.length; i++){
+                        html += '<option value="'+data[i].id_system+'">'+data[i].system_name+'</option>';
+                    }
+                    $('#list_system').html('<option value="">-Choose-</option>'+html);                     
+                }
+            });
+        });
+  </script>
