@@ -69,6 +69,7 @@
                     }
                     ?>
                 </select>
+                <div id="haha"></div>
             </td>
         </tr>
 	    <tr><td></td><td><input type="hidden" name="id_form" value="<?php echo $id_form; ?>" /> 
@@ -174,7 +175,8 @@ $('input').on("keypress", function(e) {
                         html += '<option value="'+data[i].id_item+'">'+data[i].item_type_name+'</option>';
                     }
                     $('#id_items').html('<option value="">-Choose-</option>'+html);                 
-                    $('#template_type').val("");                 
+                    $('#template_type').val("");                  
+                    $('#haha').hide();                     
                 }
             });
         });
@@ -190,14 +192,31 @@ $('input').on("keypress", function(e) {
                 success: function(data){
                     var html = '';
                     var i;
-                    for(i=0; i<data.length; i++){
-                        html += '<option value="'+data[i].id_template+'">'+data[i].template_name+'</option>';
+                    if(data.length > 0){
+                        for(i=0; i<data.length; i++){
+                            html += '<option value="'+data[i].id_template+'">'+data[i].template_name+'</option>';
+                        }
+                        $('#id_templates').html('<option value="">-Choose-</option>'+html);
                     }
-                    $('#id_templates').html('<option value="">-Choose-</option>'+html);                     
+                    else{
+                        $('#id_templates').html('<option value="">-Choose-</option>');
+                        $('#haha').hide();
+                    }
                 }
             });   
         });
 
+        $('#id_templates').change(function(){
+            var id = $(this).val();
+            var url = '<?= base_url('Associates/preview_template/') ?>'+id;
+            if(id != ""){
+                $('#haha').show();
+                $('#haha').html('&nbsp;<a onclick="window.open(\''+url+'\',\'Preview\',\'scrollbars=yes,resizable=yes,width=700,height=650,left=350,top=15\')" id="pre_temp">Preview Template</a>');
+            }
+            else{
+                $('#haha').hide();
+            }
+        });
 
  
   </script>

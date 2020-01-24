@@ -82,6 +82,12 @@ class Associates extends CI_Controller
         }
     }
 
+    public function preview_template($id){
+        $data['template'] = $this->Templates_model_->get_by_id($id);
+        $data['detailtemplate'] = $this->Templates_model_->get_detailtemplate_by_id($id);
+        $this->load->view('templates_/preview', $data);
+    }
+
     public function create() 
     {
         $data = array(

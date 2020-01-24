@@ -1072,6 +1072,7 @@ INSERT INTO `tbl_subs` VALUES (1, '16', '1', 'FG-01', 'Off Gas to Burner', 0);
 DROP TABLE IF EXISTS `tbl_subs_log`;
 CREATE TABLE `tbl_subs_log`  (
   `id_sub_log` int(11) NOT NULL AUTO_INCREMENT,
+  `id_projects` varchar(50) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
   `id_subs` varchar(50) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
   `id_systems` varchar(50) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
   `sub_id` varchar(30) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
@@ -1085,7 +1086,7 @@ CREATE TABLE `tbl_subs_log`  (
 -- ----------------------------
 -- Records of tbl_subs_log
 -- ----------------------------
-INSERT INTO `tbl_subs_log` VALUES (1, '1', '1', 'FG-01', 'Off Gas to Burner', 13, 'add', '2020-01-17 14:54:42');
+INSERT INTO `tbl_subs_log` VALUES (1, '16', '1', '1', 'FG-01', 'Off Gas to Burner', 13, 'add', '2020-01-17 14:54:42');
 
 -- ----------------------------
 -- Table structure for tbl_systems
