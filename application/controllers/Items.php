@@ -185,8 +185,8 @@ class Items extends CI_Controller
         $pilih = $this->input->post('pilih');
         $jumlah = count($pilih);
         for($i=0; $i < $jumlah;$i++){
-            $this->db->query("DELETE FROM tbl_items WHERE id = ".$pilih[$i]."");
-             $this->session->set_flashdata('message', 'Delete '.$jumlah .'Record Success');
+            $this->db->query("DELETE FROM tbl_items WHERE id_item = ".$pilih[$i]."");
+             $this->session->set_flashdata('message', 'Delete '.$jumlah .' Record Success');
         }
 
            

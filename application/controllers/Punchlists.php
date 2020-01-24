@@ -148,7 +148,7 @@ class Punchlists extends CI_Controller
 	    );
 
             $this->Punchlists_model->insert($data);
-            $this->session->set_flashdata('message', 'Create Record Success 2');
+            $this->session->set_flashdata('message', 'Create Record Success');
             redirect($this->agent->referrer());
         }
     }
@@ -241,7 +241,7 @@ class Punchlists extends CI_Controller
         $jumlah = count($pilih);
         for($i=0; $i < $jumlah;$i++){
             $this->db->query("DELETE FROM tbl_punchlist WHERE id_punch = ".$pilih[$i]."");
-             $this->session->set_flashdata('message', 'Delete '.$jumlah .'Record Success');
+             $this->session->set_flashdata('message', 'Delete '.$jumlah .' Record Success');
         }
 
            

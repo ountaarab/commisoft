@@ -215,7 +215,7 @@ class Associates extends CI_Controller
         $jumlah = count($pilih);
         for($i=0; $i < $jumlah;$i++){
             $this->db->query("DELETE FROM tbl_forms WHERE id_form = ".$pilih[$i]."");
-             $this->session->set_flashdata('message', 'Delete '.$jumlah .'Record Success');
+             $this->session->set_flashdata('message', 'Delete '.$jumlah .' Record Success');
         }
 
            
