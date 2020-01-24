@@ -36,26 +36,37 @@ class Items_model extends CI_Model
     
     // get total rows
     function total_rows($q = NULL) {
-    $this->db->like('id_item', $q);
-	$this->db->or_like('item_type_id', $q);
-	$this->db->or_like('id_disciplines', $q);
-	$this->db->or_like('item_type_id', $q);
-	$this->db->or_like('item_type_name', $q);
-	$this->db->from($this->table);
+        $this->db->where('project_status', 0);
+        $this->db->where('discipline_status', 0);
+        $this->db->group_start();           
+        $this->db->like('id_item', $q);
+    	$this->db->or_like('item_type_id', $q);
+    	$this->db->or_like('id_disciplines', $q);
+    	$this->db->or_like('item_type_id', $q);
+    	$this->db->or_like('item_type_name', $q);
+        $this->db->group_end();         
+        $this->db->join('tbl_disciplines', 'tbl_items.id_disciplines = tbl_disciplines.id_discipline');
+        $this->db->join('tbl_projects', 'tbl_items.id_projects = tbl_projects.id_project');
+    	$this->db->from($this->table);
         return $this->db->count_all_results();
     }
 
     // get data with limit and search
     function get_limit_data($limit, $start = 0, $q = NULL) {
-    $this->db->order_by($this->id, $this->desc);
-    $this->db->like('id_item', $q);
-	$this->db->or_like('id_disciplines', $q);
-    $this->db->or_like('item_type_id', $q);
-	$this->db->or_like('item_type_name', $q);
-    // MODIF BY FAZRI
-    $this->db->join('tbl_disciplines', 'tbl_items.id_disciplines = tbl_disciplines.id_discipline');
-    $this->db->join('tbl_projects', 'tbl_items.id_projects = tbl_projects.id_project');
-	$this->db->limit($limit, $start);
+        $this->db->order_by($this->id, $this->desc);
+        $this->db->group_start();
+        $this->db->like('id_item', $q);
+        $this->db->or_like('item_type_id', $q);
+        $this->db->or_like('id_disciplines', $q);
+        $this->db->or_like('item_type_id', $q);
+        $this->db->or_like('item_type_name', $q);
+        $this->db->group_end();
+        $this->db->where('project_status', 0);
+        $this->db->where('discipline_status', 0);
+        // MODIF BY FAZRI
+        $this->db->join('tbl_disciplines', 'tbl_items.id_disciplines = tbl_disciplines.id_discipline');
+        $this->db->join('tbl_projects', 'tbl_items.id_projects = tbl_projects.id_project');
+    	$this->db->limit($limit, $start);
         return $this->db->get($this->table)->result();
     }
 

@@ -22,6 +22,9 @@ class Equipments_model extends CI_Model
     function get_all()
     {
         $this->db->order_by($this->id, $this->desc);
+        $this->db->where('project_status', 0);
+        $this->db->where('system_status', 0);
+        $this->db->where('sub_status', 0);
         $this->db->join('tbl_projects', 'tbl_projects.id_project = tbl_equipments.id_projects');
         $this->db->join('tbl_systems', 'tbl_systems.id_system = tbl_equipments.id_systems');
         $this->db->join('tbl_subs', 'tbl_subs.id_sub = tbl_equipments.id_subs');
@@ -33,6 +36,9 @@ class Equipments_model extends CI_Model
     function get_by_id($id)
     {
         $this->db->where($this->id, $id);
+        $this->db->where('project_status', 0);
+        $this->db->where('system_status', 0);
+        $this->db->where('sub_status', 0);
         $this->db->join('tbl_projects', 'tbl_projects.id_project = tbl_equipments.id_projects');
         $this->db->join('tbl_systems', 'tbl_systems.id_system = tbl_equipments.id_systems');
         $this->db->join('tbl_subs', 'tbl_subs.id_sub = tbl_equipments.id_subs');
@@ -42,35 +48,45 @@ class Equipments_model extends CI_Model
     
     // get total rows
     function total_rows($q = NULL) {
+        $this->db->group_start();
         $this->db->like('id_equipment', $q);
-	$this->db->or_like('project_name', $q);
-	$this->db->or_like('system_name', $q);
-	$this->db->or_like('sub_name', $q);
-	$this->db->or_like('item_type_name', $q);
-	$this->db->or_like('equipment_no', $q);
-	$this->db->or_like('equipment_desc', $q);
-    $this->db->join('tbl_projects', 'tbl_projects.id_project = tbl_equipments.id_projects');
-    $this->db->join('tbl_systems', 'tbl_systems.id_system = tbl_equipments.id_systems');
-    $this->db->join('tbl_subs', 'tbl_subs.id_sub = tbl_equipments.id_subs');
-    $this->db->join('tbl_items', 'tbl_items.id_item = tbl_equipments.id_items');
+    	$this->db->or_like('project_name', $q);
+    	$this->db->or_like('system_name', $q);
+    	$this->db->or_like('sub_name', $q);
+    	$this->db->or_like('item_type_name', $q);
+    	$this->db->or_like('equipment_no', $q);
+    	$this->db->or_like('equipment_desc', $q);
+        $this->db->group_end();
+        $this->db->where('project_status', 0);
+        $this->db->where('system_status', 0);
+        $this->db->where('sub_status', 0);
+        $this->db->join('tbl_projects', 'tbl_projects.id_project = tbl_equipments.id_projects');
+        $this->db->join('tbl_systems', 'tbl_systems.id_system = tbl_equipments.id_systems');
+        $this->db->join('tbl_subs', 'tbl_subs.id_sub = tbl_equipments.id_subs');
+        $this->db->join('tbl_items', 'tbl_items.id_item = tbl_equipments.id_items');
 	$this->db->from($this->table);
         return $this->db->count_all_results();
     }
 
     // get data with limit and search
     function get_limit_data($limit, $start = 0, $q = NULL) {
+        $this->db->group_start();
         $this->db->like('id_equipment', $q);
-    $this->db->or_like('project_name', $q);
-    $this->db->or_like('system_name', $q);
-    $this->db->or_like('sub_name', $q);
-    $this->db->or_like('item_type_name', $q);
-    $this->db->or_like('equipment_no', $q);
-    $this->db->or_like('equipment_desc', $q);
-    $this->db->join('tbl_projects', 'tbl_projects.id_project = tbl_equipments.id_projects');
-    $this->db->join('tbl_systems', 'tbl_systems.id_system = tbl_equipments.id_systems');
-    $this->db->join('tbl_subs', 'tbl_subs.id_sub = tbl_equipments.id_subs');
-    $this->db->join('tbl_items', 'tbl_items.id_item = tbl_equipments.id_items');
-	$this->db->limit($limit, $start);
+        $this->db->or_like('project_name', $q);
+        $this->db->or_like('system_name', $q);
+        $this->db->or_like('sub_name', $q);
+        $this->db->or_like('item_type_name', $q);
+        $this->db->or_like('equipment_no', $q);
+        $this->db->or_like('equipment_desc', $q);
+        $this->db->group_end();
+        $this->db->where('project_status', 0);
+        $this->db->where('system_status', 0);
+        $this->db->where('sub_status', 0);
+        $this->db->join('tbl_projects', 'tbl_projects.id_project = tbl_equipments.id_projects');
+        $this->db->join('tbl_systems', 'tbl_systems.id_system = tbl_equipments.id_systems');
+        $this->db->join('tbl_subs', 'tbl_subs.id_sub = tbl_equipments.id_subs');
+        $this->db->join('tbl_items', 'tbl_items.id_item = tbl_equipments.id_items');
+    	$this->db->limit($limit, $start);
         return $this->db->get($this->table)->result();
     }
 

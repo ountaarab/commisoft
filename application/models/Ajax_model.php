@@ -23,6 +23,7 @@ class Ajax_model extends CI_Model
     function get_discipline_by_proj($id)
     {
         $this->db->where('id_projects', $id);
+        $this->db->where('discipline_status', 0);
         return $this->db->get('tbl_disciplines')->result();
     }
 
@@ -51,6 +52,7 @@ class Ajax_model extends CI_Model
     function get_subsystem_by_proj_AND_sys($where)
     {
         $this->db->where($where);
+        $this->db->where('sub_status', 0);
         return $this->db->get('tbl_subs')->result();
     }
 
