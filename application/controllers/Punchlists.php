@@ -167,6 +167,7 @@ class Punchlists extends CI_Controller
 		'id_subs' => set_value('id_subs', $row->id_subs),
 		'id_disciplines' => set_value('id_disciplines', $row->id_disciplines),
 		'id_equipments' => set_value('id_equipments', $row->id_equipments),
+        'equipment_no' => $row->equipment_no,
 		'punch_desc' => set_value('punch_desc', $row->punch_desc),
 		'punch_category' => set_value('punch_category', $row->punch_category),
 		'originator_ctr' => set_value('originator_ctr', $row->originator_ctr),

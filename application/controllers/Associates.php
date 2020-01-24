@@ -152,10 +152,15 @@ class Associates extends CI_Controller
 		'id_form' => set_value('id_form', $row->id_form),
 		'id_projects' => set_value('id_projects', $row->id_projects),
 		'id_disciplines' => set_value('id_disciplines', $row->id_disciplines),
+        'discipline_name' => $row->discipline_name,
 		'id_items' => set_value('id_items', $row->id_items),
-		'id_templates' => set_value('id_templates', $row->id_templates),
+        'item_type_name' => $row->item_type_name,
 		'template_type' => set_value('template_type', $row->template_type),
+		'id_templates' => set_value('id_templates', $row->id_templates),
+        'template_name' => $row->template_name,
 	    );
+            // MODIF BY FAZRI
+            $data ['data_projects'] = $this->Projects_model->get_all(0);
             $this->template->load('template','associates/tbl_forms_form', $data);
         } else {
             $this->session->set_flashdata('message', 'Record Not Found');

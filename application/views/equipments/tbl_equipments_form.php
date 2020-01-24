@@ -26,6 +26,13 @@
         <tr><td width='200'>System <?php echo form_error('id_systems') ?></td>
             <td>
                 <select class="form-control" name="id_systems" id="id_systems" required>
+                    <?php 
+                    if($id_systems != NULL){
+                    ?>
+                    <option value="<?= $id_systems ?>" selected><?= $system_name ?></option>
+                    <?php 
+                    }
+                    ?>
                 </select>
             </td>
         </tr>
@@ -33,6 +40,13 @@
         <tr><td width='200'>Sub System <?php echo form_error('id_subs') ?></td>
             <td>
                 <select class="form-control" name="id_subs" id="id_subs" required>
+                    <?php 
+                    if($id_subs != NULL){
+                    ?>
+                    <option value="<?= $id_subs ?>" selected><?= $sub_name ?></option>
+                    <?php 
+                    }
+                    ?>
                 </select>
             </td>
         </tr>
@@ -40,6 +54,13 @@
         <tr><td width='200'>Items Name <?php echo form_error('id_items') ?></td>
             <td>
                 <select class="form-control" name="id_items" id="id_items" required>
+                    <?php 
+                    if($id_items != NULL){
+                    ?>
+                    <option value="<?= $id_items ?>" selected><?= $item_type_name ?></option>
+                    <?php 
+                    }
+                    ?>
                 </select>
             </td>
         </tr>

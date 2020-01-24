@@ -136,8 +136,11 @@ class Equipments extends CI_Controller
 		'id_equipment' => set_value('id_equipment', $row->id_equipment),
 		'id_projects' => set_value('id_projects', $row->id_projects),
 		'id_systems' => set_value('id_systems', $row->id_systems),
+        'system_name' => $row->system_name,
 		'id_subs' => set_value('id_subs', $row->id_subs),
+        'sub_name' => $row->sub_name,
 		'id_items' => set_value('id_items', $row->id_items),
+        'item_type_name' => $row->item_type_name,
 		'equipment_no' => set_value('equipment_no', $row->equipment_no),
 		'equipment_desc' => set_value('equipment_desc', $row->equipment_desc),
 	    );

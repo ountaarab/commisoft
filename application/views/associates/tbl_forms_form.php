@@ -25,12 +25,26 @@
         <tr><td width='200'>Discipline <?php echo form_error('id_disciplines') ?></td>
             <td>
                 <select class="form-control" name="id_disciplines" id="id_disciplines" required>
+                    <?php 
+                    if($id_disciplines != NULL){
+                    ?>
+                    <option value="<?= $id_disciplines ?>" selected><?= $discipline_name ?></option>
+                    <?php 
+                    }
+                    ?>
                 </select>
             </td>
         </tr>
         <tr><td width='200'>Items Name <?php echo form_error('id_items') ?></td>
             <td>
                 <select class="form-control" name="id_items" id="id_items" required>
+                    <?php 
+                    if($id_items != NULL){
+                    ?>
+                    <option value="<?= $id_items ?>" selected><?= $item_type_name ?></option>
+                    <?php 
+                    }
+                    ?>
                 </select>
             </td>
         </tr>
@@ -38,7 +52,7 @@
             <td width='180'>Template Type <?php echo form_error('template_type') ?></td>
             <td>
                 <select class="form-control" name="template_type" id="template_type" required>
-                    <option value="">Choose</option>
+                    <option value="">-Choose-</option>
                     <option value="Test Sheet" <?php if($template_type=="Test Sheet"){echo" selected";} ?> >Test Sheet</option>
                     <option value="Check Sheet" <?php if($template_type=="Check Sheet"){echo" selected";} ?> >Check Sheet</option>
                 </select>
@@ -47,6 +61,13 @@
         <tr><td width='200'>Templates Name <?php echo form_error('id_templates') ?></td>
             <td>
                 <select class="form-control" name="id_templates" id="id_templates" required>
+                    <?php 
+                    if($id_templates != NULL){
+                    ?>
+                    <option value="<?= $id_templates ?>" selected><?= $template_name ?></option>
+                    <?php 
+                    }
+                    ?>
                 </select>
             </td>
         </tr>
@@ -132,6 +153,8 @@ $('input').on("keypress", function(e) {
                     }
                     $('#id_disciplines').html('<option value="">-Choose-</option>'+html);                     
                     $('#id_items').html('<option value="">-Choose-</option>');
+                    $('#id_templates').html('<option value="">-Choose-</option>');                     
+                    $('#template_type').val("");                 
                 }
             });
         });
@@ -151,6 +174,7 @@ $('input').on("keypress", function(e) {
                         html += '<option value="'+data[i].id_item+'">'+data[i].item_type_name+'</option>';
                     }
                     $('#id_items').html('<option value="">-Choose-</option>'+html);                 
+                    $('#template_type').val("");                 
                 }
             });
         });

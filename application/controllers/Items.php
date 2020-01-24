@@ -132,6 +132,7 @@ class Items extends CI_Controller
 		'item_type_id' => set_value('item_type_id', $row->item_type_id),
 		'id_projects' => $row->id_project,
         'id_disciplines' => $row->id_disciplines,
+        'discipline_name' => $row->discipline_name,
 		'item_type_name' => set_value('item_type_name', $row->item_type_name),
 	    );
             $data ['data_discipline'] = $this->Disciplines_model->get_all(0);

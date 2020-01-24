@@ -25,6 +25,13 @@
         <tr><td width='200'>Discipline <?php echo form_error('id_disciplines') ?></td>
             <td>
                 <select class="form-control" name="id_disciplines" id="id_disciplines" required>
+                    <?php 
+                    if($id_disciplines != NULL){
+                    ?>
+                    <option value="<?= $id_disciplines ?>" selected><?= $discipline_name ?></option>
+                    <?php 
+                    }
+                    ?>
                 </select>
             </td>
         </tr>
@@ -70,9 +77,9 @@ $('input').on("keypress", function(e) {
                     var html = '';
                     var i;
                     for(i=0; i<data.length; i++){
-                        html += '<option value="'+data[i].id_item+'">'+data[i].item_type_name+'</option>';
+                        html += '<option value="'+data[i].id_discipline+'">'+data[i].discipline_name+'</option>';
                     }
-                    $('#id_items').html('<option value="">-Choose-</option>'+html);                     
+                    $('#id_disciplines').html('<option value="">-Choose-</option>'+html);                     
                 }
             });
         });

@@ -53,6 +53,13 @@
         <tr><td width='200'>Equipment <?php echo form_error('id_equipments') ?></td>
             <td>
                 <select class="form-control" name="id_equipments" id="id_equipments" required>
+                    <?php 
+                    if($id_equipments != NULL){
+                    ?>
+                    <option value="<?= $id_equipments ?>" selected><?= $equipment_no ?></option>
+                    <?php 
+                    }
+                    ?>
                 </select>
             </td>
         </tr>
