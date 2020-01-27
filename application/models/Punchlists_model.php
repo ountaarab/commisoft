@@ -21,7 +21,9 @@ class Punchlists_model extends CI_Model
     // get all
     function get_all()
     {
-        $this->db->order_by($this->id, $this->desc);
+        $this->db->order_by($this->id, $this->desc);        
+        $this->db->where('sub_status', 0);
+        $this->db->where('discipline_status', 0);
         $this->db->join('tbl_subs', 'tbl_subs.id_sub = tbl_punchlist.id_subs');
         $this->db->join('tbl_disciplines', 'tbl_disciplines.id_discipline = tbl_punchlist.id_disciplines');
         $this->db->join('tbl_equipments', 'tbl_equipments.id_equipment = tbl_punchlist.id_equipments');
@@ -32,6 +34,8 @@ class Punchlists_model extends CI_Model
     function get_by_id($id)
     {
         $this->db->where($this->id, $id);
+        $this->db->where('sub_status', 0);
+        $this->db->where('discipline_status', 0);
         $this->db->join('tbl_subs', 'tbl_subs.id_sub = tbl_punchlist.id_subs');
         $this->db->join('tbl_disciplines', 'tbl_disciplines.id_discipline = tbl_punchlist.id_disciplines');
         $this->db->join('tbl_equipments', 'tbl_equipments.id_equipment = tbl_punchlist.id_equipments');
@@ -40,52 +44,60 @@ class Punchlists_model extends CI_Model
     
     // get total rows
     function total_rows($q = NULL) {
+        $this->db->group_start();
         $this->db->like('id_punch', $q);
-    $this->db->or_like('punch_id', $q);
-    $this->db->or_like('id_locations', $q);
-    $this->db->or_like('sub_name', $q);
-    $this->db->or_like('discipline_name', $q);
-    $this->db->or_like('equipment_no', $q);
-    $this->db->or_like('punch_desc', $q);
-    $this->db->or_like('punch_category', $q);
-    $this->db->or_like('originator_ctr', $q);
-    $this->db->or_like('originator_cpy', $q);
-    $this->db->or_like('originator_date', $q);
-    $this->db->or_like('verified_ctr', $q);
-    $this->db->or_like('verified_cpy', $q);
-    $this->db->or_like('verified_date', $q);
-    $this->db->or_like('punch_status', $q);
-    $this->db->or_like('punch_date', $q);
-    $this->db->join('tbl_subs', 'tbl_subs.id_sub = tbl_punchlist.id_subs');
-    $this->db->join('tbl_disciplines', 'tbl_disciplines.id_discipline = tbl_punchlist.id_disciplines');
-    $this->db->join('tbl_equipments', 'tbl_equipments.id_equipment = tbl_punchlist.id_equipments');
-	$this->db->from($this->table);
+        $this->db->or_like('punch_id', $q);
+        $this->db->or_like('id_locations', $q);
+        $this->db->or_like('sub_name', $q);
+        $this->db->or_like('discipline_name', $q);
+        $this->db->or_like('equipment_no', $q);
+        $this->db->or_like('punch_desc', $q);
+        $this->db->or_like('punch_category', $q);
+        $this->db->or_like('originator_ctr', $q);
+        $this->db->or_like('originator_cpy', $q);
+        $this->db->or_like('originator_date', $q);
+        $this->db->or_like('verified_ctr', $q);
+        $this->db->or_like('verified_cpy', $q);
+        $this->db->or_like('verified_date', $q);
+        $this->db->or_like('punch_status', $q);
+        $this->db->or_like('punch_date', $q);
+        $this->db->group_end();
+        $this->db->where('sub_status', 0);
+        $this->db->where('discipline_status', 0);
+        $this->db->join('tbl_subs', 'tbl_subs.id_sub = tbl_punchlist.id_subs');
+        $this->db->join('tbl_disciplines', 'tbl_disciplines.id_discipline = tbl_punchlist.id_disciplines');
+        $this->db->join('tbl_equipments', 'tbl_equipments.id_equipment = tbl_punchlist.id_equipments');
+    	$this->db->from($this->table);
         return $this->db->count_all_results();
     }
 
     // get data with limit and search
     function get_limit_data($limit, $start = 0, $q = NULL) {
         $this->db->order_by($this->id, $this->desc);
+        $this->db->group_start();
         $this->db->like('id_punch', $q);
-	$this->db->or_like('punch_id', $q);
-	$this->db->or_like('id_locations', $q);
-	$this->db->or_like('sub_name', $q);
-	$this->db->or_like('discipline_name', $q);
-	$this->db->or_like('equipment_no', $q);
-	$this->db->or_like('punch_desc', $q);
-	$this->db->or_like('punch_category', $q);
-	$this->db->or_like('originator_ctr', $q);
-	$this->db->or_like('originator_cpy', $q);
-	$this->db->or_like('originator_date', $q);
-	$this->db->or_like('verified_ctr', $q);
-	$this->db->or_like('verified_cpy', $q);
-	$this->db->or_like('verified_date', $q);
-	$this->db->or_like('punch_status', $q);
-	$this->db->or_like('punch_date', $q);
-    $this->db->join('tbl_subs', 'tbl_subs.id_sub = tbl_punchlist.id_subs');
-    $this->db->join('tbl_disciplines', 'tbl_disciplines.id_discipline = tbl_punchlist.id_disciplines');
-    $this->db->join('tbl_equipments', 'tbl_equipments.id_equipment = tbl_punchlist.id_equipments');
-	$this->db->limit($limit, $start);
+        $this->db->or_like('punch_id', $q);
+        $this->db->or_like('id_locations', $q);
+        $this->db->or_like('sub_name', $q);
+        $this->db->or_like('discipline_name', $q);
+        $this->db->or_like('equipment_no', $q);
+        $this->db->or_like('punch_desc', $q);
+        $this->db->or_like('punch_category', $q);
+        $this->db->or_like('originator_ctr', $q);
+        $this->db->or_like('originator_cpy', $q);
+        $this->db->or_like('originator_date', $q);
+        $this->db->or_like('verified_ctr', $q);
+        $this->db->or_like('verified_cpy', $q);
+        $this->db->or_like('verified_date', $q);
+        $this->db->or_like('punch_status', $q);
+        $this->db->or_like('punch_date', $q);
+        $this->db->group_end();
+        $this->db->where('sub_status', 0);
+        $this->db->where('discipline_status', 0);
+        $this->db->join('tbl_subs', 'tbl_subs.id_sub = tbl_punchlist.id_subs');
+        $this->db->join('tbl_disciplines', 'tbl_disciplines.id_discipline = tbl_punchlist.id_disciplines');
+        $this->db->join('tbl_equipments', 'tbl_equipments.id_equipment = tbl_punchlist.id_equipments');
+    	$this->db->limit($limit, $start);
         return $this->db->get($this->table)->result();
     }
 

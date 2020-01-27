@@ -22,6 +22,7 @@ class Templates_model_ extends CI_Model
     function get_all()
     {
         $this->db->order_by($this->id, $this->desc);
+        $this->db->where('tbl_disciplines.discipline_status', 0);
         $this->db->join('tbl_disciplines', 'tbl_templates.id_disciplines = tbl_disciplines.id_discipline');
         return $this->db->get($this->table)->result();
     }
@@ -30,6 +31,7 @@ class Templates_model_ extends CI_Model
     function get_by_id($id)
     {
         $this->db->where($this->id, $id);
+        $this->db->where('tbl_disciplines.discipline_status', 0);
         $this->db->join('tbl_disciplines', 'tbl_templates.id_disciplines = tbl_disciplines.id_discipline');
         return $this->db->get($this->table)->row();
     }
@@ -43,32 +45,38 @@ class Templates_model_ extends CI_Model
     
     // get total rows
     function total_rows($q = NULL) {
+        $this->db->group_start();
         $this->db->like('id_template', $q);
-	$this->db->or_like('template_id', $q);
-	$this->db->or_like('template_name', $q);
-	$this->db->or_like('template_type', $q);
-	$this->db->or_like('id_disciplines', $q);
-	$this->db->or_like('template_title_1', $q);
-	$this->db->or_like('template_title_2', $q);
-	$this->db->or_like('template_title_3', $q);
-    $this->db->join('tbl_disciplines', 'tbl_templates.id_disciplines = tbl_disciplines.id_discipline');
-	$this->db->from($this->table);
+    	$this->db->or_like('template_id', $q);
+    	$this->db->or_like('template_name', $q);
+    	$this->db->or_like('template_type', $q);
+    	$this->db->or_like('id_disciplines', $q);
+    	$this->db->or_like('template_title_1', $q);
+    	$this->db->or_like('template_title_2', $q);
+    	$this->db->or_like('template_title_3', $q);
+        $this->db->group_end();
+        $this->db->where('tbl_disciplines.discipline_status', 0);
+        $this->db->join('tbl_disciplines', 'tbl_templates.id_disciplines = tbl_disciplines.id_discipline');
+    	$this->db->from($this->table);
         return $this->db->count_all_results();
     }
 
     // get data with limit and search
     function get_limit_data($limit, $start = 0, $q = NULL) {
         $this->db->order_by($this->id, $this->desc);
+        $this->db->group_start();
         $this->db->like('id_template', $q);
-	$this->db->or_like('template_id', $q);
-	$this->db->or_like('template_name', $q);
-	$this->db->or_like('template_type', $q);
-	$this->db->or_like('id_disciplines', $q);
-	$this->db->or_like('template_title_1', $q);
-	$this->db->or_like('template_title_2', $q);
-	$this->db->or_like('template_title_3', $q);
-    $this->db->join('tbl_disciplines', 'tbl_templates.id_disciplines = tbl_disciplines.id_discipline');
-	$this->db->limit($limit, $start);
+        $this->db->or_like('template_id', $q);
+        $this->db->or_like('template_name', $q);
+        $this->db->or_like('template_type', $q);
+        $this->db->or_like('id_disciplines', $q);
+        $this->db->or_like('template_title_1', $q);
+        $this->db->or_like('template_title_2', $q);
+        $this->db->or_like('template_title_3', $q);
+        $this->db->group_end();
+        $this->db->where('tbl_disciplines.discipline_status', 0);
+        $this->db->join('tbl_disciplines', 'tbl_templates.id_disciplines = tbl_disciplines.id_discipline');
+    	$this->db->limit($limit, $start);
         return $this->db->get($this->table)->result();
     }
 

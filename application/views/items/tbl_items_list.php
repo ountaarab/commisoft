@@ -30,7 +30,7 @@
     <?php echo $this->session->userdata('message') <> '' ? $this->session->userdata('message') : ''; ?>
     <form action="<?php echo site_url('items/delete_select'); ?>" class="form-inline" method="post">
     <?php echo anchor(site_url('items/create'), '<i class="icon-file" aria-hidden="true"></i> Add New', 'class="btn btn-small btn-theme"'); ?>
-       <button class="btn btn-small btn-theme" type="submit" name="delete" value="select"><i class="icon-check"></i></button>
+       <button class="btn btn-small btn-theme"  type="submit" name="delete" value="select"><i class="icon-check"></i></button>
 		<?php echo anchor(site_url('items/excel'), '<i class="icon-table" aria-hidden="true"></i> Export Excel', 'class="btn btn-small btn-success"'); ?>
 		<?php echo anchor(site_url('items/word'), '<i class="icon-list-alt" aria-hidden="true"></i> Export Word', 'class="btn btn-small btn-primary"'); ?>
 		<?php echo anchor(site_url('items/pdf'), 'PDF', 'class="btn btn-small btn-danger"'); ?><div style="overflow-x:auto; overflow-x: scroll;">
@@ -93,6 +93,5 @@
                 else // selain itu
                     $(".checkitem").prop("checked",false); //  jangan ceklis semua 
             });
-    
-});
+        });
     </script>
