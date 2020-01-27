@@ -229,11 +229,10 @@ class Projects extends CI_Controller
             $pilih = $this->input->post('pilih');
             $jumlah = count($pilih);
 
-            for($i=0; $i < $jumlah;$i++){
-                $this->db->query("UPDATE tbl_projects SET project_status = 1 WHERE id = ".$pilih[$i]."");
-                $row = $this->db->get_where('tbl_projects','id = '.$pilih[$i].'')->row();
+            for($i=0; $i < $jumlah; $i++) {
+                $this->Projects_model->select_to_delete ($pilih[$i]);
                        
-            date_default_timezone_set('Asia/Bangkok');
+            /*date_default_timezone_set('Asia/Bangkok');
             $datetime = date('Y-m-d H:i:s');
             $datalog = array(
                                 'id_project'    => $row->id,
@@ -247,7 +246,7 @@ class Projects extends CI_Controller
 
             $this->db->insert('tbl_projects_log',$datalog);
             $this->session->set_flashdata('message', 'Delete '.$jumlah .'Record Success');
-            redirect(site_url('projects'));
+            redirect(site_url('projects'));*/
             }
         }
 

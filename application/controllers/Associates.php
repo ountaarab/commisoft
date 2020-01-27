@@ -255,7 +255,7 @@ class Associates extends CI_Controller
 
     public function excel()
     {
-        $this->load->helper('exportexcel');
+        $this->load->helper('exportexcel_helper');
         $namaFile = "tbl_forms.xls";
         $judul = "tbl_forms";
         $tablehead = 0;
@@ -276,7 +276,7 @@ class Associates extends CI_Controller
         $kolomhead = 0;
         xlsWriteLabel($tablehead, $kolomhead++, "No");
 	xlsWriteLabel($tablehead, $kolomhead++, "Id Projects");
-	xlsWriteLabel($tablehead, $kolomhead++, "Id Disciplines");
+	xlsWriteLabel($tablehead, $kolomhead++, "Disciplines Name");
 	xlsWriteLabel($tablehead, $kolomhead++, "Id Items");
 	xlsWriteLabel($tablehead, $kolomhead++, "Id Templates");
 	xlsWriteLabel($tablehead, $kolomhead++, "Template Type");
@@ -287,7 +287,7 @@ class Associates extends CI_Controller
             //ubah xlsWriteLabel menjadi xlsWriteNumber untuk kolom numeric
             xlsWriteNumber($tablebody, $kolombody++, $nourut);
 	    xlsWriteLabel($tablebody, $kolombody++, $data->id_projects);
-	    xlsWriteLabel($tablebody, $kolombody++, $data->id_disciplines);
+	    xlsWriteLabel($tablebody, $kolombody++, $data->discipline_name);
 	    xlsWriteLabel($tablebody, $kolombody++, $data->id_items);
 	    xlsWriteLabel($tablebody, $kolombody++, $data->id_templates);
 	    xlsWriteLabel($tablebody, $kolombody++, $data->template_type);
