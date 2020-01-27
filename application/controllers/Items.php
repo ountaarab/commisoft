@@ -116,7 +116,8 @@ class Items extends CI_Controller
 
             $this->Items_model->insert($data);
             $this->session->set_flashdata('message', 'Create Record Success');
-            redirect($this->agent->referrer());
+            // redirect($this->agent->referrer());
+            redirect(site_url('items'));
         }
     }
     

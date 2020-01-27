@@ -120,8 +120,8 @@ class Equipments extends CI_Controller
 	    );
 
             $this->Equipments_model->insert($data);
-            $this->session->set_flashdata('message', 'Create Record Success 2');
-            redirect($this->agent->referrer());
+            $this->session->set_flashdata('message', 'Create Record Success');
+            redirect(site_url('equipments'));
         }
     }
     

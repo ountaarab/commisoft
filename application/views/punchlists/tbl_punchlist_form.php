@@ -36,13 +36,13 @@
             </td>
         </tr>
 
-        <tr><td width='200'>Discipline <?php echo form_error('id_disciplines') ?></td>
+        <tr><td width='180'>Discipline <?php echo form_error('id_disciplines') ?></td>
             <td>
-                <select class="form-control" name="id_disciplines" required>
+                <select class="form-control" name="id_disciplines" style="width: 400px" required>
                     <option value="">Choose</option>
             <?php
                 foreach ($data_discipline as $baris): ?>
-                    <option value="<?= $baris->id_discipline ?>" <?php if($id_disciplines==$baris->id_discipline) {echo " selected";} ?> ><?= $baris->discipline_name ?></option>
+                    <option value="<?= $baris->id_discipline ?>" <?php if($id_disciplines==$baris->id_discipline) {echo " selected";} ?> ><?= $baris->discipline_name ?> (<?= $baris->project_name ?>)</option>
                 <?php
                 endforeach;
             ?>
