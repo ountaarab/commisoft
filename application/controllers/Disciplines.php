@@ -227,19 +227,19 @@ class Disciplines extends CI_Controller
             for($i=0; $i < $jumlah;$i++){
                 $row = $this->Disciplines_model->select_to_delete($pilih[$i]);
 
-            date_default_timezone_set('Asia/bangkok');
-            $datetime = date('Y-m-d H:i:s');
-            $datalog = array(
-                                'id_disciplines'  => $row->id_discipline,
-                                'id_projects'     => $row->id_projects,
-                                'discipline_id'   => $row->discipline_id,
-                                'discipline_name' => $row->discipline_name,
-                                'id_users'        => $this->session->userdata('id_users',true),
-                                'note'            => 'delete',
-                                'datetime'        => $datetime,
-                            );
+                date_default_timezone_set('Asia/bangkok');
+                $datetime = date('Y-m-d H:i:s');
+                $datalog = array(
+                                    'id_disciplines'  => $row->id_discipline,
+                                    'id_projects'     => $row->id_projects,
+                                    'discipline_id'   => $row->discipline_id,
+                                    'discipline_name' => $row->discipline_name,
+                                    'id_users'        => $this->session->userdata('id_users',true),
+                                    'note'            => 'delete',
+                                    'datetime'        => $datetime,
+                                );
 
-            $this->db->insert('tbl_disciplines_log',$datalog);
+                $this->db->insert('tbl_disciplines_log',$datalog);
             }   
             $this->session->set_flashdata('message', 'Delete '.$jumlah .' Record Success');
             redirect(site_url('disciplines'));
