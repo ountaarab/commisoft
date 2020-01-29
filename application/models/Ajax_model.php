@@ -16,6 +16,7 @@ class Ajax_model extends CI_Model
     function get_system_by_proj($id)
     {
         $this->db->where('id_projects', $id);
+        $this->db->where('system_status', 0);
         return $this->db->get('tbl_systems')->result();
     }
 

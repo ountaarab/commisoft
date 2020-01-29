@@ -143,6 +143,16 @@ class Systems_model extends CI_Model
             $this->db->where($this->id, $id);
             $this->db->update($this->table, $data);
         }
+
+    function select_to_delete ($id)
+        {
+            $data = array('system_status' => 1,);
+            $this->db->where($this->id, $id);
+            $this->db->update($this->table,$data);
+            
+            $query = $this->db->get_where('tbl_systems', ['id_system' => $id]);
+            return $query->row();
+        }
 }
 
 /* End of file Systems_model.php */

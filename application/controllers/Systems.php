@@ -226,25 +226,28 @@ class Systems extends CI_Controller
         {
             $pilih = $this->input->post('pilih');
             $jumlah = count($pilih);
-            for($i=0; $i < $jumlah;$i++){
-                $this->db->query("UPDATE tbl_systems SET system_status = 1 WHERE id = ".$pilih[$i]."");
-                $row = $this->db->get_where('tbl_systems','id = '.$pilih[$i].'')->row();
-            date_default_timezone_set('Asia/bangkok');
-            $datetime = date('Y-m-d H:i:s');
-            $datalog = array(
-            'id_system' => $row->id,
-            // 'system_no' => $row->system_no,
-            'system_project_no' => $row->system_project_no,
-            'system_id' => $row->system_id,
-            'system_name' => $row->system_name,
-            'id_users' => $this->session->userdata('id_users',TRUE),
-            'note' => 'delete',
-            'datetime' => $datetime,
-            );
+
+            $jml = 0;
+            for($i=0; $i < $jumlah; $i++) {
+                $row = $this->Systems_model->select_to_delete($pilih[$i]);
+                       
+                date_default_timezone_set('Asia/Bangkok');
+                $datetime = date('Y-m-d H:i:s');
+                $datalog = array(
+                        'id_systems' => $row->id_system,
+                        'id_projects' => $row->id_projects,
+                        'system_id' => $row->system_id,
+                        'system_name' => $row->system_name,
+                        'id_users' => $this->session->userdata('id_users',TRUE),
+                        'note' => 'delete',
+                        'datetime' => $datetime,
+                );
+
                 $this->db->insert('tbl_systems_log',$datalog);
-                 $this->session->set_flashdata('message', 'Delete '.$jumlah .'Record Success');
+                $jml++;
             }
-                redirect(site_url('systems'));
+            $this->session->set_flashdata('message', 'Delete '.$jumlah .' Record Success');
+            redirect(site_url('systems'));
         }
 
      public function pdf($status){

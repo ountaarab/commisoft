@@ -29,6 +29,7 @@
     <?php echo $this->session->userdata('message') <> '' ? $this->session->userdata('message') : ''; ?>
 <form action="<?php echo site_url('projects/delete_select'); ?>" class="form-inline" method="post">
 <?php echo anchor(site_url('projects/create'), '<i class="icon-file" aria-hidden="true"></i> Add New', 'class="btn btn-small btn-theme"'); ?>
+&nbsp;
 <button class="btn btn-small btn-theme" type="submit" name="delete" value="select"><i class="icon-check" aria-hidden="true"></i></button>
 <?php echo anchor(site_url('projects/excel/0'), '<i class="icon-table" aria-hidden="true"></i> Export Excel', 'class="btn btn-small btn-success"'); ?>
 <?php echo anchor(site_url('projects/word/0'), '<i class="icon-list-alt" aria-hidden="true"></i> Export Word', 'class="btn btn-small btn-primary"'); ?>

@@ -22,12 +22,6 @@ class Disciplines_model extends CI_Model
     function get_all($status = 0)
         {
             $this->db->order_by($this->id, $this->desc);
-
-            $this->db->select ('tbl_disciplines.*,
-                                tbl_projects.project_name,
-                                tbl_projects.project_status 
-                              ');
-
             $this->db->where ('tbl_disciplines.discipline_status', $status);
             $this->db->where ('tbl_projects.project_status', $status);
             $this->db->from ('tbl_disciplines');
@@ -45,11 +39,6 @@ class Disciplines_model extends CI_Model
             $this->db->or_like ('tbl_disciplines.discipline_id', $q);
             $this->db->or_like ('tbl_disciplines.discipline_name', $q);
             $this->db->group_end();
-
-            $this->db->select ('tbl_disciplines.*',
-                                'tbl_projects.project_name,
-                                tbl_projects.project_status' 
-                              );
             $this->db->where('tbl_disciplines.discipline_status', $status);
             $this->db->where ('tbl_projects.project_status', $status);
             $this->db->from('tbl_disciplines');
@@ -66,11 +55,6 @@ class Disciplines_model extends CI_Model
             $this->db->or_like ('tbl_disciplines.discipline_id', $q);
             $this->db->or_like ('tbl_disciplines.discipline_name', $q);
             $this->db->group_end();
-
-            $this->db->select ('tbl_disciplines.*',
-                                'tbl_projects.project_name,
-                                tbl_projects.project_status' 
-                              );
             $this->db->where('tbl_disciplines.discipline_status', $status);
             $this->db->where ('tbl_projects.project_status', $status);
             $this->db->from('tbl_disciplines');
@@ -90,10 +74,10 @@ class Disciplines_model extends CI_Model
 
     function select_to_insert($discipline_id, $discipline_name, $list_project)
         {
-            $this->db->where ('discipline_id', $discipline_id);
-            $this->db->where ('discipline_name', $discipline_name);
-            $this->db->where ('discipline_status', 0);
-            $this->db->where_in ('id_projects', $list_project);
+            $this->db->LIKE ('discipline_id', $discipline_id);
+            $this->db->LIKE ('discipline_name', $discipline_name);
+            $this->db->LIKE ('discipline_status', 0);
+            $this->db->WHERE ('id_projects', $list_project);
             $query = $this->db->get('tbl_disciplines');
             return $query->num_rows();
         }
@@ -136,6 +120,16 @@ class Disciplines_model extends CI_Model
         {
             $this->db->where($this->id, $id);
             $this->db->update($this->table, $data);
+        }
+
+    function select_to_delete ($id)
+        {
+            $data = array('discipline_status' => 1,);
+            $this->db->where($this->id, $id);
+            $this->db->update($this->table,$data);
+            
+            $query = $this->db->get_where('tbl_disciplines', ['id_discipline' => $id]);
+            return $query->row();
         }
 
 }

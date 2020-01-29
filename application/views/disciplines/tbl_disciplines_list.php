@@ -43,6 +43,7 @@
         <th> No </th>
 		<th>Discipline Id</th>
 		<th>Discipline Name</th>
+        <th>Project Name</th>
 		<th width="200">Action</th>
     </tr>
 
@@ -52,6 +53,7 @@
 		<td width="10px"><?php echo ++$start ?></td>
 		<td><?php echo $disciplines->discipline_id ?></td>
 		<td><?php echo $disciplines->discipline_name ?></td>
+        <td><?php echo $disciplines->project_name ?></td>
 		<td>
 			<?php 
 			echo anchor(site_url('disciplines/read/'.$disciplines->id_discipline),'<i class="icon-desktop" aria-hidden="true"></i>'); 

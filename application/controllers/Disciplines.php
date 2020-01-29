@@ -59,6 +59,7 @@ class Disciplines extends CI_Controller
                             'total_rows'       => $config['total_rows'],
                             'start'            => $start,
                           );
+
             $this->template->load('template','disciplines/tbl_disciplines_list', $data);
         }
 
@@ -108,7 +109,8 @@ class Disciplines extends CI_Controller
                                 'discipline_name'   => $discipline_name
                                );
 
-                $cek_first = $this->Systems_model->select_to_insert($discipline_id, $discipline_name, $list_project);
+                $cek_first = $this->Disciplines_model->select_to_insert($discipline_id, $discipline_name, $list_project);
+                // var_dump($cek_first);die;
                 if ($cek_first>0) {
                     $this->session->set_flashdata('message', 'Sorry, record already exists');
                     redirect ('Disciplines/create');
@@ -132,7 +134,8 @@ class Disciplines extends CI_Controller
                 $this->db->insert('tbl_disciplines_log',$datalog);
                 $this->session->set_flashdata('message', 'Create Record Success');
                 redirect('Disciplines');
-            }}
+            }
+            }
         }
     
     public function update($id) 
@@ -222,13 +225,13 @@ class Disciplines extends CI_Controller
             $pilih = $this->input->post('pilih');
             $jumlah = count($pilih);
             for($i=0; $i < $jumlah;$i++){
-                $this->db->query("UPDATE tbl_disciplines SET discipline_status =1 WHERE id = ".$pilih[$i]."");
-                $row = $this->db->get_where('tbl_disciplines','id = '.$pilih[$i].'')->row();
+                $row = $this->Disciplines_model->select_to_delete($pilih[$i]);
 
             date_default_timezone_set('Asia/bangkok');
             $datetime = date('Y-m-d H:i:s');
             $datalog = array(
-                                'id_discipline'   => $row->id,
+                                'id_disciplines'  => $row->id_discipline,
+                                'id_projects'     => $row->id_projects,
                                 'discipline_id'   => $row->discipline_id,
                                 'discipline_name' => $row->discipline_name,
                                 'id_users'        => $this->session->userdata('id_users',true),
@@ -237,8 +240,8 @@ class Disciplines extends CI_Controller
                             );
 
             $this->db->insert('tbl_disciplines_log',$datalog);
-            $this->session->set_flashdata('message', 'Delete '.$jumlah .'Record Success');
             }   
+            $this->session->set_flashdata('message', 'Delete '.$jumlah .' Record Success');
             redirect(site_url('disciplines'));
         }
 

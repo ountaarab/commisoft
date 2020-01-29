@@ -87,11 +87,14 @@ class Projects_model extends CI_Model
             $this->db->update($this->table, $data);
         }
 
-    function select_to_delete ($pilih, $i)
+    function select_to_delete ($id)
         {
-            $this->db->set ('project_status', 1);
-            $query = $this->db->get_where('tbl_projects', ['id_project' => $pilih[$i]]);
-            return $query->row ();
+            $data = array('project_status' => 1,);
+            $this->db->where($this->id, $id);
+            $this->db->update($this->table,$data);
+            
+            $query = $this->db->get_where('tbl_projects', ['id_project' => $id]);
+            return $query->row();
         }
 }
 

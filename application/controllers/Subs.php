@@ -241,23 +241,22 @@ class Subs extends CI_Controller
             $pilih  = $this->input->post('pilih');
             $jumlah = count($pilih);
             for($i=0; $i < $jumlah;$i++){
-                $this->db->query("UPDATE tbl_subs SET sub_status = 1 WHERE id = ".$pilih[$i]."");
-                $row = $this->db->get_where('tbl_subs','id = '.$pilih[$i].'')->row();
+                $row = $this->Subs_model->select_to_delete($pilih[$i]);
 
-            date_default_timezone_set('Asia/bangkok');
-            $datetime = date('Y-m-d H:i:s');
-            $datalog = array(
-                                'id_sub'        => $row->id,
-                                // 'sub_no' => $row->sub_no,
-                                'sub_system_no' => $row->sub_system_no,
-                                'sub_id'        => $row->sub_id,
-                                'sub_name'      => $row->sub_name,
-                                'id_users'      => $this->session->userdata('id_users',TRUE),
-                                'note'          => 'delete',
-                                'datetime'      => $datetime,
-                            );
-            $this->db->insert('tbl_subs_log',$datalog);
-            $this->session->set_flashdata('message', 'Delete '.$jumlah .'Record Success');
+                date_default_timezone_set('Asia/bangkok');
+                $datetime = date('Y-m-d H:i:s');
+                $datalog = array(
+                                    'id_subs'       => $row->id_sub,
+                                    'id_projects'   => $row->id_projects,
+                                    'id_systems'   => $row->id_systems,
+                                    'sub_id'        => $row->sub_id,
+                                    'sub_name'      => $row->sub_name,
+                                    'id_users'      => $this->session->userdata('id_users',TRUE),
+                                    'note'          => 'delete',
+                                    'datetime'      => $datetime,
+                                );
+                $this->db->insert('tbl_subs_log',$datalog);
+                $this->session->set_flashdata('message', 'Delete '.$jumlah .' Record Success');
             }
                 redirect(site_url('subs'));
         }

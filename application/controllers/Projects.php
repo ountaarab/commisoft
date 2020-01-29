@@ -229,25 +229,27 @@ class Projects extends CI_Controller
             $pilih = $this->input->post('pilih');
             $jumlah = count($pilih);
 
+            $jml = 0;
             for($i=0; $i < $jumlah; $i++) {
-                $this->Projects_model->select_to_delete ($pilih[$i]);
+                $row = $this->Projects_model->select_to_delete($pilih[$i]);
                        
-            /*date_default_timezone_set('Asia/Bangkok');
-            $datetime = date('Y-m-d H:i:s');
-            $datalog = array(
-                                'id_project'    => $row->id,
-                                'project_id'    => $row->project_id,
-                                'project_name'  => $row->project_name,
-                                'project_desc'  => $row->project_desc,
-                                'id_users'      => $this->session->userdata('id_users',true),
-                                'note'          => 'delete',
-                                'datetime'      => $datetime,
-                            );
+                date_default_timezone_set('Asia/Bangkok');
+                $datetime = date('Y-m-d H:i:s');
+                $datalog = array(
+                                    'id_projects'    => $row->id_project,
+                                    'project_id'    => $row->project_id,
+                                    'project_name'  => $row->project_name,
+                                    'project_desc'  => $row->project_desc,
+                                    'id_users'      => $this->session->userdata('id_users',true),
+                                    'note'          => 'delete',
+                                    'datetime'      => $datetime,
+                                );
 
-            $this->db->insert('tbl_projects_log',$datalog);
-            $this->session->set_flashdata('message', 'Delete '.$jumlah .'Record Success');
-            redirect(site_url('projects'));*/
+                $this->db->insert('tbl_projects_log',$datalog);
+                $jml++;
             }
+            $this->session->set_flashdata('message', 'Delete '.$jumlah .' Record Success');
+            redirect(site_url('projects'));
         }
 
     public function _rules() 

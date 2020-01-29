@@ -161,6 +161,16 @@ class Subs_model extends CI_Model
             $this->db->where($this->id, $id);
             $this->db->update($this->table,$data);
         }
+
+    function select_to_delete ($id)
+        {
+            $data = array('sub_status' => 1,);
+            $this->db->where($this->id, $id);
+            $this->db->update($this->table,$data);
+            
+            $query = $this->db->get_where($this->table, ['id_sub' => $id]);
+            return $query->row();
+        }
 }
 
 /* End of file Subs_model.php */
