@@ -79,7 +79,6 @@
 </div>
 </div>
 </div>
-<script type="text/javascript" src="<?=base_url('') ?>assets/js/jquery.js"></script>
 <script>
 $('input').on("keypress", function(e) {
             /* ENTER PRESSED*/
