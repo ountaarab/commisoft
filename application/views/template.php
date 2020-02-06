@@ -40,7 +40,7 @@
 <script>
   
 
-  var IDLE_TIMEOUT = 180; //seconds
+var IDLE_TIMEOUT = 180; //seconds
 var _idleSecondsCounter = 0;
 var notifcounter = 0;
 document.onclick = function() {
@@ -63,7 +63,7 @@ function CheckIdleTime() {
     if (oPanel)
         oPanel.innerHTML = (IDLE_TIMEOUT - _idleSecondsCounter) + "";
     if (_idleSecondsCounter >= IDLE_TIMEOUT) {
-        window.location.replace("<?php echo site_url('auth/logout'); ?>");
+          window.location.replace("<?php echo site_url('auth/logout'); ?>");
     }
 }
 </script>
