@@ -64,6 +64,13 @@ class Ajax_model extends CI_Model
         return $this->db->get('tbl_templates')->result();
     }
 
+    // get Notif 
+    function get_notif($where)
+    {
+        $this->db->where($where);
+        return $this->db->get('tbl_notif')->result();
+    }
+
 
 }
 

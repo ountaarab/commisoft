@@ -59,6 +59,15 @@ class Ajax extends CI_Controller
         $hasil = $this->Ajax_model->get_templ_by_disc_AND_type($where);
         echo json_encode($hasil);
     }
+
+    public function contoh_notif(){
+        $where = array(
+            'view' => '0'
+        );
+        $hasil = $this->Ajax_model->get_notif($where);
+        echo json_encode($hasil);
+
+    }
 }
 
 /* End of file Associates.php */

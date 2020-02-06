@@ -37,10 +37,9 @@
   ======================================================= -->
 </head>
 <script type="text/javascript" src="<?=base_url('') ?>assets/js/jquery.js"></script>
-<script>
-  
 
-  var IDLE_TIMEOUT = 180; //seconds
+<script>
+  var IDLE_TIMEOUT = 300; //seconds
 var _idleSecondsCounter = 0;
 var notifcounter = 0;
 document.onclick = function() {
@@ -54,7 +53,38 @@ document.onkeypress = function() {
     _idleSecondsCounter = 0;
 };
 
+CheckNotif();
 window.setInterval(CheckIdleTime, 1000);
+window.setInterval(CheckNotifrutin, 1000);
+
+function CheckNotifrutin() {
+    notifcounter++;
+
+    if (notifcounter >= 15) {
+        notifcounter = 0;
+        CheckNotif();
+    }
+}
+
+function CheckNotif() {
+        $.ajax({
+            url : "<?php echo base_url();?>Ajax/contoh_notif",
+            method : "GET",
+            async : false,
+            dataType : 'json',
+            success: function(data){
+                if(data.length>0){
+                  alert("wwkwkw");
+                }
+                // var html = '';
+                // var i;
+                // for(i=0; i<data.length; i++){
+                //     html += '<option value="'+data[i].id_system+'">'+data[i].system_name+'</option>';
+                // }
+                // $('#list_system').html('<option value="">-Choose-</option>'+html);                     
+            }
+        });
+}
 
 function CheckIdleTime() {
     _idleSecondsCounter++;
@@ -67,6 +97,7 @@ function CheckIdleTime() {
     }
 }
 </script>
+
 <body>
 
   <div id="wrapper">
